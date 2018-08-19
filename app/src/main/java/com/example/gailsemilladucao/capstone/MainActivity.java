@@ -1,20 +1,23 @@
 package com.example.gailsemilladucao.capstone;
 
+// =========== API =========== //
 import android.content.Intent;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
+// =========== PACKAGES =========== //
+import com.example.gailsemilladucao.capstone.backend.*;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageButton mic;
     private TextView txvResult;
 
     @Override
@@ -22,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mic = findViewById(R.id.mic);
         txvResult = (TextView) findViewById(R.id.txvResult);
     }
 
@@ -48,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK && data != null) {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     txvResult.setText(result.get(0));
+
+                    Intent recordIntent = new Intent(this, microphone.class);
+                    recordIntent.putExtra("textRecorded",result.get(0).toString());
+                    startActivity(recordIntent);
                 }
                 break;
         }
