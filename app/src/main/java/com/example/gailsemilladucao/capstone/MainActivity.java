@@ -6,6 +6,7 @@ import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,13 +20,23 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private TextView txvResult;
+    //private Button query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //query = findViewById(R.id.query_button);
         txvResult = (TextView) findViewById(R.id.txvResult);
+
+//        query.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent querybtn = new Intent(MainActivity.this, show_data.class);
+//                startActivity(querybtn);
+//            }
+//        });
     }
 
     public void getSpeechInput(View view) {
@@ -51,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     txvResult.setText(result.get(0));
 
-                    Intent recordIntent = new Intent(this, microphone.class);
-                    recordIntent.putExtra("textRecorded",result.get(0).toString());
-                    startActivity(recordIntent);
+//                    Intent recordIntent = new Intent(this, microphone.class);
+//                    recordIntent.putExtra("textRecorded",result.get(0).toString());
+//                    startActivity(recordIntent);
                 }
                 break;
         }
