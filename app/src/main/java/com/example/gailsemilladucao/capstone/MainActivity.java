@@ -20,6 +20,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     private TextView txvResult;
+    private String message;
     //private Button query;
 
     @Override
@@ -60,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
             case 10:
                 if (resultCode == RESULT_OK && data != null) {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    txvResult.setText(result.get(0));
+                    message = result.get(0);
+                    txvResult.setText(message);
 
 //                    Intent recordIntent = new Intent(this, microphone.class);
 //                    recordIntent.putExtra("textRecorded",result.get(0).toString());
