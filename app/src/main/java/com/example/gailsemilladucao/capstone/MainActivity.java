@@ -12,8 +12,6 @@ import android.widget.Toast;
 
 
 // =========== PACKAGES =========== //
-import com.example.gailsemilladucao.capstone.backend.*;
-
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -21,23 +19,14 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView txvResult;
     private String message;
-    //private Button query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //query = findViewById(R.id.query_button);
         txvResult = (TextView) findViewById(R.id.txvResult);
 
-//        query.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent querybtn = new Intent(MainActivity.this, show_data.class);
-//                startActivity(querybtn);
-//            }
-//        });
     }
 
     public void getSpeechInput(View view) {
@@ -46,8 +35,10 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
 
+
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, 10);
+
         } else {
             Toast.makeText(this, "Your Device Don't Support Speech Input", Toast.LENGTH_SHORT).show();
         }
@@ -62,11 +53,19 @@ public class MainActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK && data != null) {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     message = result.get(0);
-                    txvResult.setText(message);
+                    //txvResult.setText(message);
 
-//                    Intent recordIntent = new Intent(this, microphone.class);
-//                    recordIntent.putExtra("textRecorded",result.get(0).toString());
-//                    startActivity(recordIntent);
+
+                    DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
+                    databaseAccess.open();
+
+//                    if(message.equals(databaseAccess.getAddress(databaseAccess.getEnglish(englishTxt)))){
+//                        String word = message;
+//                        txvResult.setText(databaseAccess.getAddress(word));
+//                    }else{
+//                        txvResult.setText("Word not Found!");
+//                        databaseAccess.close();
+//                    }
                 }
                 break;
         }

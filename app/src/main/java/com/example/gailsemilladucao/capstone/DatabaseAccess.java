@@ -39,12 +39,22 @@ public class DatabaseAccess {
 
     // CREATE METHOD TO QUERY AND RETURN THE RESULT FROM DATABASE
 
-    public String getAddress(String english){
-        c = db.rawQuery("SELECT Cebuano_text FROM Words where English_text = '"+english+"'", new String[]{});
+    public String getAddress(String word){
+        c = db.rawQuery("SELECT Cebuano_text FROM Words where English_text = '"+word+"'", new String[]{});
         StringBuffer buffer = new StringBuffer();
         while(c.moveToNext()){
             String ceb = c.getString(0);
             buffer.append("" + ceb);
+        }
+        return buffer.toString();
+    }
+
+    public String getEnglish(String english){
+        c = db.rawQuery("SELECT English_text FROM Words where English_text = '"+english+"'", new String[]{});
+        StringBuffer buffer = new StringBuffer();
+        while(c.moveToNext()){
+            String eng = c.getString(0);
+            buffer.append("" + eng);
         }
         return buffer.toString();
     }
