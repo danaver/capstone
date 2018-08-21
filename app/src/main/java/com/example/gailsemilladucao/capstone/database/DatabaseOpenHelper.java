@@ -1,4 +1,4 @@
-package com.example.gailsemilladucao.capstone;
+package com.example.gailsemilladucao.capstone.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

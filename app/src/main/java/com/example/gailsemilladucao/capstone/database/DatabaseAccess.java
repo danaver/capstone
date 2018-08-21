@@ -1,4 +1,4 @@
-package com.example.gailsemilladucao.capstone;
+package com.example.gailsemilladucao.capstone.database;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -12,7 +12,7 @@ public class DatabaseAccess {
     Cursor c = null;
 
 
-    private DatabaseAccess (Context context){
+    public DatabaseAccess (Context context){
         this.openHelper = new DatabaseOpenHelper(context);
     }
 

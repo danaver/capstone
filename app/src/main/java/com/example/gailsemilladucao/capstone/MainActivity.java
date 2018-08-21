@@ -6,19 +6,23 @@ import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 // =========== PACKAGES =========== //
+import com.example.gailsemilladucao.capstone.backend.Translation;
+import com.example.gailsemilladucao.capstone.database.DatabaseAccess;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView txvResult;
-    private String message;
+    public TextView txvResult;
+    public String message;
+
+    Translation trans = new Translation();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,19 +57,12 @@ public class MainActivity extends AppCompatActivity {
                 if (resultCode == RESULT_OK && data != null) {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     message = result.get(0);
-                    //txvResult.setText(message);
+                    txvResult.setText(message);
 
+                    trans.checkString(message);
 
                     DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
                     databaseAccess.open();
-
-//                    if(message.equals(databaseAccess.getAddress(databaseAccess.getEnglish(englishTxt)))){
-//                        String word = message;
-//                        txvResult.setText(databaseAccess.getAddress(word));
-//                    }else{
-//                        txvResult.setText("Word not Found!");
-//                        databaseAccess.close();
-//                    }
                 }
                 break;
         }

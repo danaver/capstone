@@ -1,4 +1,4 @@
-package com.example.gailsemilladucao.capstone;
+package com.example.gailsemilladucao.capstone.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,7 +7,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import com.example.gailsemilladucao.capstone.R;
+import com.example.gailsemilladucao.capstone.database.DatabaseAccess;
 
 public class show_data extends AppCompatActivity {
 
