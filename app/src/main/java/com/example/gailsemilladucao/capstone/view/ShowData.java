@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.example.gailsemilladucao.capstone.R;
 import com.example.gailsemilladucao.capstone.database.DatabaseAccess;
 
-public class show_data extends AppCompatActivity {
+public class ShowData extends AppCompatActivity {
 
     public EditText englishText;
     public Button query_button;

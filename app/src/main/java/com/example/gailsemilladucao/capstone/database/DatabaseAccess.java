@@ -5,11 +5,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 public class DatabaseAccess {
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase db;
     private static DatabaseAccess instance;
     Cursor c = null;
+
+    ArrayList<String> arrayList = new ArrayList<>();
 
 
     public DatabaseAccess (Context context){
@@ -38,6 +42,10 @@ public class DatabaseAccess {
     }
 
     // CREATE METHOD TO QUERY AND RETURN THE RESULT FROM DATABASE
+
+    public void populate() {
+        
+    }
 
     public String getAddress(String word){
         c = db.rawQuery("SELECT Cebuano_text FROM Words where English_text = '"+word+"'", new String[]{});
