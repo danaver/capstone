@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BISTALK</title>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,600,700" rel="stylesheet">
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <div id="login_div" class="main-div">
+    <center><h3>BISTALK ADMIN LOGIN</h3> </center>
+    <input type="email" placeholder="Email" id="email_field" />
+    <input type="password" placeholder="Password" id="password_field" />
+
+    <button onclick="login()">Login to Account</button>
+  </div>
+
+  <div id="user_div" class="loggedin-div">
+    <h3>Welcome User</h3>
+    <p id="user_para"> BISTALK ADMIN LOGIN COMPLETED</p>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+
+
+<script src="https://www.gstatic.com/firebasejs/5.4.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyB5JosFVcpOsdjy5R1LVKb4kStHapmIFu8",
+    authDomain: "bistalk-81ab4.firebaseapp.com",
+    databaseURL: "https://bistalk-81ab4.firebaseio.com",
+    projectId: "bistalk-81ab4",
+    storageBucket: "bistalk-81ab4.appspot.com",
+    messagingSenderId: "56317823420"
+  };
+  firebase.initializeApp(config);
+</script>
+<script src="login.js" ></script>
+</body>
+</html>
