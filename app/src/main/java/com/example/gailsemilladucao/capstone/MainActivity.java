@@ -11,8 +11,9 @@ import android.widget.Toast;
 
 
 // =========== PACKAGES =========== //
-import com.example.gailsemilladucao.capstone.backend.Translation;
-import com.example.gailsemilladucao.capstone.database.DatabaseAccess;
+import com.example.gailsemilladucao.capstone.backend.*;
+import com.example.gailsemilladucao.capstone.database.*;
+import com.example.gailsemilladucao.capstone.view.*;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -22,17 +23,16 @@ public class MainActivity extends AppCompatActivity {
     public TextView txvResult;
     public String message;
 
-    Translation trans = new Translation();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        txvResult = (TextView) findViewById(R.id.txvResult);
+        txvResult = findViewById(R.id.txvResult);
 
     }
 
+    //called in xml
     public void getSpeechInput(View view) {
 
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -62,12 +62,17 @@ public class MainActivity extends AppCompatActivity {
 
                     DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
                     databaseAccess.open();
-
-                    Intent sd = new Intent (MainActivity.this, ShowData.class);
-                    sd.putExtra("word", message);
-                    startActivity(sd);
                 }
                 break;
+        }
+    }
+
+    //called in xml
+    public void nextScreen(View view) {
+        if(!message.isEmpty()) {
+            Intent sd = new Intent (MainActivity.this, ShowData.class);
+            sd.putExtra("word", message);
+            startActivity(sd);
         }
     }
 
