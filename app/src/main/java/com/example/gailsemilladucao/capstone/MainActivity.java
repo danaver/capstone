@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, 10);
-
         } else {
             Toast.makeText(this, "Your Device Don't Support Speech Input", Toast.LENGTH_SHORT).show();
         }
@@ -59,10 +58,14 @@ public class MainActivity extends AppCompatActivity {
                     message = result.get(0);
                     txvResult.setText(message);
 
-                    trans.checkString(message);
+                    //trans.checkString(message);
 
                     DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
                     databaseAccess.open();
+
+                    Intent sd = new Intent (MainActivity.this, ShowData.class);
+                    sd.putExtra("word", message);
+                    startActivity(sd);
                 }
                 break;
         }
