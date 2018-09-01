@@ -62,15 +62,23 @@
         android:layout_marginTop="250dp"
         android:text="Attach Audio"/>
     <Button
+        android:id="@+id/attach"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="File"
         android:layout_marginTop="270dp"/>
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="325dp"
+        android:text=""/>
+
     <ImageView
         android:id="@+id/image"
         android:background="@drawable/cam"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginTop="320dp"/>
+        android:layout_marginTop="340dp"/>
 
 </RelativeLayout>

@@ -16,25 +16,30 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gailsemilladucao.capstone.R;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
 public class AddData extends AppCompatActivity {
 
     ImageView mimage;
-    Button recstart,recstop,play,pause;
-    String savepath = "";
+    Button recstart,recstop,play,pause,attach;
+    String savepath = "",preset ="";
+    File file;
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
+    TextView info;
 
     final int REQUEST_PERMISSION_CODE = 1000;
     final int REQUEST_PERMISSION_GALLERY = 999;
+    final static int RQS_OPEN_AUDIO_MP3 = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,8 @@ public class AddData extends AppCompatActivity {
             requestPermission();
 
         //binding
+        info = findViewById(R.id.info);
+        attach = findViewById(R.id.attach);
         mimage = findViewById(R.id.image);
         recstart = findViewById(R.id.recstart);
         recstop =  findViewById(R.id.recstop);
@@ -61,10 +68,12 @@ public class AddData extends AppCompatActivity {
 
                     savepath = Environment.getExternalStorageDirectory()
                             .getAbsolutePath()+"/"
-                            + UUID.randomUUID().toString()+"_audio_record.3gp";
+                            + UUID.randomUUID().toString()+".3gp";
                     setupMediaRecorder();
+
+                    info.setText(savepath);
                     try{
-//                        mediaPlayer = new MediaPlayer();
+                        mediaPlayer = new MediaPlayer();
                         mediaRecorder.prepare();
                         mediaRecorder.start();
                     }catch (IOException e){
@@ -84,6 +93,17 @@ public class AddData extends AppCompatActivity {
             }
         });
 
+        attach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent lol = new Intent();
+                lol.setType("audio/*");
+                lol.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(
+                        lol, "Open Audio (mp3) file"), RQS_OPEN_AUDIO_MP3);
+            }
+        });
+
         recstop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,6 +115,7 @@ public class AddData extends AppCompatActivity {
             }
         });
 
+        //The Play Button is an event that plays the record
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,14 +126,32 @@ public class AddData extends AppCompatActivity {
 
                 mediaPlayer = new MediaPlayer();
                 try {
-                    mediaPlayer.setDataSource(savepath);
-                    mediaPlayer.prepare();
+                    //It checks wether the TextView->Where the file path of the attach file is shown, is empty or not
+                    //if it is empty, then it will assume that it will play on the recorded audio
+                    if(info.getText() == "" && savepath != ""){
+                        mediaPlayer.setDataSource(savepath);
+                        mediaPlayer.prepare();
+                        Toast.makeText(AddData.this, "hahahhaah...", Toast.LENGTH_SHORT).show();
+                    }
+                    //else, it will read the filepath inn the textview and play the audio
+                    else{
+                        //code here is needed to play the attach audio file
+                        //doesnt work because we didnt get the audio attach file yet
+                        savepath = info.getText().toString();//this portion gets the text that was in the TextView
+                        mediaPlayer.setDataSource(savepath);//will read the path
+                        mediaPlayer.prepare();
+                        Toast.makeText(AddData.this, "Playing...", Toast.LENGTH_SHORT).show();
+
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
+                    Toast.makeText(AddData.this, "File attach is not found", Toast.LENGTH_SHORT).show();
                 }
 
                 mediaPlayer.start();
-                Toast.makeText(AddData.this, "Playing...", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(AddData.this, "Playing...", Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -145,6 +184,8 @@ public class AddData extends AppCompatActivity {
                 );
             }
         });
+
+
 
     }
 
@@ -199,8 +240,11 @@ public class AddData extends AppCompatActivity {
                 }
                 return;
             }
+
         }
     }
+
+
 
     private boolean checkPermissionFromDevice() {
         int write_external_storage_result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -232,6 +276,17 @@ public class AddData extends AppCompatActivity {
             }
         }
 
+        if (resultCode == RESULT_OK) {
+            if (requestCode == RQS_OPEN_AUDIO_MP3) {
+                Uri audioFileUri = data.getData();
+                //vvv This lets you set the path sa TextView
+                info.setText(audioFileUri.getPath());
+
+            }
+        }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+
 }

@@ -69,11 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
     //called in xml
     public void nextScreen(View view) {
-        if(!message.isEmpty()) {
-            Intent sd = new Intent (MainActivity.this, ShowData.class);
-            sd.putExtra("word", message);
-            startActivity(sd);
-        }
+        Intent intent = new Intent(MainActivity.this, ShowData.class);
+        startActivity(intent);
     }
 
 }

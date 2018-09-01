@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.gailsemilladucao.capstone.MainActivity;
 import com.example.gailsemilladucao.capstone.R;
 import com.example.gailsemilladucao.capstone.database.DatabaseAccess;
 
@@ -15,8 +16,7 @@ public class ShowData extends AppCompatActivity {
     public EditText englishText;
     public Button query_button;
     public TextView result_cebuano;
-    public String mes;
-    Bundle extras = getIntent().getExtras();
+    public MainActivity mainActivity;
 
 
     @Override
@@ -24,15 +24,11 @@ public class ShowData extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_data);
 
-        if(extras != null) {
-            mes = extras.getString("word");
-        }
-
-        englishText.setText(mes);
-
         englishText = findViewById(R.id.englishText);
         query_button = findViewById(R.id.query_button);
         result_cebuano = findViewById(R.id.result_text);
+
+        //englishText.setText(mainActivity.message);
 
         //SETTING ONCLICK LISTENER
 
