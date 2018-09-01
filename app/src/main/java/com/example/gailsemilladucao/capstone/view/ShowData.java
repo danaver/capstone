@@ -28,9 +28,10 @@ public class ShowData extends AppCompatActivity {
         query_button = findViewById(R.id.query_button);
         result_cebuano = findViewById(R.id.result_text);
 
-        //englishText.setText(mainActivity.message);
+        englishText.setText(getIntent().getStringExtra("Val"));
 
         //SETTING ONCLICK LISTENER
+
 
         query_button.setOnClickListener(new View.OnClickListener() {
             @Override

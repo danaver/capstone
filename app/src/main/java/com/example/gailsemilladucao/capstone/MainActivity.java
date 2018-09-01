@@ -1,11 +1,13 @@
 package com.example.gailsemilladucao.capstone;
 
 // =========== API =========== //
+import android.Manifest;
 import android.content.Intent;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +23,8 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     public TextView txvResult;
-    public String message;
+    public String message ="Hello";
+    Button next;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         txvResult = findViewById(R.id.txvResult);
+        next = findViewById(R.id.next);
 
     }
 
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, 10);
+
         } else {
             Toast.makeText(this, "Your Device Don't Support Speech Input", Toast.LENGTH_SHORT).show();
         }
@@ -59,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
                     txvResult.setText(message);
 
                     //trans.checkString(message);
+                    Intent lol = new Intent(MainActivity.this,ShowData.class);
+                    lol.putExtra("Val", message);
+                    startActivity(lol);
 
                     DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
                     databaseAccess.open();
@@ -68,9 +76,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //called in xml
-    public void nextScreen(View view) {
-        Intent intent = new Intent(MainActivity.this, ShowData.class);
-        startActivity(intent);
-    }
+//    public void nextScreen(View view) {
+//        Intent intent = new Intent(MainActivity.this, ShowData.class);
+//        startActivity(intent);
+//    }
 
 }
