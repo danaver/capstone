@@ -17,6 +17,7 @@ public class ShowData extends AppCompatActivity {
     public Button query_button;
     public TextView result_cebuano;
     public MainActivity mainActivity;
+    String Val;
 
 
     @Override
@@ -28,7 +29,21 @@ public class ShowData extends AppCompatActivity {
         query_button = findViewById(R.id.query_button);
         result_cebuano = findViewById(R.id.result_text);
 
-        englishText.setText(getIntent().getStringExtra("Val"));
+        Val = getIntent().getStringExtra("Val");
+
+        englishText.setText(Val);
+
+        // CREATE INSTANCE OF DB ACCESS CLASS AND DB CONNECTION
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
+        databaseAccess.open();
+
+        // GETTING VALUE FROM EDIT TEXT
+        String engWord = englishText.getText().toString();
+        String cebWord = databaseAccess.getAddress(engWord); // getAddress() method to get the english word
+
+        // SETTING TEXT TO RESULT FIELD
+        result_cebuano.setText(cebWord);
+        databaseAccess.close();
 
         //SETTING ONCLICK LISTENER
 
@@ -42,7 +57,6 @@ public class ShowData extends AppCompatActivity {
                 databaseAccess.open();
 
                 // GETTING VALUE FROM EDIT TEXT
-
                 String engWord = englishText.getText().toString();
                 String cebWord = databaseAccess.getAddress(engWord); // getAddress() method to get the english word
 
