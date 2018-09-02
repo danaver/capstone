@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         txvResult = findViewById(R.id.txvResult);
-        next = findViewById(R.id.next);
+
 
     }
 
