@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.gailsemilladucao.capstone.MainActivity;
 import com.example.gailsemilladucao.capstone.R;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -58,7 +59,7 @@ public class AddData extends AppCompatActivity {
         recstop =  findViewById(R.id.recstop);
         play = findViewById(R.id.play);
         pause = findViewById(R.id.pause);
-        state = findViewById(R.id.state);
+
 
         //from android m, you need request runtime permission
 
@@ -291,5 +292,9 @@ public class AddData extends AppCompatActivity {
 //        super.onActivityResult(requestCode, resultCode, data);
     }
 
+    public void menu(View view) {
+        Intent intent = new Intent(AddData.this, MainActivity   .class);
+        startActivity(intent);
+    }
 
 }

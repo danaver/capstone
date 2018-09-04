@@ -25,11 +25,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:layout_centerHorizontal="true" />
+
     <Button
-        android:id="@+id/setting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Settings"/>
+        android:text="Add word"
+        android:layout_marginLeft="280dp"
+        android:onClick="addWord"/>
 
 
 

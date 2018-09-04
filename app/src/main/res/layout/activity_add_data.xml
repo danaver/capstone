@@ -80,14 +80,11 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginTop="340dp"/>
-    <TextView
-        android:id="@+id/state"
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="54dp"
-        android:layout_marginTop="260dp"
-        android:text="TextView" />
+        android:text="Menu"
+        android:onClick="menu"
+        android:layout_marginLeft="250dp"/>
 
 </RelativeLayout>
