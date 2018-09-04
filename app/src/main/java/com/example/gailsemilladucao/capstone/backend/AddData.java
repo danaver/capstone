@@ -31,11 +31,11 @@ public class AddData extends AppCompatActivity {
 
     ImageView mimage;
     Button recstart,recstop,play,pause,attach;
-    String savepath = "",preset ="";
-    File file;
+    String savepath = "",srcPath =null;
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
-    TextView info;
+    TextView info,state;
+    Uri audioFileUri;
 
     final int REQUEST_PERMISSION_CODE = 1000;
     final int REQUEST_PERMISSION_GALLERY = 999;
@@ -58,6 +58,7 @@ public class AddData extends AppCompatActivity {
         recstop =  findViewById(R.id.recstop);
         play = findViewById(R.id.play);
         pause = findViewById(R.id.pause);
+        state = findViewById(R.id.state);
 
         //from android m, you need request runtime permission
 
@@ -129,8 +130,9 @@ public class AddData extends AppCompatActivity {
                     //It checks wether the TextView->Where the file path of the attach file is shown, is empty or not
                     //if it is empty, then it will assume that it will play on the recorded audio
                     if(info.getText() == "" && savepath != ""){
-                        mediaPlayer.setDataSource(savepath);
                         mediaPlayer.prepare();
+                        mediaPlayer.setDataSource(savepath);
+
                         Toast.makeText(AddData.this, "hahahhaah...", Toast.LENGTH_SHORT).show();
                     }
                     //else, it will read the filepath inn the textview and play the audio
@@ -138,7 +140,7 @@ public class AddData extends AppCompatActivity {
                         //code here is needed to play the attach audio file
                         //doesnt work because we didnt get the audio attach file yet
                         savepath = info.getText().toString();//this portion gets the text that was in the TextView
-                        mediaPlayer.setDataSource(savepath);//will read the path
+                        mediaPlayer.setDataSource(AddData.this,audioFileUri);//will read the path
                         mediaPlayer.prepare();
                         Toast.makeText(AddData.this, "Playing...", Toast.LENGTH_SHORT).show();
 
@@ -278,14 +280,15 @@ public class AddData extends AppCompatActivity {
 
         if (resultCode == RESULT_OK) {
             if (requestCode == RQS_OPEN_AUDIO_MP3) {
-                Uri audioFileUri = data.getData();
+               audioFileUri = data.getData();
                 //vvv This lets you set the path sa TextView
-                info.setText(audioFileUri.getPath());
+                srcPath = audioFileUri.getPath();
+                info.setText(audioFileUri.toString() + "\n" + srcPath);
 
             }
         }
 
-        super.onActivityResult(requestCode, resultCode, data);
+//        super.onActivityResult(requestCode, resultCode, data);
     }
 
 

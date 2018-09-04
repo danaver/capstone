@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     public TextView txvResult;
     public String message ="Hello";
-    Button next;
+    Button setting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +32,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         txvResult = findViewById(R.id.txvResult);
+        setting = findViewById(R.id.setting);
 
-
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent set = new Intent(MainActivity.this,AddData.class);
+                startActivity(set);
+            }
+        });
     }
 
     //called in xml
