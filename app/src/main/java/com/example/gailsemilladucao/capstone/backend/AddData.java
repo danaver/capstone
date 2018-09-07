@@ -86,7 +86,7 @@ public class AddData extends AppCompatActivity {
                     recstop.setEnabled(true);
                     recstart.setEnabled(false);
 
-                    Toast.makeText(AddData.this, "now recording", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddData.this, "Now recording", Toast.LENGTH_SHORT).show();
 
                 }else{
                     requestPermission();
@@ -121,39 +121,44 @@ public class AddData extends AppCompatActivity {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pause.setEnabled(true);
-                recstop.setEnabled(false);
-                recstart.setEnabled(false);
-                play.setEnabled(false);
+                if(audioFileUri != null) {
+                    pause.setEnabled(true);
+                    recstop.setEnabled(false);
+                    recstart.setEnabled(false);
+                    play.setEnabled(false);
 
-                mediaPlayer = new MediaPlayer();
-                try {
-                    //It checks wether the TextView->Where the file path of the attach file is shown, is empty or not
-                    //if it is empty, then it will assume that it will play on the recorded audio
-                    if(info.getText() == "" && savepath != ""){
-                        mediaPlayer.prepare();
-                        mediaPlayer.setDataSource(savepath);
+                    mediaPlayer = new MediaPlayer();
 
-                        Toast.makeText(AddData.this, "hahahhaah...", Toast.LENGTH_SHORT).show();
-                    }
-                    //else, it will read the filepath inn the textview and play the audio
-                    else{
-                        //code here is needed to play the attach audio file
-                        //doesnt work because we didnt get the audio attach file yet
-                        savepath = info.getText().toString();//this portion gets the text that was in the TextView
-                        mediaPlayer.setDataSource(AddData.this,audioFileUri);//will read the path
-                        mediaPlayer.prepare();
-                        Toast.makeText(AddData.this, "Playing...", Toast.LENGTH_SHORT).show();
+                        try {
+                            //It checks wether the TextView->Where the file path of the attach file is shown, is empty or not
+                            //if it is empty, then it will assume that it will play on the recorded audio
+                            if (savepath != "" && info.getText().toString() == savepath) {
+                                mediaPlayer.setDataSource(savepath);
+                                mediaPlayer.prepare();
+                                mediaPlayer.start();
+                                Toast.makeText(AddData.this, "Playing Recorded Audio...", Toast.LENGTH_SHORT).show();
+                            }
+                            //else, it will read the filepath inn the textview and play the audio
+                            else {
+                                //code here is needed to play the attach audio file
+                                savepath = info.getText().toString();//this portion gets the text that was in the TextView
+                                mediaPlayer.setDataSource(AddData.this, audioFileUri);//will read the path
+                                mediaPlayer.prepare();
+                                mediaPlayer.start();
+                                Toast.makeText(AddData.this, "Playing Attached Audio...", Toast.LENGTH_SHORT).show();
 
-                    }
+                            }
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(AddData.this, "File attach is not found", Toast.LENGTH_SHORT).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(AddData.this, "File attach is not found", Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                    Toast.makeText(AddData.this, "Please Record or Attach a Files ", Toast.LENGTH_SHORT).show();
                 }
 
-                mediaPlayer.start();
-//                Toast.makeText(AddData.this, "Playing...", Toast.LENGTH_SHORT).show();
+
+
 
             }
         });
