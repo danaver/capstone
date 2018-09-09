@@ -31,12 +31,14 @@ import java.util.UUID;
 public class AddData extends AppCompatActivity {
 
     ImageView mimage;
-    Button recstart,recstop,play,pause,attach;
+    Button recstart,recstop,play,pause,attach,addData;
     String savepath = "",srcPath =null;
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
     TextView info,state;
     Uri audioFileUri;
+
+
 
     final int REQUEST_PERMISSION_CODE = 1000;
     final int REQUEST_PERMISSION_GALLERY = 999;
@@ -59,6 +61,7 @@ public class AddData extends AppCompatActivity {
         recstop =  findViewById(R.id.recstop);
         play = findViewById(R.id.play);
         pause = findViewById(R.id.pause);
+        addData = findViewById(R.id.addData);
 
 
         //from android m, you need request runtime permission

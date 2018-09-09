@@ -1,10 +1,12 @@
 package com.example.gailsemilladucao.capstone.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.sql.Blob;
 import java.util.ArrayList;
 
 public class DatabaseAccess {
@@ -65,5 +67,12 @@ public class DatabaseAccess {
             buffer.append("" + eng);
         }
         return buffer.toString();
+    }
+
+    public void addWord(String english, String cebuano){
+        ContentValues content = new ContentValues();
+
+        
+
     }
 }
