@@ -82,6 +82,7 @@ public class AddData extends AppCompatActivity {
                     setupMediaRecorder();
 
                     info.setText(savepath);
+
                     try{
                         mediaPlayer = new MediaPlayer();
                         mediaRecorder.prepare();
@@ -129,7 +130,7 @@ public class AddData extends AppCompatActivity {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(audioFileUri != null) {
+                if(audioFileUri != null || savepath != "") {
                     pause.setEnabled(true);
                     recstop.setEnabled(false);
                     recstart.setEnabled(false);
@@ -208,7 +209,10 @@ public class AddData extends AppCompatActivity {
     private void initControls() {
         try
         {
+            //binding
             volumeSeekbar = (SeekBar)findViewById(R.id.seekBar);
+
+
             audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
             volumeSeekbar.setMax(audioManager
                     .getStreamMaxVolume(AudioManager.STREAM_MUSIC));
