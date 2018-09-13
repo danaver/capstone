@@ -1,29 +1,27 @@
 package com.example.gailsemilladucao.capstone;
 
 // =========== API =========== //
-import android.Manifest;
 import android.content.Intent;
+import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-// =========== PACKAGES =========== //
-import com.example.gailsemilladucao.capstone.backend.*;
-import com.example.gailsemilladucao.capstone.database.*;
-import com.example.gailsemilladucao.capstone.view.*;
+import com.example.gailsemilladucao.capstone.backend.AddData;
+import com.example.gailsemilladucao.capstone.database.DatabaseOpenHelper;
 
 import java.util.ArrayList;
 import java.util.Locale;
+
+// =========== PACKAGES =========== //
 
 public class MainActivity extends AppCompatActivity {
 
     public TextView txvResult;
     public String message ="Hello";
+    DatabaseOpenHelper db;
 
 
     @Override
@@ -32,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         txvResult = findViewById(R.id.txvResult);
-
+        db = new DatabaseOpenHelper(this);
     }
 
     //called in xml
@@ -65,14 +63,14 @@ public class MainActivity extends AppCompatActivity {
                     //covert first letter to uppercase since database set it on uppercase
                     message = message.substring(0,1).toUpperCase() + message.substring(1).toLowerCase();
                     //access the db
-                    DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
-                    databaseAccess.open();
+
                     //Checking if the word is naa in the database
-                    String cebWord = databaseAccess.getAddress(message);
+                    String cebWord = db.getAddress(message);
                     if(cebWord != ""){
-                        Intent lol = new Intent(MainActivity.this,ShowData.class);
-                        lol.putExtra("Val", message);
-                        startActivity(lol);
+//                        Intent lol = new Intent(MainActivity.this,ShowData.class);
+//                        lol.putExtra("Val", message);
+//                        startActivity(lol);
+                        txvResult.setText(cebWord);
                     }else{
                         Toast.makeText(this, "Word is not found", Toast.LENGTH_SHORT).show();
                     }

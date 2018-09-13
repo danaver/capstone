@@ -8,15 +8,16 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -24,22 +25,26 @@ import android.widget.Toast;
 
 import com.example.gailsemilladucao.capstone.MainActivity;
 import com.example.gailsemilladucao.capstone.R;
+import com.example.gailsemilladucao.capstone.database.DatabaseOpenHelper;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
 public class AddData extends AppCompatActivity {
 
     ImageView mimage;
-    Button recstart,recstop,play,pause,attach,addData;
+    EditText eng,ceb;
+    Button recstart,recstop,play,pause,attach,add;
     String savepath = "",srcPath =null;
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
     TextView info,state;
     Uri audioFileUri;
+    String engt="",cebt="";
+    DatabaseOpenHelper db;
+
     private SeekBar volumeSeekbar = null;
     private AudioManager audioManager = null;
 
@@ -58,7 +63,12 @@ public class AddData extends AppCompatActivity {
         if(!checkPermissionFromDevice())
             requestPermission();
 
+        //Calling the db
+
+
         //binding
+        eng = findViewById(R.id.engtb);
+        ceb = findViewById(R.id.bistb);
         info = findViewById(R.id.info);
         attach = findViewById(R.id.attach);
         mimage = findViewById(R.id.image);
@@ -66,11 +76,27 @@ public class AddData extends AppCompatActivity {
         recstop =  findViewById(R.id.recstop);
         play = findViewById(R.id.play);
         pause = findViewById(R.id.pause);
-        addData = findViewById(R.id.addData);
+        add = findViewById(R.id.addData);
 
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                engt=eng.getText().toString();
+                cebt=ceb.getText().toString();
+
+                if(!engt.isEmpty() && !cebt.isEmpty()) {
+                    Toast.makeText(AddData.this, engt, Toast.LENGTH_SHORT).show();
+                    db.addWord(engt, cebt);
+                }else {
+                    Toast.makeText(AddData.this, "Data is not inserted", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         //from android m, you need request runtime permission
-
         recstart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

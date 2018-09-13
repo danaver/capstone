@@ -1,7 +1,7 @@
 package com.example.gailsemilladucao.capstone.view;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.example.gailsemilladucao.capstone.MainActivity;
 import com.example.gailsemilladucao.capstone.R;
-import com.example.gailsemilladucao.capstone.database.DatabaseAccess;
+import com.example.gailsemilladucao.capstone.database.DatabaseOpenHelper;
 
 public class ShowData extends AppCompatActivity {
 
@@ -18,6 +18,8 @@ public class ShowData extends AppCompatActivity {
     public TextView result_cebuano;
     public MainActivity mainActivity;
     String Val;
+
+    DatabaseOpenHelper db;
 
 
     @Override
@@ -34,16 +36,16 @@ public class ShowData extends AppCompatActivity {
         englishText.setText(Val);
 
         // CREATE INSTANCE OF DB ACCESS CLASS AND DB CONNECTION
-        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
-        databaseAccess.open();
+//        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
+//        databaseAccess.open();
 
         // GETTING VALUE FROM EDIT TEXT
         String engWord = englishText.getText().toString();
-        String cebWord = databaseAccess.getAddress(engWord); // getAddress() method to get the english word
+        String cebWord = db.getAddress(engWord); // getAddress() method to get the english word
 
         // SETTING TEXT TO RESULT FIELD
         result_cebuano.setText(cebWord);
-        databaseAccess.close();
+
 
         //SETTING ONCLICK LISTENER
 
@@ -53,16 +55,15 @@ public class ShowData extends AppCompatActivity {
             public void onClick(View v) {
 
                 // CREATE INSTANCE OF DB ACCESS CLASS AND DB CONNECTION
-                DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
-                databaseAccess.open();
+
 
                 // GETTING VALUE FROM EDIT TEXT
                 String engWord = englishText.getText().toString();
-                String cebWord = databaseAccess.getAddress(engWord); // getAddress() method to get the english word
+                String cebWord = db.getAddress(engWord); // getAddress() method to get the english word
 
                 // SETTING TEXT TO RESULT FIELD
                 result_cebuano.setText(cebWord);
-                databaseAccess.close();
+                db.close();
             }
         });
     }
