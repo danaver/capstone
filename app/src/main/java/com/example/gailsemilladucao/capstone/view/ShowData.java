@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.example.gailsemilladucao.capstone.MainActivity;
 import com.example.gailsemilladucao.capstone.R;
-import com.example.gailsemilladucao.capstone.database.DatabaseAccess;
+
 
 public class ShowData extends AppCompatActivity {
 
@@ -34,16 +34,15 @@ public class ShowData extends AppCompatActivity {
         englishText.setText(Val);
 
         // CREATE INSTANCE OF DB ACCESS CLASS AND DB CONNECTION
-        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
-        databaseAccess.open();
+
 
         // GETTING VALUE FROM EDIT TEXT
         String engWord = englishText.getText().toString();
-        String cebWord = databaseAccess.getAddress(engWord); // getAddress() method to get the english word
+       // String cebWord = databaseAccess.getAddress(engWord); // getAddress() method to get the english word
 
         // SETTING TEXT TO RESULT FIELD
-        result_cebuano.setText(cebWord);
-        databaseAccess.close();
+        //result_cebuano.setText(cebWord);
+
 
         //SETTING ONCLICK LISTENER
 
@@ -53,16 +52,16 @@ public class ShowData extends AppCompatActivity {
             public void onClick(View v) {
 
                 // CREATE INSTANCE OF DB ACCESS CLASS AND DB CONNECTION
-                DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
-                databaseAccess.open();
+//                DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
+//                databaseAccess.open();
 
                 // GETTING VALUE FROM EDIT TEXT
-                String engWord = englishText.getText().toString();
-                String cebWord = databaseAccess.getAddress(engWord); // getAddress() method to get the english word
+//                String engWord = englishText.getText().toString();
+//                String cebWord = databaseAccess.getAddress(engWord); // getAddress() method to get the english word
 
                 // SETTING TEXT TO RESULT FIELD
-                result_cebuano.setText(cebWord);
-                databaseAccess.close();
+//                result_cebuano.setText(cebWord);
+//                databaseAccess.close();
             }
         });
     }

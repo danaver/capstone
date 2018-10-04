@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 // =========== PACKAGES =========== //
 import com.example.gailsemilladucao.capstone.backend.*;
-import com.example.gailsemilladucao.capstone.database.*;
 import com.example.gailsemilladucao.capstone.view.*;
 
 import java.util.ArrayList;
@@ -65,17 +64,16 @@ public class MainActivity extends AppCompatActivity {
                     //covert first letter to uppercase since database set it on uppercase
                     message = message.substring(0,1).toUpperCase() + message.substring(1).toLowerCase();
                     //access the db
-                    DatabaseAccess databaseAccess = DatabaseAccess.getInstance(getApplicationContext());
-                    databaseAccess.open();
+
                     //Checking if the word is naa in the database
-                    String cebWord = databaseAccess.getAddress(message);
-                    if(cebWord != ""){
-                        Intent lol = new Intent(MainActivity.this,ShowData.class);
-                        lol.putExtra("Val", message);
-                        startActivity(lol);
-                    }else{
-                        Toast.makeText(this, "Word is not found", Toast.LENGTH_SHORT).show();
-                    }
+//                    String cebWord = message;
+//                    if(cebWord != ""){
+//                        Intent lol = new Intent(MainActivity.this,ShowData.class);
+//                        lol.putExtra("Val", message);
+//                        startActivity(lol);
+//                    }else{
+//                        Toast.makeText(this, "Word is not found", Toast.LENGTH_SHORT).show();
+//                    }
 
                 }
                 break;
