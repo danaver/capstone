@@ -1,6 +1,8 @@
 package com.example.gailsemilladucao.capstone.backend;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,7 +17,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -24,6 +28,12 @@ import android.widget.Toast;
 
 import com.example.gailsemilladucao.capstone.MainActivity;
 import com.example.gailsemilladucao.capstone.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -40,19 +50,32 @@ public class AddData extends AppCompatActivity {
     MediaPlayer mediaPlayer;
     TextView info,state;
     Uri audioFileUri;
+
+
+
     private SeekBar volumeSeekbar = null;
     private AudioManager audioManager = null;
+    private static String mFileName = null;
+    private static final String LOG_TAG = "AudioRecordTest";
 
 
     final int REQUEST_PERMISSION_CODE = 1000;
     final int REQUEST_PERMISSION_GALLERY = 999;
     final static int RQS_OPEN_AUDIO_MP3 = 1;
 
+    //FIREBASE
+    StorageReference storageRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_data);
         initControls();
+
+
+        // Create a storage reference from our app
+        storageRef = FirebaseStorage.getInstance().getReference();
+
 
         //request runtime permission
         if(!checkPermissionFromDevice())
@@ -69,11 +92,25 @@ public class AddData extends AppCompatActivity {
         addData = findViewById(R.id.addData);
 
 
+        // Upload Image to Firebase
+        addData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadFile();
+
+            }
+        });
         //from android m, you need request runtime permission
 
         recstart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                mediaRecorder = new MediaRecorder();
+                mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                mediaRecorder.setOutputFile(savepath);
+
                 if(checkPermissionFromDevice()){
 
                     savepath = Environment.getExternalStorageDirectory()
@@ -83,13 +120,23 @@ public class AddData extends AppCompatActivity {
 
                     info.setText(savepath);
 
-                    try{
-                        mediaPlayer = new MediaPlayer();
+
+//                    try{
+//                        mediaPlayer = new MediaPlayer();
+//                        mediaRecorder.prepare();
+//                        mediaRecorder.start();
+//                    }catch (IOException e){
+//                        e.printStackTrace();
+//                    }
+
+                    try {
                         mediaRecorder.prepare();
-                        mediaRecorder.start();
-                    }catch (IOException e){
-                        e.printStackTrace();
+                    } catch (IOException e) {
+                        Log.e(LOG_TAG, "prepare() failed");
                     }
+
+                    mediaRecorder.start();
+
                     play.setEnabled(false);
                     pause.setEnabled(false);
                     recstop.setEnabled(true);
@@ -201,18 +248,14 @@ public class AddData extends AppCompatActivity {
                 );
             }
         });
-
-
-
     }
+
     // Adjust Volume Settings
     private void initControls() {
         try
         {
             //binding
             volumeSeekbar = (SeekBar)findViewById(R.id.seekBar);
-
-
             audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
             volumeSeekbar.setMax(audioManager
                     .getStreamMaxVolume(AudioManager.STREAM_MUSIC));
@@ -266,9 +309,6 @@ public class AddData extends AppCompatActivity {
 
 
 
-
-
-
     //for audio
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -301,7 +341,6 @@ public class AddData extends AppCompatActivity {
     }
 
 
-
     private boolean checkPermissionFromDevice() {
         int write_external_storage_result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int record_audio_result = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
@@ -324,9 +363,9 @@ public class AddData extends AppCompatActivity {
         if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if(resultCode == RESULT_OK){
-                Uri resultUri = result.getUri();
+                audioFileUri = result.getUri();
                 //set image choosen from gallery to image view
-                mimage.setImageURI(resultUri);
+                mimage.setImageURI(audioFileUri);
             }else if( resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
                 Exception error = result.getError();
             }
@@ -341,8 +380,62 @@ public class AddData extends AppCompatActivity {
 
             }
         }
+    }
 
-//        super.onActivityResult(requestCode, resultCode, data);
+
+    private void uploadFile() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+
+
+        if (audioFileUri != null) {
+            StorageReference imageReference = storageRef.child("Images").child(System.currentTimeMillis() + "." + getFileExtension(audioFileUri));
+            StorageReference audioRef = storageRef.child("Audio").child(System.currentTimeMillis() + ".3pg");
+            Uri audioUri = audioFileUri.fromFile(new File(savepath));
+
+
+            audioRef.putFile(audioUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "Audio Uploaded!", Toast.LENGTH_LONG).show();
+                }
+            });
+
+            imageReference.putFile(audioFileUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    //calculating progress percentage
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+
+                    //displaying percentage in progress dialog
+                    progressDialog.setMessage("Uploading " + ((int) progress) + "%");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressDialog.dismiss();
+
+                    //and displaying error message
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }else{
+            Toast.makeText(getApplicationContext(), "No File Selected.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    // RETURN THE FILE EXTENSION OF THE IMAGE (IF JPEG IT WILL TURN INTO JPG)
+    private String getFileExtension(Uri uri){
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cr.getType(uri));
     }
 
     public void menu(View view) {
