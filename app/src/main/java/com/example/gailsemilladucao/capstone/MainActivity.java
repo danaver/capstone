@@ -47,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
     String jsonString;
 
+
+
     FirebaseStorage storage = FirebaseStorage.getInstance();
 
     @Override
@@ -184,16 +186,16 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Audio is downloaded", Toast.LENGTH_SHORT).show();
 
                     // Play MP3
-                    try {
-                        MediaPlayer player = new MediaPlayer();
-                        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                        player.setDataSource("https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/effects%2Fairplane.mp3?alt=media&token=0bfc07f6-5879-4d2e-8d48-c44e08786a16");
-                        player.prepare();
-                        player.start();
-                        Toast.makeText(MainActivity.this, "Audio is downloaded", Toast.LENGTH_SHORT).show();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        MediaPlayer player = new MediaPlayer();
+//                        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//                        player.setDataSource("https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/effects%2Fairplane.mp3?alt=media&token=0bfc07f6-5879-4d2e-8d48-c44e08786a16");
+//                        player.prepare();
+//                        player.start();
+//                        Toast.makeText(MainActivity.this, "Audio is downloaded", Toast.LENGTH_SHORT).show();
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -279,8 +281,19 @@ public class MainActivity extends AppCompatActivity {
                     txvResult.setText(message);
 
                     //covert first letter to uppercase since database set it on uppercase
-                    message = message.substring(0,1).toUpperCase() + message.substring(1).toLowerCase();
+                    message = message.substring(0,1).toLowerCase() + message.substring(1).toLowerCase();
                     //access the db
+
+
+                    JSONObject res = searchWord(message);
+                    if(res != null){
+                        Intent lol = new Intent(MainActivity.this,ShowData.class);
+                        //converted the
+                        lol.putExtra("Val",res.toString());
+                        startActivity(lol);
+                    }else{
+                        Toast.makeText(this, "Word is not in the dictionary", Toast.LENGTH_SHORT).show();
+                    }
 
                     //Checking if the word is naa in the database
 //                    String cebWord = message;
@@ -288,13 +301,35 @@ public class MainActivity extends AppCompatActivity {
 //                        Intent lol = new Intent(MainActivity.this,ShowData.class);
 //                        lol.putExtra("Val", message);
 //                        startActivity(lol);
-//                    }else{
-//                        Toast.makeText(this, "Word is not found", Toast.LENGTH_SHORT).show();
-//                    }
+////                    }else{
+////                        Toast.makeText(this, "Word is not found", Toast.LENGTH_SHORT).show();
+////
 
                 }
                 break;
         }
+    }
+    public JSONObject searchWord(String msg) {
+        JSONObject match = null;
+
+        JSONArray jsonArray = null;
+        try {
+            JSONObject jsonObject = new JSONObject(readFromFile());
+            jsonArray = jsonObject.getJSONArray("wordbank");
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject instance = jsonArray.getJSONObject(i);
+                //Toast.makeText(this, instance.getString(msg), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, msg + "   "+ instance.getString("English"), Toast.LENGTH_SHORT).show();
+                if (msg.equals(instance.getString("English"))) {
+                    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+                    return match = instance;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return match;
     }
 
     //called in xml

@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.example.gailsemilladucao.capstone.MainActivity;
 import com.example.gailsemilladucao.capstone.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class ShowData extends AppCompatActivity {
 
@@ -17,7 +20,8 @@ public class ShowData extends AppCompatActivity {
     public Button query_button;
     public TextView result_cebuano;
     public MainActivity mainActivity;
-    String Val;
+
+    JSONObject instance;
 
 
     @Override
@@ -29,9 +33,14 @@ public class ShowData extends AppCompatActivity {
         query_button = findViewById(R.id.query_button);
         result_cebuano = findViewById(R.id.result_text);
 
-        Val = getIntent().getStringExtra("Val");
+        try {
+            instance = new JSONObject(getIntent().getStringExtra("Val"));
+            englishText.setText(instance.getString("Cebuano"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        englishText.setText(Val);
+
 
         // CREATE INSTANCE OF DB ACCESS CLASS AND DB CONNECTION
 
