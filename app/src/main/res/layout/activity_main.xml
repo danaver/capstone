@@ -32,6 +32,17 @@
         android:text="Add word"
         android:layout_marginLeft="280dp"
         android:onClick="addWord"/>
+    <EditText
+        android:id="@+id/wordie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="airplane"/>
+    <Button
+        android:id="@+id/searching"
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search"/>
 
 
 

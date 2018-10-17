@@ -5,19 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/result_text"
-        android:layout_width="344dp"
-        android:layout_height="355dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="44dp"
-        android:layout_marginStart="18dp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="170dp" />
+    <ImageButton
+        android:id="@+id/imgfx"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:layout_marginHorizontal="180dp"
+        />
 
     <EditText
-        android:id="@+id/englishText"
+        android:id="@+id/cebTxt"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -27,13 +24,14 @@
         android:hint="Enter an english word"
         android:inputType="textPersonName"
         android:text="Name" />
-
     <Button
-        android:id="@+id/query_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="86dp"
-        android:text="Button" />
+        android:id="@+id/audio"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/audio"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="250dp"
+        />
+
+
 </RelativeLayout>

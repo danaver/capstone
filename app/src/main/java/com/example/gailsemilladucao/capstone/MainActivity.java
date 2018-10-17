@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
     public TextView txvResult;
     public String message ="Hello";
+    Button searchy;
+    EditText wordie;
 
     String jsonString;
 
@@ -57,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         txvResult = findViewById(R.id.txvResult);
+        searchy = findViewById(R.id.searching);
+        wordie = findViewById(R.id.wordie);
 
         //create folders
         createFolder();
@@ -67,19 +72,21 @@ public class MainActivity extends AppCompatActivity {
         //part na na parse na and placed sa string
         jsonString = readFromFile();
 
-        try {
-            //accessing the json file
-            JSONObject jsonObject = new JSONObject(jsonString);
-            JSONArray jsonArray = jsonObject.getJSONArray("wordbank");
-            //for (int i = 0; i < jsonArray.length(); i++) {
-            //accessing 1 instance
-            JSONObject oneWord = jsonArray.getJSONObject(4);
-            JSONObject twoWord = jsonArray.getJSONObject(4);
+       // if (jsonString!=null) {
+            try {
+                //accessing the json file
+                JSONObject jsonObject = new JSONObject(jsonString);
+                JSONArray jsonArray = jsonObject.getJSONArray("wordbank");
+                for (int i = 0; i < 6; i++) {
+                //for (int i = 0; i < jsonArray.length(); i++) {
+                    //accessing 1 instance
+                    JSONObject oneWord = jsonArray.getJSONObject(i);
+                    JSONObject twoWord = jsonArray.getJSONObject(i);
 
-            //download files
-            downloadImage(oneWord);
-            downloadEffect(twoWord);
-
+                    //download files
+                    downloadImage(oneWord);
+                    downloadEffect(twoWord);
+                }
 //                temp = new WordBank();
 //                temp.english = word.getString("English");
 //                temp.cebuano = word.getString("Cebuano");
@@ -88,11 +95,28 @@ public class MainActivity extends AppCompatActivity {
 //                temp.audio = word.getString("Audio");
 //                wordbank.add(temp);
 //
-            //json.setText(oneWord.getString("English") + " "+oneWord.getString("Cebuano") + " "+ oneWord.getString("Effect"));
+                //json.setText(oneWord.getString("English") + " "+oneWord.getString("Cebuano") + " "+ oneWord.getString("Effect"));
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+         searchy.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 JSONObject res = null;
+                 res = searchWord("airplane");
+                 if(res != null){
+                     Intent lol = new Intent(MainActivity.this,ShowData.class);
+                     //converted the
+                     lol.putExtra("Val",res.toString());
+                     startActivity(lol);
+                 }else{
+                     Toast.makeText(MainActivity.this, "Word is not in the dictionary", Toast.LENGTH_SHORT).show();
+                 }
+             }
+         });
+    }
         // downloadImages(jsonString);
         // new JSONTask();
 
@@ -121,7 +145,9 @@ public class MainActivity extends AppCompatActivity {
 //            e.printStackTrace();
 //        }
 
-    }
+    //}
+
+
 
     private String readFromFile() {
         String ret = "";
@@ -235,21 +261,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createFolder() {
-        final File f = new File(getFilesDir(), "images");
-        final File f1 = new File(getFilesDir(), "effects");
+        final File image = new File(getFilesDir(), "images");
+        final File effect = new File(getFilesDir(), "effects");
+        final File audio = new File(getFilesDir(), "audio");
 
-        if (!f.exists() || !f1.exists()){
-            if(!f.mkdir() || !f1.mkdir()){
-                f1.mkdir();
-                f.mkdir();
-                Toast.makeText(this, f.getAbsolutePath(), Toast.LENGTH_SHORT).show();
-                // path.setText(f.getAbsolutePath());
-            }else{
-                //Toast.makeText(MainActivity.this, "Already Exist", Toast.LENGTH_SHORT).show();
+        if (!image.exists() || !effect.exists()|| !audio.exists()) {
+            if (!image.mkdir() || !effect.mkdir() || !audio.exists()) {
+                effect.mkdir();
+                image.mkdir();
+                audio.mkdir();
             }
-        }else{
-            //path.setText(f.getAbsolutePath() + f1.getAbsolutePath());
-            //Toast.makeText(this, "folder is already cretaed", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -295,29 +316,23 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(this, "Word is not in the dictionary", Toast.LENGTH_SHORT).show();
                     }
 
-                    //Checking if the word is naa in the database
-//                    String cebWord = message;
-//                    if(cebWord != ""){
-//                        Intent lol = new Intent(MainActivity.this,ShowData.class);
-//                        lol.putExtra("Val", message);
-//                        startActivity(lol);
-////                    }else{
-////                        Toast.makeText(this, "Word is not found", Toast.LENGTH_SHORT).show();
-////
-
                 }
                 break;
         }
     }
+
+    //called in getSpeechInput and searchings the word
     public JSONObject searchWord(String msg) {
         JSONObject match = null;
 
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         JSONArray jsonArray = null;
         try {
             JSONObject jsonObject = new JSONObject(readFromFile());
             jsonArray = jsonObject.getJSONArray("wordbank");
 
             for (int i = 0; i < jsonArray.length(); i++) {
+            //for (int i = 0; i < 6; i++) {
                 JSONObject instance = jsonArray.getJSONObject(i);
                 //Toast.makeText(this, instance.getString(msg), Toast.LENGTH_SHORT).show();
                 Toast.makeText(this, msg + "   "+ instance.getString("English"), Toast.LENGTH_SHORT).show();
@@ -331,6 +346,8 @@ public class MainActivity extends AppCompatActivity {
         }
         return match;
     }
+
+
 
     //called in xml
     public void addWord(View view) {
