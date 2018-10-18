@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -31,7 +32,9 @@ import com.example.gailsemilladucao.capstone.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnPausedListener;
 import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -44,24 +47,24 @@ import java.util.UUID;
 public class AddData extends AppCompatActivity {
 
     ImageView mimage;
-    Button recstart,recstop,play,pause,attach,addData;
-    String savepath = "",srcPath =null;
+    Button recstart,recstop,play,pause,attach,addData, attach_fx;
+    String savepath = "",fxpath = "",srcPath =null;
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
-    TextView info,state;
-    Uri audioFileUri;
-
+    TextView info,info_effect;
+    EditText engText;
+    Uri audioFileUri, audioFxUri, imageFileUri;
 
 
     private SeekBar volumeSeekbar = null;
     private AudioManager audioManager = null;
-    private static String mFileName = null;
-    private static final String LOG_TAG = "AudioRecordTest";
+    private static final String LOG_TAG = "Audio Record Test";
 
 
     final int REQUEST_PERMISSION_CODE = 1000;
     final int REQUEST_PERMISSION_GALLERY = 999;
     final static int RQS_OPEN_AUDIO_MP3 = 1;
+    final static int RQS_OPEN_AUDIO_FX = 2;
 
     //FIREBASE
     StorageReference storageRef;
@@ -74,8 +77,7 @@ public class AddData extends AppCompatActivity {
 
 
         // Create a storage reference from our app
-        storageRef = FirebaseStorage.getInstance().getReference();
-
+        storageRef = FirebaseStorage.getInstance().getReference("temp");
 
         //request runtime permission
         if(!checkPermissionFromDevice())
@@ -90,6 +92,9 @@ public class AddData extends AppCompatActivity {
         play = findViewById(R.id.play);
         pause = findViewById(R.id.pause);
         addData = findViewById(R.id.addData);
+        attach_fx = findViewById(R.id.attach_effect);
+        info_effect = findViewById(R.id.info_effect);
+        engText = findViewById(R.id.engtb);
 
 
         // Upload Image to Firebase
@@ -97,11 +102,9 @@ public class AddData extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 uploadFile();
-
             }
         });
         //from android m, you need request runtime permission
-
         recstart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,14 +123,6 @@ public class AddData extends AppCompatActivity {
 
                     info.setText(savepath);
 
-
-//                    try{
-//                        mediaPlayer = new MediaPlayer();
-//                        mediaRecorder.prepare();
-//                        mediaRecorder.start();
-//                    }catch (IOException e){
-//                        e.printStackTrace();
-//                    }
 
                     try {
                         mediaRecorder.prepare();
@@ -148,6 +143,19 @@ public class AddData extends AppCompatActivity {
                     requestPermission();
                 }
 
+            }
+        });
+
+
+        // Attach audio effects
+        attach_fx.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("audio/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Open Audio Effect (mp3) file"), RQS_OPEN_AUDIO_FX);
+                fxpath = info_effect.getText().toString();
             }
         });
 
@@ -185,37 +193,34 @@ public class AddData extends AppCompatActivity {
 
                     mediaPlayer = new MediaPlayer();
 
-                        try {
-                            //It checks wether the TextView->Where the file path of the attach file is shown, is empty or not
-                            //if it is empty, then it will assume that it will play on the recorded audio
-                            if (savepath != "" && info.getText().toString() == savepath) {
-                                mediaPlayer.setDataSource(savepath);
-                                mediaPlayer.prepare();
-                                mediaPlayer.start();
-                                Toast.makeText(AddData.this, "Playing Recorded Audio...", Toast.LENGTH_SHORT).show();
-                            }
-                            //else, it will read the filepath inn the textview and play the audio
-                            else {
-                                //code here is needed to play the attach audio file
-                                savepath = info.getText().toString();//this portion gets the text that was in the TextView
-                                mediaPlayer.setDataSource(AddData.this, audioFileUri);//will read the path
-                                mediaPlayer.prepare();
-                                mediaPlayer.start();
-                                Toast.makeText(AddData.this, "Playing Attached Audio...", Toast.LENGTH_SHORT).show();
-
-                            }
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            Toast.makeText(AddData.this, "File attach is not found", Toast.LENGTH_SHORT).show();
+                    try {
+                        //It checks wether the TextView->Where the file path of the attach file is shown, is empty or not
+                        //if it is empty, then it will assume that it will play on the recorded audio
+                        if (savepath != "" && info.getText().toString() == savepath) {
+                            mediaPlayer.setDataSource(savepath);
+                            mediaPlayer.prepare();
+                            mediaPlayer.start();
+                            Toast.makeText(AddData.this, "Playing Recorded Audio...", Toast.LENGTH_SHORT).show();
                         }
-                    }else{
+                        //else, it will read the filepath inn the textview and play the audio
+                        else {
+                            //code here is needed to play the attach audio file
+                            savepath = info.getText().toString();//this portion gets the text that was in the TextView
+                            fxpath = info_effect.getText().toString(); // this portion gets the effect text.
+                            mediaPlayer.setDataSource(AddData.this, audioFileUri);//will read the path
+                            mediaPlayer.prepare();
+                            mediaPlayer.start();
+                            Toast.makeText(AddData.this, "Playing Attached Audio...", Toast.LENGTH_SHORT).show();
+
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(AddData.this, "File attach is not found", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
                     Toast.makeText(AddData.this, "Please Record or Attach a Files ", Toast.LENGTH_SHORT).show();
                 }
-
-
-
-
             }
         });
 
@@ -308,7 +313,6 @@ public class AddData extends AppCompatActivity {
     //press CTRL+O
 
 
-
     //for audio
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -352,6 +356,8 @@ public class AddData extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        // Image File
         if(requestCode == REQUEST_PERMISSION_GALLERY && resultCode == RESULT_OK) {
             Uri imageUri = data.getData();
             CropImage.activity(imageUri)
@@ -363,20 +369,32 @@ public class AddData extends AppCompatActivity {
         if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if(resultCode == RESULT_OK){
-                audioFileUri = result.getUri();
+                imageFileUri = result.getUri();
                 //set image choosen from gallery to image view
-                mimage.setImageURI(audioFileUri);
+                mimage.setImageURI(imageFileUri);
             }else if( resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
                 Exception error = result.getError();
             }
         }
 
+        // AUDIO
         if (resultCode == RESULT_OK) {
             if (requestCode == RQS_OPEN_AUDIO_MP3) {
-               audioFileUri = data.getData();
-                //vvv This lets you set the path sa TextView
+                audioFileUri = data.getData();
+                // This lets you set the path sa TextView
                 srcPath = audioFileUri.getPath();
                 info.setText(audioFileUri.toString() + "\n" + srcPath);
+
+            }
+        }
+
+        // AUDIO FX
+        if (resultCode == RESULT_OK) {
+            if (requestCode == RQS_OPEN_AUDIO_FX) {
+                audioFxUri = data.getData();
+                //vvv This lets you set the path sa TextView
+                srcPath = audioFxUri.getPath();
+                info_effect.setText(audioFxUri.toString() + "\n" + srcPath);
 
             }
         }
@@ -385,57 +403,81 @@ public class AddData extends AppCompatActivity {
 
     private void uploadFile() {
         final ProgressDialog progressDialog = new ProgressDialog(this);
-
+        progressDialog.setTitle("Uploading Files, Please wait...");
+        progressDialog.show();
 
         if (audioFileUri != null) {
-            StorageReference imageReference = storageRef.child("Images").child(System.currentTimeMillis() + "." + getFileExtension(audioFileUri));
-            StorageReference audioRef = storageRef.child("Audio").child(System.currentTimeMillis() + ".3pg");
-            Uri audioUri = audioFileUri.fromFile(new File(savepath));
+            StorageReference imageReference = storageRef.child("images").child(engText.getText().toString().trim() + "");
+            StorageReference audioRef = storageRef.child("audio").child(engText.getText().toString().trim() + ""); // storage location to firebase.
+            StorageReference fxRef = storageRef.child("effects").child(engText.getText().toString().trim() + ""); // storage location to firebase
 
-
-            audioRef.putFile(audioUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            // Upload attach audio file
+            audioRef.putFile(audioFileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Audio Uploaded!", Toast.LENGTH_LONG).show();
                 }
-            });
-
-            imageReference.putFile(audioFileUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
-                        }
-                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    //calculating progress percentage
-                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
-                    //displaying percentage in progress dialog
-                    progressDialog.setMessage("Uploading " + ((int) progress) + "%");
-                }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     progressDialog.dismiss();
-
-                    //and displaying error message
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
-        }else{
-            Toast.makeText(getApplicationContext(), "No File Selected.", Toast.LENGTH_LONG).show();
-        }
-    }
 
-    // RETURN THE FILE EXTENSION OF THE IMAGE (IF JPEG IT WILL TURN INTO JPG)
-    private String getFileExtension(Uri uri){
-        ContentResolver cr = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cr.getType(uri));
+            // Upload for attach effects audio file
+            if(audioFxUri != null){
+                fxRef.putFile(audioFxUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Audio Effect Uploaded! ", Toast.LENGTH_LONG).show();
+
+                    }
+                }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onPaused(UploadTask.TaskSnapshot taskSnapshot) { // When loading progress is paused
+                        System.out.println("Upload is paused");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) { // If progress fails
+                        Toast.makeText(getApplicationContext(), "Audio Effect Failed! ", Toast.LENGTH_LONG).show();
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) { // During upload progress
+                        double progress = (100.0 * taskSnapshot.getBytesTransferred())/ taskSnapshot.getTotalByteCount();
+                        System.out.println("Upload is " + progress + " % done");
+                    }
+                });
+            }
+
+            // Upload for Image
+
+            if(imageFileUri != null){
+                imageReference.putFile(imageFileUri)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                progressDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), "Image File Uploaded ", Toast.LENGTH_LONG).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+
+                        //and displaying error message
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        } else {
+            progressDialog.dismiss();
+            Toast.makeText(getApplicationContext(), "No file selected. Audio File Required!", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void menu(View view) {
@@ -444,3 +486,16 @@ public class AddData extends AppCompatActivity {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
