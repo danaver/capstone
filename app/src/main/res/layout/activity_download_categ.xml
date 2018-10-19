@@ -22,7 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Download"
-            android:layout_marginLeft="20dp"/>
+            android:layout_marginLeft="20dp"
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -34,49 +35,39 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Download Noun Package" />
+            android:text="Download Verb Package" />
 
         <Button
             android:id="@+id/verb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Download"
-            android:layout_marginLeft="20dp"/>
+            android:layout_marginLeft="20dp"
+            />
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        >
+        android:layout_marginTop="100dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Download Noun Package" />
+            android:text="Download Adjective Package" />
 
         <Button
-            android:id="@+id/adject"
+            android:id="@+id/adjective"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Download"
-            android:layout_marginLeft="20dp"/>
+            android:layout_marginLeft="20dp"
+            />
     </LinearLayout>
-    <LinearLayout
+
+    <Button
+        android:id="@+id/main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Download Noun Package" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Download"
-            android:layout_marginLeft="20dp"/>
-    </LinearLayout>
+        android:text="Main"/>
 
 </RelativeLayout>

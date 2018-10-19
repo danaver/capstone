@@ -77,16 +77,16 @@ public class MainActivity extends AppCompatActivity {
                 //accessing the json file
                 JSONObject jsonObject = new JSONObject(jsonString);
                 JSONArray jsonArray = jsonObject.getJSONArray("wordbank");
-                for (int i = 0; i < 6; i++) {
+               // for (int i = 0; i < 6; i++) {
                 //for (int i = 0; i < jsonArray.length(); i++) {
                     //accessing 1 instance
-                    JSONObject oneWord = jsonArray.getJSONObject(i);
-                    JSONObject twoWord = jsonArray.getJSONObject(i);
+                  //  JSONObject oneWord = jsonArray.getJSONObject(i);
+                   // JSONObject twoWord = jsonArray.getJSONObject(i);
 
                     //download files
-                    downloadImage(oneWord);
-                    downloadEffect(twoWord);
-                }
+                   // downloadImage(oneWord);
+                   // downloadEffect(twoWord);
+               // }
 //                temp = new WordBank();
 //                temp.english = word.getString("English");
 //                temp.cebuano = word.getString("Cebuano");
