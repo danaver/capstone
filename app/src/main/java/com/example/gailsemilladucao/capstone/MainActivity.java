@@ -63,43 +63,13 @@ public class MainActivity extends AppCompatActivity {
         searchy = findViewById(R.id.searching);
         wordie = findViewById(R.id.wordie);
 
-        //create folders
-        createFolder();
-
         //download json
         gayson();
 
         //part na na parse na and placed sa string
+        //this also is used global in searchWord()
         jsonString = readFromFile();
 
-       // if (jsonString!=null) {
-            try {
-                //accessing the json file
-                JSONObject jsonObject = new JSONObject(jsonString);
-                JSONArray jsonArray = jsonObject.getJSONArray("wordbank");
-               // for (int i = 0; i < 6; i++) {
-                //for (int i = 0; i < jsonArray.length(); i++) {
-                    //accessing 1 instance
-                  //  JSONObject oneWord = jsonArray.getJSONObject(i);
-                   // JSONObject twoWord = jsonArray.getJSONObject(i);
-
-                    //download files
-                   // downloadImage(oneWord);
-                   // downloadEffect(twoWord);
-               // }
-//                temp = new WordBank();
-//                temp.english = word.getString("English");
-//                temp.cebuano = word.getString("Cebuano");
-//                temp.pos = word.getString("POS");
-//                temp.picture = word.getString("Picture");
-//                temp.audio = word.getString("Audio");
-//                wordbank.add(temp);
-//
-                //json.setText(oneWord.getString("English") + " "+oneWord.getString("Cebuano") + " "+ oneWord.getString("Effect"));
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 
          searchy.setOnClickListener(new View.OnClickListener() {
              @Override
@@ -117,35 +87,7 @@ public class MainActivity extends AppCompatActivity {
              }
          });
     }
-        // downloadImages(jsonString);
-        // new JSONTask();
 
-
-        //json.setText(here);
-
-//        try {
-//            //accessing the json file
-//            JSONObject jsonObject = new JSONObject(jsonString);
-//            JSONArray jsonArray = jsonObject.getJSONArray("wordbank");
-//            for (int i = 0 ; i < jsonArray.length() ;i++){
-//                //accessing 1 instance
-//                JSONObject word = jsonArray.getJSONObject(1);
-//                temp = new WordBank();
-//                temp.english = word.getString("English");
-//                temp.cebuano = word.getString("Cebuano");
-//                temp.pos = word.getString("POS");
-//                temp.picture = word.getString("Picture");
-//                temp.audio = word.getString("Audio");
-//                wordbank.add(temp);
-//
-//                //json.setText(word.getString("English") + word.getString("Cebuano"));
-//            }
-//            Toast.makeText(MainActivity.this, "Added!", Toast.LENGTH_SHORT).show();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
-    //}
 
 
 
@@ -178,61 +120,7 @@ public class MainActivity extends AppCompatActivity {
         return ret;
     }
 
-    private void downloadImage(JSONObject oneWord) {
-        try {
-            final StorageReference pictureReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("pictures/" + oneWord.getString("Picture"));
-            final File imageFile = new File(getFilesDir(), "images/" + oneWord.getString("Picture").toString());
 
-            pictureReference.getFile(imageFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                    Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-//                    img.setImageBitmap(bitmap);
-                    Toast.makeText(MainActivity.this, "Image Successfully Downloaded", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(MainActivity.this, "Image Not Downloaded", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void downloadEffect(JSONObject twoWord) {
-        try {
-            final StorageReference audioReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("effects/"+twoWord.getString("Effect"));
-            final File audioFile = new File(getFilesDir(),"effects/"+twoWord.getString("Effect").toString());
-
-            audioReference.getFile(audioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(MainActivity.this, "Audio is downloaded", Toast.LENGTH_SHORT).show();
-
-                    // Play MP3
-//                    try {
-//                        MediaPlayer player = new MediaPlayer();
-//                        player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//                        player.setDataSource("https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/effects%2Fairplane.mp3?alt=media&token=0bfc07f6-5879-4d2e-8d48-c44e08786a16");
-//                        player.prepare();
-//                        player.start();
-//                        Toast.makeText(MainActivity.this, "Audio is downloaded", Toast.LENGTH_SHORT).show();
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(MainActivity.this, "Audio is not downloaded", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void gayson() {
 
@@ -254,25 +142,11 @@ public class MainActivity extends AppCompatActivity {
         }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getBytesTransferred()
-                // taskSnapshot.getTotalByteCount();
+
             }
         });
     }
 
-    private void createFolder() {
-        final File image = new File(getFilesDir(), "images");
-        final File effect = new File(getFilesDir(), "effects");
-        final File audio = new File(getFilesDir(), "audio");
-
-        if (!image.exists() || !effect.exists()|| !audio.exists()) {
-            if (!image.mkdir() || !effect.mkdir() || !audio.exists()) {
-                effect.mkdir();
-                image.mkdir();
-                audio.mkdir();
-            }
-        }
-    }
 
     //called in xml
     public void getSpeechInput(View view) {
