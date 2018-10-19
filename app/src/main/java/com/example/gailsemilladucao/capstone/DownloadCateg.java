@@ -32,18 +32,11 @@ import java.io.InputStreamReader;
 
 public class DownloadCateg extends AppCompatActivity {
 
-    public static final String LOG_TAG = "Android Downloader";
-
     Button noun,verb,adj,main;
     String jsonfile;
     JSONArray jsonArray;
     FirebaseStorage storage = FirebaseStorage.getInstance();
 
-    public String category;
-
-    //progress bar
-    private ProgressDialog mProgressDialog;
-    public static final int DIALOG_DOWNLOAD_PROGRESS = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,24 +63,33 @@ public class DownloadCateg extends AppCompatActivity {
         noun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                category = "noun";
-                new DownloadFileAsync().execute(category);
+                try {
+                    downloadCateg("noun");
+                }catch(JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
         verb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                category = "verb";
-                new DownloadFileAsync().execute(category);
+                try {
+                    downloadCateg("verb");
+                }catch(JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
         adj.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                category = "adjective";
-                new DownloadFileAsync().execute(category);
+                try {
+                    downloadCateg("adjective");
+                }catch(JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -101,135 +103,67 @@ public class DownloadCateg extends AppCompatActivity {
 
     }
 
-    //progress
-    class DownloadFileAsync extends AsyncTask<String, String, String> {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            showDialog(DIALOG_DOWNLOAD_PROGRESS);
-        }
+    private void downloadCateg(String categ) throws JSONException {
 
-        @Override
-        protected String doInBackground(String... aurl) {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Downloading Files");
+        progressDialog.show();
 
-            for (int i = 0; i <jsonArray.length();i++) {
+        for (int i = 0; i <jsonArray.length();i++){
 
-                //images
-                try {
-                    JSONObject word = jsonArray.getJSONObject(i);
-                    final StorageReference pictureReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("pictures/" + category + "/" + word.getString("Picture"));
-                    final File imageFile = new File(getFilesDir(), "images/" + word.getString("Picture"));
+            JSONObject word = jsonArray.getJSONObject(i);
 
-                    pictureReference.getFile(imageFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+            //images
+            try {
+                final StorageReference pictureReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("pictures/"+categ+"/" + word.getString("Picture"));
+                final File imageFile = new File(getFilesDir(), "images/" + word.getString("Picture"));
 
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-
-                        }
-                    });
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                //effects
-                try {
-                    JSONObject word = jsonArray.getJSONObject(i);
-                    final StorageReference audioFxReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("effects/" + category + "/" + word.getString("Effect"));
-                    final File audioFile = new File(getFilesDir(), "effects/" + word.getString("Effect").toString());
-
-                    audioFxReference.getFile(audioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            //Toast.makeText(DownloadCateg.this, "AudioFx is downloaded", Toast.LENGTH_SHORT).show();
-
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            //Toast.makeText(MainActivity.this, "Audio is not downloaded", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                pictureReference.getFile(imageFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        progressDialog.dismiss();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        progressDialog.dismiss();
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
 
-            return null;
-        }
+            //effects
+            try {
+                final StorageReference audioFxReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("effects/"+categ+"/"+word.getString("Effect"));
+                final File audioFile = new File(getFilesDir(),"effects/"+word.getString("Effect").toString());
 
-        protected void onProgressUpdate(String... progress) {
-            Log.d(LOG_TAG,progress[0]);
-            mProgressDialog.setProgress(Integer.parseInt(progress[0]));
-        }
+                audioFxReference.getFile(audioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        //Toast.makeText(DownloadCateg.this, "AudioFx is downloaded", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        //Toast.makeText(MainActivity.this, "Audio is not downloaded", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-        @Override
-        protected void onPostExecute(String unused) {
-            //dismiss the dialog after the file was downloaded
-            dismissDialog(DIALOG_DOWNLOAD_PROGRESS);
-        }
-    }
-
-    //our progress bar settings
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-            case DIALOG_DOWNLOAD_PROGRESS: //we set this to 0
-                mProgressDialog = new ProgressDialog(this);
-                mProgressDialog.setMessage("Downloading File");
-                mProgressDialog.setIndeterminate(false);
-                mProgressDialog.setMax(100);
-                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                mProgressDialog.setCancelable(true);
-                mProgressDialog.show();
-
-                return mProgressDialog;
-            default:
-                return null;
-        }
-    }
-
-
-
-//    private void downloadCateg(String categ) throws JSONException {
-//
-//        for (int i = 0; i <jsonArray.length();i++){
-//
-//            JSONObject word = jsonArray.getJSONObject(i);
-//
-//            //images
+            //audio file
 //            try {
-//                final StorageReference pictureReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("pictures/"+categ+"/" + word.getString("Picture"));
-//                final File imageFile = new File(getFilesDir(), "images/" + word.getString("Picture"));
+//                final StorageReference audioReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("audio/"+categ+"/"+word.getString("Audio"));
+//                final File audioFile = new File(getFilesDir(),"audio/"+word.getString("Effect").toString());
 //
-//                pictureReference.getFile(imageFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+//                audioReference.getFile(audioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
 //                    @Override
 //                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception exception) {
-//
-//                    }
-//                });
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//
-//            //effects
-//            try {
-//                final StorageReference audioFxReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("effects/"+categ+"/"+word.getString("Effect"));
-//                final File audioFile = new File(getFilesDir(),"effects/"+word.getString("Effect").toString());
-//
-//                audioFxReference.getFile(audioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                        Toast.makeText(DownloadCateg.this, "AudioFx is downloaded", Toast.LENGTH_SHORT).show();
 //
 //                    }
 //                }).addOnFailureListener(new OnFailureListener() {
@@ -241,31 +175,11 @@ public class DownloadCateg extends AppCompatActivity {
 //            } catch (JSONException e) {
 //                e.printStackTrace();
 //            }
-//
-//            //audio file
-////            try {
-////                final StorageReference audioReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("audio/"+categ+"/"+word.getString("Audio"));
-////                final File audioFile = new File(getFilesDir(),"audio/"+word.getString("Effect").toString());
-////
-////                audioReference.getFile(audioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-////                    @Override
-////                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-////
-////                    }
-////                }).addOnFailureListener(new OnFailureListener() {
-////                    @Override
-////                    public void onFailure(@NonNull Exception exception) {
-////                        //Toast.makeText(MainActivity.this, "Audio is not downloaded", Toast.LENGTH_SHORT).show();
-////                    }
-////                });
-////            } catch (JSONException e) {
-////                e.printStackTrace();
-////            }
-//
-//
-//
-//        }
-//    }
+
+
+
+        }
+    }
 
     private String readFromFile() {
         String ret = "";
