@@ -15,13 +15,20 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Download Noun Package" />
+            android:text="Noun Package" />
 
         <Button
             android:id="@+id/noun"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Download"
+            android:layout_marginLeft="20dp"
+            />
+        <Button
+            android:id="@+id/delnoun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Del"
             android:layout_marginLeft="20dp"
             />
     </LinearLayout>
@@ -35,13 +42,20 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Download Verb Package" />
+            android:text=" Verb Package" />
 
         <Button
             android:id="@+id/verb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Download"
+            android:layout_marginLeft="20dp"
+            />
+        <Button
+            android:id="@+id/delverb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Del"
             android:layout_marginLeft="20dp"
             />
     </LinearLayout>
@@ -53,13 +67,20 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Download Adjective Package" />
+            android:text="Adjective Package" />
 
         <Button
             android:id="@+id/adjective"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Download"
+            android:layout_marginLeft="20dp"
+            />
+        <Button
+            android:id="@+id/deladjective"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Del"
             android:layout_marginLeft="20dp"
             />
     </LinearLayout>
