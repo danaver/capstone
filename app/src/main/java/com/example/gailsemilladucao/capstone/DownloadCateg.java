@@ -2,8 +2,11 @@ package com.example.gailsemilladucao.capstone;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -141,6 +144,12 @@ public class DownloadCateg extends AppCompatActivity {
 
     }
 
+    //returns true if connected
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
+
     private void deleteCateg(String categ) throws JSONException {
 
         String imgpath;
@@ -178,7 +187,12 @@ public class DownloadCateg extends AppCompatActivity {
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Downloading Files");
-        progressDialog.show();
+
+        if (isNetworkConnected() == true) {
+            progressDialog.show();
+        } else {
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+        }
 
         for (int i = 0; i <jsonArray.length();i++){
 
@@ -212,13 +226,11 @@ public class DownloadCateg extends AppCompatActivity {
                 audioFxReference.getFile(audioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        //Toast.makeText(DownloadCateg.this, "AudioFx is downloaded", Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        //Toast.makeText(MainActivity.this, "Audio is not downloaded", Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                     }
                 });
