@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.gailsemilladucao.capstone.backend.AddData;
+import com.example.gailsemilladucao.capstone.view.viewCateg;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -36,7 +37,7 @@ import java.io.InputStreamReader;
 
 public class DownloadCateg extends AppCompatActivity {
 
-    Button noun,verb,adj,main,deln,dela,delv;
+    Button noun,verb,adj,main,deln,dela,delv,viewnoun,viewverb,viewadj;
     String jsonfile;
     JSONArray jsonArray;
     FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -54,6 +55,9 @@ public class DownloadCateg extends AppCompatActivity {
         deln = findViewById(R.id.delnoun);
         dela = findViewById(R.id.deladjective);
         delv = findViewById(R.id.delverb);
+        viewnoun = findViewById(R.id.viewnoun);
+        viewverb = findViewById(R.id.viewverb);
+        viewadj = findViewById(R.id.viewadj);
 
         createFolder();
         gayson();
@@ -131,6 +135,32 @@ public class DownloadCateg extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        viewnoun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent lol = new Intent(DownloadCateg.this,viewCateg.class);
+                lol.putExtra("Val","noun");
+                startActivity(lol);
+            }
+        });
+
+        viewverb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent lol = new Intent(DownloadCateg.this,viewCateg.class);
+                lol.putExtra("Val","verb");
+                startActivity(lol);
+            }
+        });
+        viewadj.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent lol = new Intent(DownloadCateg.this,viewCateg.class);
+                lol.putExtra("Val","adjective");
+                startActivity(lol);
             }
         });
 

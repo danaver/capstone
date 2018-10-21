@@ -8,87 +8,132 @@
     android:padding="20dp"
     >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Noun Package" />
-
-        <Button
-            android:id="@+id/noun"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Download"
-            android:layout_marginLeft="20dp"
-            />
-        <Button
-            android:id="@+id/delnoun"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Del"
-            android:layout_marginLeft="20dp"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="DOWNLOAD PACKAGE"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="50dp">
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Noun" />
+
+            <Button
+                android:id="@+id/noun"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="Download"
+                android:layout_marginLeft="20dp"
+                />
+            <Button
+                android:id="@+id/delnoun"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="Del"
+                android:layout_marginLeft="20dp"
+                />
+            <Button
+                android:id="@+id/viewnoun"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="view"
+                android:layout_marginLeft="20dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Verb" />
+
+            <Button
+                android:id="@+id/verb"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="dl"
+                android:layout_marginLeft="20dp"
+                />
+            <Button
+                android:id="@+id/delverb"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="Del"
+                android:layout_marginLeft="20dp"
+                />
+            <Button
+                android:id="@+id/viewverb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="view"
+                android:layout_marginLeft="20dp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Adjective" />
+
+            <Button
+                android:id="@+id/adjective"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="Dl"
+                android:layout_marginLeft="20dp"
+                />
+            <Button
+                android:id="@+id/deladjective"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="Del"
+                android:layout_marginLeft="20dp"
+                />
+            <Button
+                android:id="@+id/viewadj"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="view"
+                android:layout_marginLeft="20dp"
+                />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="200dp"
+            android:text="Main"/>
+
+        <Button
+            android:id="@+id/sample"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="270dp"
+            android:text="Try"/>
+
         <TextView
+            android:id="@+id/gayson"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Verb Package" />
-
-        <Button
-            android:id="@+id/verb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Download"
-            android:layout_marginLeft="20dp"
-            />
-        <Button
-            android:id="@+id/delverb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Del"
-            android:layout_marginLeft="20dp"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Adjective Package" />
-
-        <Button
-            android:id="@+id/adjective"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Download"
-            android:layout_marginLeft="20dp"
-            />
-        <Button
-            android:id="@+id/deladjective"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Del"
-            android:layout_marginLeft="20dp"
-            />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/main"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Main"/>
+            android:layout_marginTop="200dp"/>
+    </RelativeLayout>
 
 </RelativeLayout>
