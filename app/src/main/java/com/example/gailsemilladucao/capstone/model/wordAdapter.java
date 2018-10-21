@@ -18,9 +18,9 @@ public class wordAdapter extends ArrayAdapter {
 
     Activity context;
     int resource;
-    ArrayList<wordbank> list;
+    ArrayList<wordbanks> list;
 
-    public wordAdapter(@NonNull Activity context, int resource, @NonNull ArrayList<wordbank> objects) {
+    public wordAdapter(@NonNull Activity context, int resource, @NonNull ArrayList<wordbanks> objects) {
         super(context, resource, objects);
         this.context = context;
         this.resource = resource;
@@ -38,7 +38,7 @@ public class wordAdapter extends ArrayAdapter {
         final CheckBox caud = row.findViewById(R.id.caud);
         final CheckBox cfx = row.findViewById(R.id.cfx);
 
-        final wordbank wl = list.get(position);
+        final wordbanks wl = list.get(position);
 
         eng.setText(wl.getEnglish());
         ceb.setText(wl.getCebuano());

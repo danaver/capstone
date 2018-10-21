@@ -2,7 +2,7 @@ package com.example.gailsemilladucao.capstone.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class wordbank{
+public class wordbanks{
     private String English;
     private String Cebuano;
     private String Pronunciation;
@@ -13,7 +13,7 @@ public class wordbank{
     private String Effect;
     private String Status;
 
-    public wordbank(String english, String cebuano, String pronunciation, String pos, String audio, String status) {
+    public wordbanks(String english, String cebuano, String pronunciation, String pos, String audio, String status) {
         English = english;
         Cebuano = cebuano;
         Pronunciation = pronunciation;
@@ -22,7 +22,7 @@ public class wordbank{
         Status = status;
     }
 
-    public wordbank(String english, String cebuano, String pronunciation, String pos, String audio, String picture, String effect, String status) {
+    public wordbanks(String english, String cebuano, String pronunciation, String pos, String audio, String picture, String effect, String status) {
         English = english;
         Cebuano = cebuano;
         Pronunciation = pronunciation;
@@ -33,7 +33,7 @@ public class wordbank{
         Status = status;
     }
 
-    public wordbank(String english, String cebuano, String pronunciation, String pos, String audio, String picture, String status) {
+    public wordbanks(String english, String cebuano, String pronunciation, String pos, String audio, String picture, String status) {
         English = english;
         Cebuano = cebuano;
         Pronunciation = pronunciation;
@@ -43,7 +43,7 @@ public class wordbank{
         Status = status;
     }
 
-    public wordbank(String english, String cebuano, String audio, String picture, String effect) {
+    public wordbanks(String english, String cebuano, String audio, String picture, String effect) {
         English = english;
         Cebuano = cebuano;
         Audio = audio;

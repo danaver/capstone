@@ -7,7 +7,7 @@ import android.widget.ListView;
 
 import com.example.gailsemilladucao.capstone.R;
 import com.example.gailsemilladucao.capstone.model.wordAdapter;
-import com.example.gailsemilladucao.capstone.model.wordbank;
+import com.example.gailsemilladucao.capstone.model.wordbanks;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class viewCateg extends AppCompatActivity {
 
     String categ,jsonfile;
-    ArrayList<wordbank> wordlist;
+    ArrayList<wordbanks> wordlist;
     ListView listView;
 
 
@@ -34,7 +34,7 @@ public class viewCateg extends AppCompatActivity {
 
         listView = findViewById(R.id.listview);
 
-        wordlist = new ArrayList<wordbank>();
+        wordlist = new ArrayList<wordbanks>();
 
         categ = getIntent().getStringExtra("Val");
         jsonfile = readFromFile();
@@ -63,7 +63,7 @@ public class viewCateg extends AppCompatActivity {
                         fx = null;
                     }
 
-                    wordlist.add(new wordbank(eng, ceb, aud, img, fx));
+                    wordlist.add(new wordbanks(eng, ceb, aud, img, fx));
                 }
             }
         } catch (JSONException e) {

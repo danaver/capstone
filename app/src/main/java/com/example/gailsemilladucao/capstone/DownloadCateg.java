@@ -60,7 +60,7 @@ public class DownloadCateg extends AppCompatActivity {
         viewadj = findViewById(R.id.viewadj);
 
         createFolder();
-        gayson();
+        //gayson();
 
         jsonfile = readFromFile();
         JSONObject jsonObject = null;
