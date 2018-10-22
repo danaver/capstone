@@ -4,50 +4,64 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".signup">
+    tools:context=".signup"
+    android:background="@drawable/bg" >
 
     <TextView
         android:id="@+id/signupTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="106dp"
-        android:text="Sign Up!"
-        android:textSize="30dp"/>
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="222dp"
+        android:fontFamily="Tahoma"
+        android:text="SIGN UP"
+        android:textSize="30dp" />
 
     <EditText
         android:id="@+id/emailTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Email"
-        android:layout_below="@+id/signupTxt"/>
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/signupTxt"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="162dp"
+        android:layout_marginTop="3dp"
+        android:hint="Email" />
 
     <EditText
         android:id="@+id/passwordTxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:layout_below="@+id/emailTxt"/>
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/emailTxt"
+        android:layout_alignEnd="@+id/signinText"
+        android:layout_marginStart="157dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="18dp"
+        android:hint="Password" />
 
     <Button
         android:id="@+id/signupBtn"
+        style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignRight="@id/signupTxt"
         android:layout_alignEnd="@id/signupTxt"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_alignRight="@id/signupTxt"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginRight="17dp"
+        android:layout_marginBottom="144dp"
         android:text="Sign Up" />
 
     <TextView
         android:id="@+id/signinText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="201dp"
+        android:layout_marginEnd="112dp"
+        android:layout_marginBottom="113dp"
         android:text="Already have an account? Please sign in here"
         android:textSize="17dp" />
 
