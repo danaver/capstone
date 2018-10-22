@@ -7,8 +7,10 @@
     storageBucket: "bistalk-7833f.appspot.com",
     messagingSenderId: "1004391529913"
   };
+
   firebase.initializeApp(config);
   var rootRef = firebase.database().ref().child('wordbank');
+  var usersRef = firebase.database().ref().child('User');
 
   rootRef.on("child_added", snap =>{
     var english = snap.child("English").val();
@@ -21,10 +23,32 @@
     var effect = snap.child("Effect").val();    
 
     // $("#table_body").append("<tr><td>" + english +"</td><td>" +cebuano + "</td><td>" +pronunciation+
-    //                         "</td><td>" + pos + "</td><td><button>Pic</button></td><tr>" );
- $("#table_body").append("<tr><td>" + english +"</td><td>"+cebuano + "</td><td>" +pronunciation+
-                            "</td><td>" + pos + "</td><td><button>Pic</button></td><td>" + 
-                            "</td><td><button>Audio</button></td></td>" + "</td><td><button>Effect</button></td></tr>" 
-                             );
+  //   //                         "</td><td>" + pos + "</td><td><button>Pic</button></td><tr>" );
+  // $("#table_body").append("<tr><td>" + english +"</td><td>"+cebuano + "</td><td>" +pronunciation+
+  //                           "</td><td>" + pos + "</td><td>" + picture + "</td><td>" + "audio" "</td><td>" + effect "</td></tr>" );
+  // copy of the #table_body original code
+   $("#table_body").append("<tr><td>" + english +"</td><td>"+cebuano + "</td><td>" +pronunciation+
+                            "</td><td>" + pos + "</td><td>" + picture + "</td><td>" + audio + "</td><td>"+ effect + "</td></tr>" );
+
+
+  });
+
+  //USER DATA TABLE FETCH DATA FROM FIREBASE
+
+  usersRef.on("child_added", snap =>{
+    var email = snap.child("email").val();
+    var password = snap.child("password").val();
+    var type = snap.child("type").val();
+    var username = snap.child("username").val();
+    // var password = snap.child("password").val();
+
+    // if(type == 2) {
+    //   $("#table_premium").append("<tr><td>" + username + "</td><td>" + email + "</td></tr>");    
+    // } else {
+    //   $("#table_free").append("<tr><td>" + username + "</td><td>" + email + "</td></tr>");    
+    // }
+
+     $("#table_free").append("<tr><td>" + username + "</td><td>" + email + "</td><td>" + password +"</td></tr>"); 
+
 
   });
