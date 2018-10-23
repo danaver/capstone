@@ -199,8 +199,12 @@ public class DownloadCateg extends AppCompatActivity {
                 audiopath = getFilesDir() + "/audio/" + list.getWordbankList().get(i).getAudio();
                 File audiofile = new File(audiopath);
                 audiofile.delete();
+
+                list.getWordbankList().get(i).setStatus(0);
             }
         }
+
+        GsontoJson(list);
 
         Toast.makeText(this, "All Data in "+categ+" has been deleted", Toast.LENGTH_SHORT).show();
     }
@@ -220,40 +224,41 @@ public class DownloadCateg extends AppCompatActivity {
         for (int i = 0; i < list.getWordbankList().size(); i++){
 
             //images
-            final StorageReference pictureReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("pictures/"+categ+"/" + list.getWordbankList().get(i).getPicture());
-            final File imageFile = new File(getFilesDir(), "images/" + list.getWordbankList().get(i).getPicture());
-
-
-            pictureReference.getFile(imageFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    progressDialog.dismiss();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    progressDialog.dismiss();
-                }
-            });
-
-            //effects
-            final StorageReference audioFxReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("effects/"+categ+"/"+ list.getWordbankList().get(i).getEffect());
-            final File audioFile = new File(getFilesDir(),"effects/"+ list.getWordbankList().get(i).getEffect());
-
-            audioFxReference.getFile(audioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    progressDialog.dismiss();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    progressDialog.dismiss();
-                }
-            });
-
             if(list.getWordbankList().get(i).getPos().equals(categ)) {
+                final StorageReference pictureReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("pictures/"+categ+"/" + list.getWordbankList().get(i).getPicture());
+                final File imageFile = new File(getFilesDir(), "images/" + list.getWordbankList().get(i).getPicture());
+
                 list.getWordbankList().get(i).setStatus(1);
+                pictureReference.getFile(imageFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        progressDialog.dismiss();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        progressDialog.dismiss();
+                    }
+                });
+
+                //effects
+                final StorageReference audioFxReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("effects/"+categ+"/"+ list.getWordbankList().get(i).getEffect());
+                final File audioFile = new File(getFilesDir(),"effects/"+ list.getWordbankList().get(i).getEffect());
+
+                audioFxReference.getFile(audioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        progressDialog.dismiss();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        progressDialog.dismiss();
+                    }
+                });
+
+
+
             }
 
             //audio file
