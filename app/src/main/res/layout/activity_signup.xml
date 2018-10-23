@@ -15,10 +15,12 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="26dp"
         android:layout_marginEnd="222dp"
+        android:textColor="@color/dirty"
         android:text="SIGN UP"
         android:textSize="30dp" />
 
     <EditText
+        android:background="@drawable/box"
         android:id="@+id/emailTxt"
         android:layout_width="300dp"
         android:layout_height="40dp"
@@ -26,35 +28,42 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="162dp"
         android:layout_marginTop="3dp"
-        android:hint="Email" />
+        android:hint="Email"
+        android:textAlignment="center"/>
 
     <EditText
         android:id="@+id/passwordTxt"
+        android:background="@drawable/box"
         android:layout_width="300dp"
         android:layout_height="40dp"
         android:layout_below="@+id/emailTxt"
         android:layout_alignEnd="@+id/signinText"
+        android:inputType="textPassword"
         android:layout_marginStart="157dp"
         android:layout_marginTop="13dp"
         android:layout_marginEnd="18dp"
-        android:hint="Password" />
+        android:hint="Password"
+        android:textAlignment="center"/>
 
     <Button
         android:id="@+id/signupBtn"
-        style="@style/Widget.AppCompat.Button"
+        android:background="@drawable/button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignEnd="@id/signupTxt"
         android:layout_alignRight="@id/signupTxt"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="12dp"
         android:layout_marginEnd="17dp"
         android:layout_marginRight="17dp"
         android:layout_marginBottom="144dp"
+        android:layout_centerVertical="true"
+        android:textAlignment="center"
         android:text="Sign Up" />
 
     <TextView
         android:id="@+id/signinText"
+        android:textColor="@color/dirty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
