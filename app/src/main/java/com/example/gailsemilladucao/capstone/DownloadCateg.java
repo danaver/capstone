@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.gailsemilladucao.capstone.backend.AddData;
+import com.example.gailsemilladucao.capstone.model.*;
 import com.example.gailsemilladucao.capstone.view.viewCateg;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,22 +32,25 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class DownloadCateg extends AppCompatActivity {
 
-    Button noun,verb,adj,main,deln,dela,delv,viewnoun,viewverb,viewadj;
+    Button noun, verb, adj, main, deln, dela, delv, viewnoun, viewverb, viewadj;
     String jsonfile;
-    JSONArray jsonArray;
+
     FirebaseStorage storage = FirebaseStorage.getInstance();
 
+    Bistalk list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download_categ);
+
 
         noun = findViewById(R.id.noun);
         verb = findViewById(R.id.verb);
@@ -60,17 +64,11 @@ public class DownloadCateg extends AppCompatActivity {
         viewadj = findViewById(R.id.viewadj);
 
         createFolder();
-        //gayson();
+        gayson();
 
         jsonfile = readFromFile();
-        JSONObject jsonObject = null;
+        list = JsontoGson();
 
-        try {
-            jsonObject = new JSONObject(jsonfile);
-            jsonArray = jsonObject.getJSONArray("wordbank");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
         noun.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,27 +183,22 @@ public class DownloadCateg extends AppCompatActivity {
         String imgpath;
         String audiopath;
         String fxpath;
-        for (int i = 0; i <jsonArray.length();i++) {
-            JSONObject word = jsonArray.getJSONObject(i);
+        for (int i = 0; i < list.getWordbankList().size(); i++) {
 
-            if(word.getString("POS").equals(categ)){
-                if(word.has("Picture")){
-                    imgpath = getFilesDir() + "/images/" + word.getString("Picture");
-                    File imgfile = new File(imgpath);
-                    imgfile.delete();
-                }
 
-                if(word.has("Effect")){
-                    fxpath = getFilesDir() + "/effects/" + word.getString("Effect");
-                    File fxfile = new File(fxpath);
-                    fxfile.delete();
-                }
+            if(list.getWordbankList().get(i).getPos().equals(categ)){
+                imgpath = getFilesDir() + "/images/" + list.getWordbankList().get(i).getPicture();
+                File imgfile = new File(imgpath);
+                imgfile.delete();
 
-                if(word.has("Audio")){
-                    audiopath = getFilesDir() + "/audio/" + word.getString("Audio");
-                    File audiofile = new File(audiopath);
-                    audiofile.delete();
-                }
+                fxpath = getFilesDir() + "/effects/" + list.getWordbankList().get(i).getEffect();
+                File fxfile = new File(fxpath);
+                fxfile.delete();
+
+
+                audiopath = getFilesDir() + "/audio/" + list.getWordbankList().get(i).getAudio();
+                File audiofile = new File(audiopath);
+                audiofile.delete();
             }
         }
 
@@ -224,48 +217,43 @@ public class DownloadCateg extends AppCompatActivity {
             Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
         }
 
-        for (int i = 0; i <jsonArray.length();i++){
-
-            JSONObject word = jsonArray.getJSONObject(i);
+        for (int i = 0; i < list.getWordbankList().size(); i++){
 
             //images
-            try {
-                final StorageReference pictureReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("pictures/"+categ+"/" + word.getString("Picture"));
-                final File imageFile = new File(getFilesDir(), "images/" + word.getString("Picture"));
+            final StorageReference pictureReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("pictures/"+categ+"/" + list.getWordbankList().get(i).getPicture());
+            final File imageFile = new File(getFilesDir(), "images/" + list.getWordbankList().get(i).getPicture());
 
-                pictureReference.getFile(imageFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        progressDialog.dismiss();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        progressDialog.dismiss();
-                    }
-                });
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+
+            pictureReference.getFile(imageFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    progressDialog.dismiss();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    progressDialog.dismiss();
+                }
+            });
 
             //effects
-            try {
-                final StorageReference audioFxReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("effects/"+categ+"/"+word.getString("Effect"));
-                final File audioFile = new File(getFilesDir(),"effects/"+word.getString("Effect").toString());
+            final StorageReference audioFxReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("effects/"+categ+"/"+ list.getWordbankList().get(i).getEffect());
+            final File audioFile = new File(getFilesDir(),"effects/"+ list.getWordbankList().get(i).getEffect());
 
-                audioFxReference.getFile(audioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        progressDialog.dismiss();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        progressDialog.dismiss();
-                    }
-                });
-            } catch (JSONException e) {
-                e.printStackTrace();
+            audioFxReference.getFile(audioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    progressDialog.dismiss();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    progressDialog.dismiss();
+                }
+            });
+
+            if(list.getWordbankList().get(i).getPos().equals(categ)) {
+                list.getWordbankList().get(i).setStatus(1);
             }
 
             //audio file
@@ -291,6 +279,9 @@ public class DownloadCateg extends AppCompatActivity {
 
 
         }
+
+        GsontoJson(list);
+
     }
 
     private String readFromFile() {
@@ -346,7 +337,7 @@ public class DownloadCateg extends AppCompatActivity {
         reference.getFile(myFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                //  Toast.makeText(MainActivity.this, myFile.getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(DownloadCateg.this, myFile.getName(), Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -359,6 +350,38 @@ public class DownloadCateg extends AppCompatActivity {
 
             }
         });
+    }
+
+    private Bistalk JsontoGson(){
+        Bistalk bistalk = new com.google.gson.Gson().fromJson(jsonfile, Bistalk.class);
+        return bistalk;
+    }
+
+    public void GsontoJson(Bistalk besh) throws JSONException {
+
+
+        com.google.gson.Gson gson = new com.google.gson.Gson();
+
+        Bistalk bistalk = new Bistalk(besh.getUserList(),besh.getWordbankList());
+        String json = gson.toJson(bistalk);
+
+        // this will overwrite the jsonfile
+        try {
+            writeFile(json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    void writeFile(String data) throws IOException {
+        File outFile = new File(getFilesDir(), "wordbank.json");
+        FileOutputStream out = new FileOutputStream(outFile, false);
+        byte[] contents = data.getBytes();
+        out.write(contents);
+        out.flush();
+        out.close();
     }
 
 

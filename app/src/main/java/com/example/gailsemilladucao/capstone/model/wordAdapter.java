@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.gailsemilladucao.capstone.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class wordAdapter extends ArrayAdapter {
 
@@ -44,16 +45,16 @@ public class wordAdapter extends ArrayAdapter {
         ceb.setText(wl.getCebuano());
         caud.setChecked(true);
 
-        if(wl.getEffect() != null){
-            cfx.setChecked(true);
-        }else{
+        if(wl.getEffect().equals("null")){
             cfx.setChecked(false);
+        }else{
+            cfx.setChecked(true);
         }
 
-        if(wl.getPicture() != null){
-            cimg.setChecked(true);
-        }else{
+        if(wl.getPicture().equals("null")){
             cimg.setChecked(false);
+        }else{
+            cimg.setChecked(true);
         }
 
         return row;

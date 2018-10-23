@@ -11,9 +11,12 @@ public class wordbanks{
     private String Audio;
     private String Picture;
     private String Effect;
-    private String Status;
+    private int Status;
 
-    public wordbanks(String english, String cebuano, String pronunciation, String pos, String audio, String status) {
+    public wordbanks() {
+    }
+
+    public wordbanks(String english, String cebuano, String pronunciation, String pos, String audio, int status) {
         English = english;
         Cebuano = cebuano;
         Pronunciation = pronunciation;
@@ -22,7 +25,7 @@ public class wordbanks{
         Status = status;
     }
 
-    public wordbanks(String english, String cebuano, String pronunciation, String pos, String audio, String picture, String effect, String status) {
+    public wordbanks(String english, String cebuano, String pronunciation, String pos, String audio, String picture, String effect, int status) {
         English = english;
         Cebuano = cebuano;
         Pronunciation = pronunciation;
@@ -33,7 +36,7 @@ public class wordbanks{
         Status = status;
     }
 
-    public wordbanks(String english, String cebuano, String pronunciation, String pos, String audio, String picture, String status) {
+    public wordbanks(String english, String cebuano, String pronunciation, String pos, String audio, String picture, int status) {
         English = english;
         Cebuano = cebuano;
         Pronunciation = pronunciation;
@@ -107,11 +110,11 @@ public class wordbanks{
         Effect = effect;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return Status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         Status = status;
     }
 }

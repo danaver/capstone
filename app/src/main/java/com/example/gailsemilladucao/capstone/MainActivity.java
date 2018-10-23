@@ -71,21 +71,21 @@ public class MainActivity extends AppCompatActivity {
         jsonString = readFromFile();
 
 
-         searchy.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                 JSONObject res = null;
-                 res = searchWord("airplane");
-                 if(res != null){
-                     Intent lol = new Intent(MainActivity.this,ShowData.class);
-                     //converted the
-                     lol.putExtra("Val",res.toString());
-                     startActivity(lol);
-                 }else{
-                     Toast.makeText(MainActivity.this, "Word is not in the dictionary", Toast.LENGTH_SHORT).show();
-                 }
-             }
-         });
+        searchy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                JSONObject res = null;
+                res = searchWord("airplane");
+                if(res != null){
+                    Intent lol = new Intent(MainActivity.this,ShowData.class);
+                    //converted the
+                    lol.putExtra("Val",res.toString());
+                    startActivity(lol);
+                }else{
+                    Toast.makeText(MainActivity.this, "Word is not in the dictionary", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
 
@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
             jsonArray = jsonObject.getJSONArray("wordbank");
 
             for (int i = 0; i < jsonArray.length(); i++) {
-            //for (int i = 0; i < 6; i++) {
+                //for (int i = 0; i < 6; i++) {
                 JSONObject instance = jsonArray.getJSONObject(i);
                 //Toast.makeText(this, instance.getString(msg), Toast.LENGTH_SHORT).show();
                 Toast.makeText(this, msg + "   "+ instance.getString("English"), Toast.LENGTH_SHORT).show();

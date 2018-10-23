@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -20,17 +21,22 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gailsemilladucao.capstone.MainActivity;
 import com.example.gailsemilladucao.capstone.R;
+import com.example.gailsemilladucao.capstone.model.Bistalk;
+import com.example.gailsemilladucao.capstone.model.wordbanks;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnPausedListener;
 import com.google.firebase.storage.OnProgressListener;
@@ -40,20 +46,29 @@ import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import org.json.JSONException;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.UUID;
 
 public class AddData extends AppCompatActivity {
 
     ImageView mimage;
     Button recstart,recstop,play,pause,attach,addData, attach_fx;
-    String savepath = "",fxpath = "",srcPath =null;
+    String savepath = "",fxpath = "",srcPath =null,jsonstring;
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
     TextView info,info_effect;
-    EditText engText;
+    EditText engText,cebText;
     Uri audioFileUri, audioFxUri, imageFileUri;
+    Bistalk bistalk;
+    Spinner drop;
 
 
     private SeekBar volumeSeekbar = null;
@@ -75,6 +90,8 @@ public class AddData extends AppCompatActivity {
         setContentView(R.layout.activity_add_data);
         initControls();
 
+        gayson();
+
 
         // Create a storage reference from our app
         storageRef = FirebaseStorage.getInstance().getReference("temp");
@@ -87,14 +104,29 @@ public class AddData extends AppCompatActivity {
         info = findViewById(R.id.info);
         attach = findViewById(R.id.attach);
         mimage = findViewById(R.id.image);
-        recstart = findViewById(R.id.recstart);
+
         recstop =  findViewById(R.id.recstop);
         play = findViewById(R.id.play);
-        pause = findViewById(R.id.pause);
+
         addData = findViewById(R.id.addData);
         attach_fx = findViewById(R.id.attach_effect);
         info_effect = findViewById(R.id.info_effect);
         engText = findViewById(R.id.engtb);
+        cebText = findViewById(R.id.bistb);
+        drop = findViewById(R.id.pos);
+
+
+        //spinner
+        String pos [] =  getResources().getStringArray(R.array.pos);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddData.this,R.layout.spinner,pos);
+        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // drop.setAdapter(adapter);
+
+        //json
+        jsonstring = readFromFile();
+
+        bistalk = JsontoGson();
+
 
 
         // Upload Image to Firebase
@@ -102,49 +134,10 @@ public class AddData extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 uploadFile();
+                //localAdd(bistalk);
             }
         });
         //from android m, you need request runtime permission
-        recstart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                mediaRecorder = new MediaRecorder();
-                mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                mediaRecorder.setOutputFile(savepath);
-
-                if(checkPermissionFromDevice()){
-
-                    savepath = Environment.getExternalStorageDirectory()
-                            .getAbsolutePath()+"/"
-                            + UUID.randomUUID().toString()+".3gp";
-                    setupMediaRecorder();
-
-                    info.setText(savepath);
-
-
-                    try {
-                        mediaRecorder.prepare();
-                    } catch (IOException e) {
-                        Log.e(LOG_TAG, "prepare() failed");
-                    }
-
-                    mediaRecorder.start();
-
-                    play.setEnabled(false);
-                    pause.setEnabled(false);
-                    recstop.setEnabled(true);
-                    recstart.setEnabled(false);
-
-                    Toast.makeText(AddData.this, "Now recording", Toast.LENGTH_SHORT).show();
-
-                }else{
-                    requestPermission();
-                }
-
-            }
-        });
 
 
         // Attach audio effects
@@ -224,21 +217,6 @@ public class AddData extends AppCompatActivity {
             }
         });
 
-        pause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recstart.setEnabled(true);
-                recstop.setEnabled(false);
-                play.setEnabled(true);
-                pause.setEnabled(false);
-
-                if(mediaPlayer != null){
-                    mediaPlayer.stop();
-                    mediaPlayer.release();
-                    setupMediaRecorder();
-                }
-            }
-        });
 
 
         mimage.setOnClickListener(new View.OnClickListener() {
@@ -480,11 +458,169 @@ public class AddData extends AppCompatActivity {
         }
     }
 
+
+
+    private Bistalk JsontoGson(){
+        //this is the portion na gi convert ang json to array
+        //.fromJson(<the json string version ni wordbank>,<ang data type ni json file>)
+        Bistalk bistalk = new com.google.gson.Gson().fromJson(jsonstring, Bistalk.class);
+
+        //here is an example of accessing the data
+        //bistalk -> user and wordbank -> wordbank index -> access an element
+        String word = bistalk.getWordbankList().get(1).getEnglish();
+        Toast.makeText(this, word, Toast.LENGTH_SHORT).show();
+
+
+        return bistalk;
+    }
+
+    private String readFromFile() {
+        String ret = "";
+
+        try {
+            InputStream inputStream = openFileInput("wordbank.json");
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                }
+
+                inputStream.close();
+                ret = stringBuilder.toString();
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+
+        return ret;
+    }
+
     public void menu(View view) {
-        Intent intent = new Intent(AddData.this, MainActivity   .class);
+        Intent intent = new Intent(AddData.this, MainActivity.class);
         startActivity(intent);
     }
 
+    public void localAdd(Bistalk bistalk){
+
+        boolean internet = false;
+        wordbanks word = new wordbanks();
+
+        word.setEnglish(engText.getText().toString());
+        word.setCebuano(cebText.getText().toString());
+
+        //image to json and copy to internal
+        File imgname =new File(imageFileUri.getPath());
+        String imgextension = imgname.getAbsolutePath().substring(imgname.getAbsolutePath().lastIndexOf("."));
+        String imgFile = imgname.getName() + imgextension;
+        File img = new File(getFilesDir(),"images/"+imgFile);
+        word.setPicture(imgFile);
+
+        //audio to json and copy to internal
+        File audioname = new File(audioFileUri.getPath());
+        String audextension = audioname.getAbsolutePath().substring(audioname.getAbsolutePath().lastIndexOf("."));
+        String audFile = audioname.getName()+audextension;
+        File aud = new File(getFilesDir(),"audio/"+audFile);
+        word.setAudio(audFile);
+
+        File fxname = new File(audioFileUri.getPath());
+        String fxextension = fxname.getAbsolutePath().substring(fxname.getAbsolutePath().lastIndexOf("."));
+        String fxFile = fxname.getName()+fxextension;
+        File fx = new File(getFilesDir(),"effects/"+fxFile);
+        word.setAudio(fxFile);
+
+        word.setPronunciation("null");
+        word.setPos("null");
+
+        internet = isNetworkConnected();
+        if(internet == false){
+            word.setStatus(2);
+        }else{
+            word.setStatus(3);
+        }
+
+        bistalk.getWordbankList().add(word);
+
+        try {
+            GsontoJson(bistalk);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
+
+    public void GsontoJson(Bistalk besh) throws JSONException {
+
+        //Gson gson = new Gson(); raman ta na idk nganong mo error haahaha
+        com.google.gson.Gson gson = new com.google.gson.Gson();
+
+        //initialize a wordbanks to add new word, since you passed besh(ang gson array) you can append it der
+        //just comment this out if ever
+        //if naay kuwang sa constructor just add sa wordbanks og lain constructor
+        // wordbanks wordo = new wordbanks("meow", "meow", "meow", "meow", "meow");
+
+        //you have added to the array
+        //to append it you have to access the "WordbankList" sooo besh.getWordbankList.add()
+        // besh.getWordbankList().add(wordo);
+
+        Bistalk bistalk = new Bistalk(besh.getUserList(),besh.getWordbankList());
+        String json = gson.toJson(bistalk);
+
+        // this will overwrite the jsonfile
+        try {
+            writeFile(json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    void writeFile(String data) throws IOException {
+        File outFile = new File(getFilesDir(), "wordbank.json");
+        FileOutputStream out = new FileOutputStream(outFile, false);
+        byte[] contents = data.getBytes();
+        out.write(contents);
+        out.flush();
+        out.close();
+    }
+
+    private void gayson() {
+
+        String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/wordbank.json?alt=media&token=21f68d7f-7a1c-4b1d-aab1-0790bbe5644c";
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference reference = firebaseStorage.getReferenceFromUrl(storageUrl);
+
+        final File myFile = new File(getFilesDir(),"wordbank.json");
+        reference.getFile(myFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                //  Toast.makeText(MainActivity.this, myFile.getName(), Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(AddData.this, "Download was unsuccessful", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
+
+            }
+        });
+    }
 }
 
 

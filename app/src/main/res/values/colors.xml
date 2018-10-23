@@ -2,5 +2,8 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#2c3e50</color>
+    <color name="addcolor">#7ea4b3</color>
+    <color name="dirty">#ecf0f1</color>
+    <color name="transi">#80ecf0f1</color>
 </resources>
