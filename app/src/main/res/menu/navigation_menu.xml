@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+
+    <item
+        android:id="@+id/add_word"
+        android:title="Add Word"
+        android:icon="@drawable/add_plus_button"
+        >
+    </item>
+    <item
+        android:id="@+id/download_package"
+        android:title= "Download Packages"
+        android:icon="@drawable/download"
+        >
+    </item>
+
+</menu>

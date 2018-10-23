@@ -22,12 +22,10 @@ import java.io.IOException;
 
 public class ShowData extends AppCompatActivity {
 
-    public EditText cebtxt;
+    public TextView cebtxt;
     public Button query_button;
     public ImageButton imgfx;
     public Button audio;
-    public TextView result_cebuano;
-    public MainActivity mainActivity;
 
     String imgName=null,audname=null,cebword=null,fxname = null;
 

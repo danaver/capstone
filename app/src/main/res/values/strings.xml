@@ -5,4 +5,8 @@
         <item>verb</item>
         <item>adjective</item>
     </string-array>
+
+    <!-- Navigation Drawer -->
+    <string name="close">Close</string>
+    <string name="open">Open</string>
 </resources>

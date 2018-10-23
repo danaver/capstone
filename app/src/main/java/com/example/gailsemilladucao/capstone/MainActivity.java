@@ -3,14 +3,15 @@ package com.example.gailsemilladucao.capstone;
 // =========== API =========== //
 import android.Manifest;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.os.AsyncTask;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +20,7 @@ import android.widget.Toast;
 
 
 // =========== PACKAGES =========== //
-import com.example.gailsemilladucao.capstone.backend.*;
+import com.example.gailsemilladucao.capstone.backend.AddData;
 import com.example.gailsemilladucao.capstone.view.*;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
     Button searchy;
     EditText wordie;
 
+    // Navigation Drawer
+    private DrawerLayout dl;
+    private ActionBarDrawerToggle abdt;
+
     String jsonString;
 
 
@@ -62,6 +67,30 @@ public class MainActivity extends AppCompatActivity {
         txvResult = findViewById(R.id.txvResult);
         searchy = findViewById(R.id.searching);
         wordie = findViewById(R.id.wordie);
+        dl = findViewById(R.id.dl);
+
+        // Navigation Drawer
+        abdt = new ActionBarDrawerToggle(MainActivity.this, dl, R.string.open, R.string.close);
+        dl.addDrawerListener(abdt);
+        abdt.syncState();
+
+        NavigationView nav_view = findViewById(R.id.nav_view);
+        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                int id = menuItem.getItemId();
+
+                if(id == R.id.add_word){
+                    Intent intent = new Intent(MainActivity.this,AddData.class);
+                    startActivity(intent);
+                }else if(id == R.id.download_package){
+                    Intent intent = new Intent(MainActivity.this, DownloadCateg.class);
+                    startActivity(intent);
+                }
+                return true;
+            }
+        });
+
 
         //download json
         gayson();
@@ -220,13 +249,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return match;
     }
-
-
-
-    //called in xml
-    public void addWord(View view) {
-        Intent intent = new Intent(MainActivity.this, AddData.class);
-        startActivity(intent);
-    }
-
 }

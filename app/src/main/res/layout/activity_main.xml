@@ -1,49 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<android.support.v4.widget.DrawerLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity"
+    android:orientation="horizontal"
+    android:id="@+id/dl">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Bistalk" />
-    <ImageButton
-        android:id="@+id/mic"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/mic"
-        android:onClick="getSpeechInput" />
-    <TextView
-        android:id="@+id/txvResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_centerHorizontal="true" />
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity"
+        android:background="@drawable/microphone_background">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add word"
-        android:layout_marginLeft="280dp"
-        android:onClick="addWord"/>
-    <EditText
-        android:id="@+id/wordie"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="airplane"/>
-    <Button
-        android:id="@+id/searching"
-        android:layout_marginTop="40dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Search"/>
+        <ImageButton
+            android:id="@+id/mic"
+            android:layout_width="142dp"
+            android:layout_height="147dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/microphone"
+            android:onClick="getSpeechInput" />
 
+        <TextView
+            android:id="@+id/txvResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/boogaloo"
+            android:text="Say something in English"
+            android:textAlignment="center"
+            android:textSize="40dp"
+            android:textColor="#FFFFFF"/>
 
+        <EditText
+            android:id="@+id/wordie"
+            android:layout_width="128dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-240dp"
+            android:layout_marginTop="190dp"
+            android:layout_marginBottom="239dp"
+            android:layout_toEndOf="@+id/txvResult"
+            android:fontFamily="@font/boogaloo"
+            android:text="airplane"
+            android:textAlignment="center"
+            android:textColor="@android:color/white" />
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/searching"
+            android:layout_width="33dp"
+            android:layout_height="32dp"
+            android:layout_marginLeft="430dp"
+            android:layout_marginTop="200dp"
+            android:background="@drawable/search"
+            android:textAlignment="center" />
+
+    </RelativeLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="false"
+        app:headerLayout="@layout/navigation_header"
+        app:menu="@menu/navigation_menu">
+
+    </android.support.design.widget.NavigationView>
+</android.support.v4.widget.DrawerLayout>
