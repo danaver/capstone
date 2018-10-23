@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#2c3e50</color>
     <color name="addcolor">#7ea4b3</color>
+    <color name="blue">#3498db</color>
     <color name="dirty">#ecf0f1</color>
     <color name="transi">#80ecf0f1</color>
+    <color name="opaque">#BFecf0f1</color>
 </resources>
