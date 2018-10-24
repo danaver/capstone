@@ -40,8 +40,8 @@
         <activity android:name=".Gson" android:screenOrientation="landscape">
 
         </activity>
-        <activity android:name=".signup" android:screenOrientation="landscape">
-
+        <activity android:name=".signup" android:screenOrientation="landscape"/>
+        <activity android:name=".Login" android:screenOrientation="landscape">
         </activity>
 
         <meta-data

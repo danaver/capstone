@@ -86,11 +86,16 @@ public class MainActivity extends AppCompatActivity {
                 }else if(id == R.id.download_package){
                     Intent intent = new Intent(MainActivity.this, DownloadCateg.class);
                     startActivity(intent);
+                }else if(id == R.id.action_logout){
+                    Intent intent = new Intent(MainActivity.this, Login.class);
+                    startActivity(intent);
+                }else if(id == R.id.home){
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    startActivity(intent);
                 }
                 return true;
             }
         });
-
 
         //download json
         gayson();
