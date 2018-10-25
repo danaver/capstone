@@ -89,11 +89,8 @@ public class DownloadCateg extends AppCompatActivity {
                 if(id == R.id.add_word){
                     Intent intent = new Intent(DownloadCateg.this,AddData.class);
                     startActivity(intent);
-                }else if(id == R.id.download_package){
-                    Intent intent = new Intent(DownloadCateg.this, DownloadCateg.class);
-                    startActivity(intent);
                 }else if(id == R.id.home){
-                    Intent intent = new Intent(DownloadCateg.this, DownloadCateg.class);
+                    Intent intent = new Intent(DownloadCateg.this, MainActivity.class);
                     startActivity(intent);
                 }
                 return true;

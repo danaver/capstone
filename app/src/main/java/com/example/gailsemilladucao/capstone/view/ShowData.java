@@ -47,7 +47,6 @@ public class ShowData extends AppCompatActivity {
 
 
 
-
         try {
             instance = new JSONObject(getIntent().getStringExtra("Val"));
             cebword = instance.getString("Cebuano");
