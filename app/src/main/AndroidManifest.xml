@@ -16,11 +16,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DownloadCateg" android:screenOrientation="landscape">
+        <activity android:name=".view.DownloadCateg" android:screenOrientation="landscape">
 
         </activity>
         <activity android:name=".view.ShowData" android:screenOrientation="landscape" />
-        <activity android:name=".backend.AddData" android:screenOrientation="landscape" >
+        <activity android:name=".backend.AddData" >
 
         </activity>
         <activity
@@ -34,14 +34,13 @@
             </intent-filter>
 
 
-
         </activity>
         <activity android:name=".view.viewCateg" android:screenOrientation="landscape" />
-        <activity android:name=".Gson" android:screenOrientation="landscape">
+        <activity android:name=".Gson">
 
         </activity>
-        <activity android:name=".signup" android:screenOrientation="landscape"/>
-        <activity android:name=".Login" android:screenOrientation="landscape">
+        <activity android:name=".signup" android:screenOrientation="landscape">
+
         </activity>
 
         <meta-data

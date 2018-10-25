@@ -1,27 +1,20 @@
-package com.example.gailsemilladucao.capstone;
+package com.example.gailsemilladucao.capstone.view;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.os.AsyncTask;
-import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.gailsemilladucao.capstone.R;
 import com.example.gailsemilladucao.capstone.backend.AddData;
-import com.example.gailsemilladucao.capstone.model.*;
-import com.example.gailsemilladucao.capstone.view.viewCateg;
+import com.example.gailsemilladucao.capstone.model.Bistalk;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -29,9 +22,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -45,10 +36,6 @@ public class DownloadCateg extends AppCompatActivity {
 
     Button noun, verb, adj, main, deln, dela, delv, viewnoun, viewverb, viewadj;
     String jsonfile;
-
-    // Navigation Drawer
-    private DrawerLayout dl;
-    private ActionBarDrawerToggle abdt;
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -70,41 +57,12 @@ public class DownloadCateg extends AppCompatActivity {
         viewnoun = findViewById(R.id.viewnoun);
         viewverb = findViewById(R.id.viewverb);
         viewadj = findViewById(R.id.viewadj);
-        dl = findViewById(R.id.dl);
 
         createFolder();
         gayson();
 
         jsonfile = readFromFile();
         list = JsontoGson();
-
-        // Navigation Drawer
-        abdt = new ActionBarDrawerToggle(DownloadCateg.this, dl, R.string.open, R.string.close);
-        dl.addDrawerListener(abdt);
-        abdt.syncState();
-
-        NavigationView nav_view = findViewById(R.id.nav_view);
-        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                int id = menuItem.getItemId();
-
-                if(id == R.id.add_word){
-                    Intent intent = new Intent(DownloadCateg.this,AddData.class);
-                    startActivity(intent);
-                }else if(id == R.id.download_package){
-                    Intent intent = new Intent(DownloadCateg.this, DownloadCateg.class);
-                    startActivity(intent);
-                }else if(id == R.id.action_logout){
-                    Intent intent = new Intent(DownloadCateg.this, Login.class);
-                    startActivity(intent);
-                }else if(id == R.id.home){
-                    Intent intent = new Intent(DownloadCateg.this, MainActivity.class);
-                    startActivity(intent);
-                }
-                return true;
-            }
-        });
 
 
         noun.setOnClickListener(new View.OnClickListener() {
@@ -299,25 +257,20 @@ public class DownloadCateg extends AppCompatActivity {
             }
 
             //audio file
-//            try {
-//                final StorageReference audioReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("audio/"+categ+"/"+word.getString("Audio"));
-//                final File audioFile = new File(getFilesDir(),"audio/"+word.getString("Effect").toString());
-//
-//                audioReference.getFile(audioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception exception) {
-//                        //Toast.makeText(MainActivity.this, "Audio is not downloaded", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
+            final StorageReference audioReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("audio/"+categ+"/"+list.getWordbankList().get(i).getAudio());
+            final File audioFile = new File(getFilesDir(),"audio/"+list.getWordbankList().get(i).getAudio());
 
+            audioReference.getFile(audioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    //Toast.makeText(MainActivity.this, "Audio is not downloaded", Toast.LENGTH_SHORT).show();
+                }
+            });
 
 
         }

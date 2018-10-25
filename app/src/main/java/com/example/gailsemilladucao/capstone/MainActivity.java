@@ -1,15 +1,15 @@
 package com.example.gailsemilladucao.capstone;
 
 // =========== API =========== //
-import android.Manifest;
+
 import android.content.Intent;
+import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,10 +18,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-// =========== PACKAGES =========== //
 import com.example.gailsemilladucao.capstone.backend.AddData;
-import com.example.gailsemilladucao.capstone.view.*;
+import com.example.gailsemilladucao.capstone.view.DownloadCateg;
+import com.example.gailsemilladucao.capstone.view.ShowData;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -42,10 +41,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Locale;
 
+// =========== PACKAGES =========== //
+
 public class MainActivity extends AppCompatActivity {
 
     public TextView txvResult;
-    public String message ="Hello";
+    public String message ="";
     Button searchy;
     EditText wordie;
 
@@ -86,19 +87,14 @@ public class MainActivity extends AppCompatActivity {
                 }else if(id == R.id.download_package){
                     Intent intent = new Intent(MainActivity.this, DownloadCateg.class);
                     startActivity(intent);
-                }else if(id == R.id.action_logout){
-                    Intent intent = new Intent(MainActivity.this, Login.class);
-                    startActivity(intent);
-                }else if(id == R.id.home){
-                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    startActivity(intent);
                 }
                 return true;
             }
         });
 
+
         //download json
-        gayson();
+        //gayson();
 
         //part na na parse na and placed sa string
         //this also is used global in searchWord()
@@ -108,15 +104,29 @@ public class MainActivity extends AppCompatActivity {
         searchy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JSONObject res = null;
-                res = searchWord("airplane");
-                if(res != null){
-                    Intent lol = new Intent(MainActivity.this,ShowData.class);
-                    //converted the
-                    lol.putExtra("Val",res.toString());
-                    startActivity(lol);
+
+                message = wordie.getText().toString();
+                if (!message.equals("")) {
+                    JSONObject res = null;
+                    res = searchWord(message);
+                    if (res != null) {
+                        Intent lol = new Intent(MainActivity.this, ShowData.class);
+                        //converted the
+                        try {
+                            if (res.getInt("Status") == 1) {
+                                lol.putExtra("Val", res.toString());
+                                startActivity(lol);
+                            } else {
+                                Toast.makeText(MainActivity.this, "Please download the word", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Toast.makeText(MainActivity.this, "Word is not in the dictionary", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
-                    Toast.makeText(MainActivity.this, "Word is not in the dictionary", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Enter word", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -215,14 +225,24 @@ public class MainActivity extends AppCompatActivity {
 
 
                     JSONObject res = searchWord(message);
-                    if(res != null){
-                        Intent lol = new Intent(MainActivity.this,ShowData.class);
+                    if (res != null) {
+                        Intent lol = new Intent(MainActivity.this, ShowData.class);
                         //converted the
-                        lol.putExtra("Val",res.toString());
-                        startActivity(lol);
-                    }else{
-                        Toast.makeText(this, "Word is not in the dictionary", Toast.LENGTH_SHORT).show();
+                        try {
+                            if (res.getInt("Status") == 1) {
+                                lol.putExtra("Val", res.toString());
+                                startActivity(lol);
+                            } else {
+                                Toast.makeText(MainActivity.this, "Please download the word", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Toast.makeText(MainActivity.this, "Word is not in the dictionary", Toast.LENGTH_SHORT).show();
                     }
+                }else{
+                    Toast.makeText(MainActivity.this, "Enter word", Toast.LENGTH_SHORT).show();
 
                 }
                 break;
@@ -240,13 +260,9 @@ public class MainActivity extends AppCompatActivity {
             jsonArray = jsonObject.getJSONArray("wordbank");
 
             for (int i = 0; i < jsonArray.length(); i++) {
-                //for (int i = 0; i < 6; i++) {
                 JSONObject instance = jsonArray.getJSONObject(i);
-                //Toast.makeText(this, instance.getString(msg), Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, msg + "   "+ instance.getString("English"), Toast.LENGTH_SHORT).show();
                 if (msg.equals(instance.getString("English"))) {
-                    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-                    return match = instance;
+                        return match = instance;
                 }
             }
         } catch (JSONException e) {

@@ -3,15 +3,13 @@ package com.example.gailsemilladucao.capstone.view;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.gailsemilladucao.capstone.MainActivity;
 import com.example.gailsemilladucao.capstone.R;
 
 import org.json.JSONException;
@@ -22,12 +20,12 @@ import java.io.IOException;
 
 public class ShowData extends AppCompatActivity {
 
-    public TextView cebtxt;
+    public TextView cebtxt,pru;
     public Button query_button;
     public ImageButton imgfx;
     public Button audio;
 
-    String imgName=null,audname=null,cebword=null,fxname = null;
+    String imgName=null,audname=null,cebword=null,fxname = null,pruword=null;
 
     JSONObject instance;
 
@@ -42,12 +40,15 @@ public class ShowData extends AppCompatActivity {
        // result_cebuano = findViewById(R.id.result_text);
         imgfx = findViewById(R.id.imgfx);
         audio =findViewById(R.id.audio);
+        pru = findViewById(R.id.pru);
+
 
 
 
         try {
             instance = new JSONObject(getIntent().getStringExtra("Val"));
             cebword = instance.getString("Cebuano");
+            pruword = instance.getString("Pronunciation");
             imgName = instance.getString("Picture");
             audname = instance.getString("Audio");
             try {
@@ -63,6 +64,7 @@ public class ShowData extends AppCompatActivity {
         //Uri uri = Uri.parse(getFilesDir()+"/images/"+imgName);
 
         cebtxt.setText(cebword);
+        pru.setText("["+pruword+"]");
         imgfx.setImageURI(Uri.parse(getFilesDir()+"/images/"+imgName));
 
         imgfx.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +74,22 @@ public class ShowData extends AppCompatActivity {
                 MediaPlayer player = new MediaPlayer();
                     player.setAudioStreamType(AudioManager.STREAM_MUSIC);
                     player.setDataSource(getFilesDir()+"/effects/"+fxname);
+                    player.prepare();
+                    player.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+        audio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    MediaPlayer player = new MediaPlayer();
+                    player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                    player.setDataSource(getFilesDir()+"/audio/"+audname);
                     player.prepare();
                     player.start();
                 } catch (IOException e) {

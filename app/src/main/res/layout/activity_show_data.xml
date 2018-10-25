@@ -13,7 +13,8 @@
         android:layout_marginHorizontal="60dp"
         android:layout_marginStart="-388dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/airplane"/>
+        android:background="@null"
+        />
 
     <Button
         android:id="@+id/audio"
@@ -39,7 +40,7 @@
         android:textSize="70dp" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/pru"
         android:layout_width="-200dp"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/audio"
