@@ -17,10 +17,10 @@
         android:background="@drawable/microphone_background">
 
         <TextView
-            android:layout_width="142dp"
+            android:layout_width="150dp"
             android:layout_height="147dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="110dp"
             android:background="@drawable/circle"
             android:backgroundTint="@color/blue"
             />
@@ -30,7 +30,7 @@
             android:layout_height="125dp"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="238dp"
-            android:layout_marginTop="95dp"
+            android:layout_marginTop="122dp"
             android:background="@drawable/mic"
             android:backgroundTint="@android:color/background_light"
             android:onClick="getSpeechInput"/>
@@ -44,7 +44,7 @@
             android:fontFamily="@font/boogaloo"
             android:text="Say something in English"
             android:textAlignment="center"
-            android:textSize="40dp"
+            android:textSize="50dp"
             android:textColor="#FFFFFF"/>
 
         <EditText
@@ -52,7 +52,7 @@
             android:background="@drawable/boxtrans"
             android:layout_width="200dp"
             android:layout_height="40dp"
-            android:layout_marginTop="250dp"
+            android:layout_marginTop="280dp"
             android:layout_centerHorizontal="true"
             android:fontFamily="@font/boogaloo"
             android:hint="search word..."
@@ -62,9 +62,9 @@
         <Button
             android:id="@+id/searching"
             android:layout_width="33dp"
-            android:layout_height="32dp"
-            android:layout_marginLeft="400dp"
-            android:layout_marginTop="252dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="620dp"
+            android:layout_marginTop="280dp"
             android:background="@drawable/search"
             android:textAlignment="center" />
 

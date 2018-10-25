@@ -6,12 +6,17 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.gailsemilladucao.capstone.MainActivity;
 import com.example.gailsemilladucao.capstone.R;
 import com.example.gailsemilladucao.capstone.backend.AddData;
 import com.example.gailsemilladucao.capstone.model.Bistalk;
@@ -41,6 +46,10 @@ public class DownloadCateg extends AppCompatActivity {
 
     Bistalk list;
 
+    // Navigation Drawer
+    private DrawerLayout dl;
+    private ActionBarDrawerToggle abdt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +72,33 @@ public class DownloadCateg extends AppCompatActivity {
 
         jsonfile = readFromFile();
         list = JsontoGson();
+
+        dl = findViewById(R.id.dl);
+
+        // Navigation Drawer
+        abdt = new ActionBarDrawerToggle(DownloadCateg.this, dl, R.string.open, R.string.close);
+        dl.addDrawerListener(abdt);
+        abdt.syncState();
+
+        NavigationView nav_view = findViewById(R.id.nav_view);
+        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                int id = menuItem.getItemId();
+
+                if(id == R.id.add_word){
+                    Intent intent = new Intent(DownloadCateg.this,AddData.class);
+                    startActivity(intent);
+                }else if(id == R.id.download_package){
+                    Intent intent = new Intent(DownloadCateg.this, DownloadCateg.class);
+                    startActivity(intent);
+                }else if(id == R.id.home){
+                    Intent intent = new Intent(DownloadCateg.this, DownloadCateg.class);
+                    startActivity(intent);
+                }
+                return true;
+            }
+        });
 
 
         noun.setOnClickListener(new View.OnClickListener() {

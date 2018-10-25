@@ -1,5 +1,6 @@
 package com.example.gailsemilladucao.capstone.view;
 
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.gailsemilladucao.capstone.MainActivity;
 import com.example.gailsemilladucao.capstone.R;
 
 import org.json.JSONException;
@@ -20,7 +22,7 @@ import java.io.IOException;
 
 public class ShowData extends AppCompatActivity {
 
-    public TextView cebtxt,pru;
+    public TextView cebtxt,pru, back_btn;
     public Button query_button;
     public ImageButton imgfx;
     public Button audio;
@@ -41,6 +43,7 @@ public class ShowData extends AppCompatActivity {
         imgfx = findViewById(R.id.imgfx);
         audio =findViewById(R.id.audio);
         pru = findViewById(R.id.pru);
+        back_btn = findViewById(R.id.back);
 
 
 
@@ -60,6 +63,14 @@ public class ShowData extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShowData.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //Uri uri = Uri.parse(getFilesDir()+"/images/"+imgName);
 
