@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.gailsemilladucao.capstone.MainActivity;
 import com.example.gailsemilladucao.capstone.R;
+import com.example.gailsemilladucao.capstone.model.wordbanks;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +38,9 @@ public class ShowData extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_data);
 
+        Intent i = getIntent();
+        wordbanks val = (wordbanks)i.getSerializableExtra("res");
+
         cebtxt = findViewById(R.id.cebTxt);
        // query_button = findViewById(R.id.query_button);
        // result_cebuano = findViewById(R.id.result_text);
@@ -47,20 +51,12 @@ public class ShowData extends AppCompatActivity {
 
 
 
-        try {
-            instance = new JSONObject(getIntent().getStringExtra("Val"));
-            cebword = instance.getString("Cebuano");
-            pruword = instance.getString("Pronunciation");
-            imgName = instance.getString("Picture");
-            audname = instance.getString("Audio");
-            try {
-                fxname = instance.getString("Effect");
-            }catch (Exception e){
-                fxname = null;
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+        cebword = val.getCebuano();
+        pruword = val.getPos();
+        imgName = val.getPicture();
+        audname = val.getAudio();
+        if(!val.getEffect().equals("null")){
+            fxname =val.getEffect();
         }
 
         back_btn.setOnClickListener(new View.OnClickListener() {

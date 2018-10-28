@@ -68,7 +68,7 @@ public class DownloadCateg extends AppCompatActivity {
         viewadj = findViewById(R.id.viewadj);
 
         createFolder();
-        gayson();
+        //gayson();
 
         jsonfile = readFromFile();
         list = JsontoGson();
@@ -271,9 +271,9 @@ public class DownloadCateg extends AppCompatActivity {
 
                 //effects
                 final StorageReference audioFxReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("effects/"+categ+"/"+ list.getWordbankList().get(i).getEffect());
-                final File audioFile = new File(getFilesDir(),"effects/"+ list.getWordbankList().get(i).getEffect());
+                final File audioFxFile = new File(getFilesDir(),"effects/"+ list.getWordbankList().get(i).getEffect());
 
-                audioFxReference.getFile(audioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                audioFxReference.getFile(audioFxFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                         progressDialog.dismiss();
@@ -287,7 +287,7 @@ public class DownloadCateg extends AppCompatActivity {
 
 
 
-            }
+
 
             //audio file
             final StorageReference audioReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("audio/"+categ+"/"+list.getWordbankList().get(i).getAudio());
@@ -305,7 +305,9 @@ public class DownloadCateg extends AppCompatActivity {
                 }
             });
 
+            }
 
+            list.getWordbankList().get(i).setStatus(1);
         }
 
         GsontoJson(list);

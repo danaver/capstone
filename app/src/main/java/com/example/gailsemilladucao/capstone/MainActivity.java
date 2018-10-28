@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gailsemilladucao.capstone.backend.AddData;
+import com.example.gailsemilladucao.capstone.model.Bistalk;
+import com.example.gailsemilladucao.capstone.model.wordbanks;
 import com.example.gailsemilladucao.capstone.view.DownloadCateg;
 import com.example.gailsemilladucao.capstone.view.ShowData;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     public String message ="";
     Button searchy;
     EditText wordie;
+    Bistalk bistalk;
 
     // Navigation Drawer
     private DrawerLayout dl;
@@ -99,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
         //part na na parse na and placed sa string
         //this also is used global in searchWord()
         jsonString = readFromFile();
+        bistalk = JsontoGson();
+
 
 
         searchy.setOnClickListener(new View.OnClickListener() {
@@ -107,20 +112,18 @@ public class MainActivity extends AppCompatActivity {
 
                 message = wordie.getText().toString();
                 if (!message.equals("")) {
-                    JSONObject res = null;
+                    //JSONObject res = null;
+                    wordbanks res = null;
                     res = searchWord(message);
                     if (res != null) {
                         Intent lol = new Intent(MainActivity.this, ShowData.class);
                         //converted the
-                        try {
-                            if (res.getInt("Status") == 1) {
-                                lol.putExtra("Val", res.toString());
-                                startActivity(lol);
-                            } else {
-                                Toast.makeText(MainActivity.this, "Please download the word", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+//
+                        if(res.getStatus() == 1){
+                            lol.putExtra("res", res);
+                            startActivity(lol);
+                        }else{
+                            Toast.makeText(MainActivity.this, "Please download the word", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(MainActivity.this, "Word is not in the dictionary", Toast.LENGTH_SHORT).show();
@@ -222,52 +225,46 @@ public class MainActivity extends AppCompatActivity {
                     //covert first letter to uppercase since database set it on uppercase
                     message = message.substring(0,1).toLowerCase() + message.substring(1).toLowerCase();
                     //access the db
-
-
-                    JSONObject res = searchWord(message);
-                    if (res != null) {
-                        Intent lol = new Intent(MainActivity.this, ShowData.class);
-                        //converted the
-                        try {
-                            if (res.getInt("Status") == 1) {
-                                lol.putExtra("Val", res.toString());
+                        wordbanks res = null;
+                        res = searchWord(message);
+                        if (res != null) {
+                            Intent lol = new Intent(MainActivity.this, ShowData.class);
+                            //converted the
+                            if(res.getStatus() == 1){
+                                lol.putExtra("res", res);
                                 startActivity(lol);
-                            } else {
+                            }else{
                                 Toast.makeText(MainActivity.this, "Please download the word", Toast.LENGTH_SHORT).show();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        } else {
+                            Toast.makeText(MainActivity.this, "Word is not in the dictionary", Toast.LENGTH_SHORT).show();
                         }
-                    } else {
-                        Toast.makeText(MainActivity.this, "Word is not in the dictionary", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(MainActivity.this, "Enter word", Toast.LENGTH_SHORT).show();
                     }
-                }else{
-                    Toast.makeText(MainActivity.this, "Enter word", Toast.LENGTH_SHORT).show();
 
-                }
                 break;
         }
     }
 
     //called in getSpeechInput and searchings the word
-    public JSONObject searchWord(String msg) {
-        JSONObject match = null;
+      public wordbanks searchWord(String msg) {
+        wordbanks match = null;
 
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-        JSONArray jsonArray = null;
-        try {
-            JSONObject jsonObject = new JSONObject(readFromFile());
-            jsonArray = jsonObject.getJSONArray("wordbank");
 
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject instance = jsonArray.getJSONObject(i);
-                if (msg.equals(instance.getString("English"))) {
-                        return match = instance;
+
+            for (int i = 0; i < bistalk.getWordbankList().size(); i++) {
+                if (msg.equals(bistalk.getWordbankList().get(i).getEnglish())) {
+                    return match = bistalk.getWordbankList().get(i);
                 }
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         return match;
+    }
+
+    private Bistalk JsontoGson(){
+        Bistalk bistalk = new com.google.gson.Gson().fromJson(jsonString, Bistalk.class);
+        return bistalk;
     }
 }
