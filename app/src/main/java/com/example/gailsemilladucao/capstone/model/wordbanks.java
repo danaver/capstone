@@ -2,7 +2,9 @@ package com.example.gailsemilladucao.capstone.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class wordbanks{
+import java.io.Serializable;
+
+public class wordbanks implements Serializable {
     private String English;
     private String Cebuano;
     private String Pronunciation;

@@ -112,10 +112,11 @@ public class AddData extends AppCompatActivity {
 
 
         //spinner
-        String pos [] =  getResources().getStringArray(R.array.pos);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddData.this,R.layout.spinner,pos);
-        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // drop.setAdapter(adapter);
+      ArrayAdapter<String> adapter = new ArrayAdapter<>(AddData.this,
+                        android.R.layout.simple_list_item_1,
+                        getResources().getStringArray(R.array.post));
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                drop.setAdapter(adapter);
 
         //json
         jsonstring = readFromFile();
