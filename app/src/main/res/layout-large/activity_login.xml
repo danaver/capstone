@@ -15,45 +15,46 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         android:text="SIGN IN"
-        android:textSize="40dp"
+        android:textSize="70dp"
         android:fontFamily="@font/boogaloo"/>
 
     <EditText
         android:id="@+id/emailView"
         android:background="@drawable/box"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
+        android:layout_width="500dp"
+        android:layout_height="70dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="150dp"
         android:textAlignment="center"
         android:fontFamily="@font/boogaloo"
-        android:textSize="25dp"
+        android:textSize="35dp"
         android:hint="Email" />
 
     <EditText
         android:id="@+id/passwordView"
         android:background="@drawable/box"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
+        android:layout_width="500dp"
+        android:layout_height="70dp"
         android:layout_below="@+id/emailView"
         android:inputType="textPassword"
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="20dp"
         android:textAlignment="center"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/boogaloo"
-        android:textSize="25dp"
+        android:textSize="35dp"
         android:hint="Password" />
 
     <Button
         android:id="@+id/signinBtn"
-        android:layout_width="300dp"
+        android:layout_width="500dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:layout_below="@+id/passwordView"
         android:background="@drawable/button"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/boogaloo"
-        android:textSize="25dp"
+        android:textSize="35dp"
+        android:padding="5dp"
         android:textColor="@android:color/holo_green_dark"
         android:text="Sign In" />
 </RelativeLayout>

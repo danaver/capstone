@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.gailsemilladucao.capstone">
+    <supports-screens
+        android:xlargeScreens="true"
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true"/>
+
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -19,6 +25,7 @@
         <activity
             android:name=".view.DownloadCateg"
             android:screenOrientation="landscape">
+
 
         </activity>
         <activity

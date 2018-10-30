@@ -59,7 +59,6 @@ public class DownloadCateg extends AppCompatActivity {
         noun = findViewById(R.id.noun);
         verb = findViewById(R.id.verb);
         adj = findViewById(R.id.adjective);
-        main = findViewById(R.id.main);
         deln = findViewById(R.id.delnoun);
         dela = findViewById(R.id.deladjective);
         delv = findViewById(R.id.delverb);
@@ -190,13 +189,7 @@ public class DownloadCateg extends AppCompatActivity {
             }
         });
 
-        main.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DownloadCateg.this, AddData.class);
-                startActivity(intent);
-            }
-        });
+
 
     }
 

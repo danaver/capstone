@@ -8,4 +8,6 @@
     <color name="dirty">#ecf0f1</color>
     <color name="transi">#80ecf0f1</color>
     <color name="opaque">#BFecf0f1</color>
+    <color name="yelo">#b3f1c40f</color>
+    <color name="yellor">#ffff00</color>
 </resources>

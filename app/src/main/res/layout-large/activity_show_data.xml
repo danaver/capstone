@@ -7,60 +7,62 @@
 
     <ImageButton
         android:id="@+id/imgfx"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="470dp"
+        android:layout_height="393dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="30dp"
         android:background="@null" />
 
 
-    <RelativeLayout
-        android:layout_width="290dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="300dp">
 
+    <RelativeLayout
+        android:layout_width="400dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="540dp">
         <TextView
             android:id="@+id/cebTxt"
-            android:layout_width="318dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/boogaloo"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/boogaloo"
             android:hint="Enter an english word"
             android:inputType="textPersonName"
             android:text="Cebuano"
             android:textAlignment="center"
             android:textColor="@color/yellor"
-            android:textSize="60dp" />
+            android:textSize="80dp" />
 
         <TextView
             android:id="@+id/pru"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/cebTxt"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/cebTxt"
             android:fontFamily="@font/boogaloo"
             android:text="[Pronounciation]"
             android:textColor="@android:color/white"
-            android:textSize="25dp" />
+            android:textSize="35dp" />
 
         <Button
             android:id="@+id/audio"
-            android:layout_width="75dp"
-            android:layout_height="80dp"
+            android:layout_width="95dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/pru"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:layout_below="@id/pru"
+            android:layout_marginTop="60dp"
             android:background="@drawable/audio_speaker" />
-
     </RelativeLayout>
+
+
     <Button
         android:id="@+id/back"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="280dp"
-        android:layout_marginLeft="10dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="425dp"
         android:background="@drawable/back" />
-
 
 
 </RelativeLayout>

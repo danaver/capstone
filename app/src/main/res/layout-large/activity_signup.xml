@@ -15,49 +15,49 @@
         android:textColor="@color/dirty"
         android:fontFamily="@font/boogaloo"
         android:text="SIGN UP"
-        android:layout_marginTop="20dp"
-        android:textSize="40dp"
+        android:layout_marginTop="50dp"
+        android:textSize="50dp"
         android:layout_centerHorizontal="true"/>
 
     <EditText
         android:background="@drawable/box"
         android:id="@+id/emailTxt"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
+        android:layout_width="500dp"
+        android:layout_height="70dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/signupTxt"
         android:layout_marginTop="10dp"
         android:hint="Email"
-        android:textSize="25dp"
+        android:textSize="35dp"
         android:fontFamily="@font/boogaloo"
         android:textAlignment="center"/>
 
     <EditText
         android:id="@+id/passwordTxt"
         android:background="@drawable/box"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
+        android:layout_width="500dp"
+        android:layout_height="70dp"
         android:layout_below="@+id/emailTxt"
         android:inputType="textPassword"
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:hint="Password"
-        android:textSize="25dp"
+        android:textSize="35dp"
         android:fontFamily="@font/boogaloo"
         android:textAlignment="center"/>
 
     <Button
         android:id="@+id/signupBtn"
         android:background="@drawable/button"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
+        android:layout_width="500dp"
+        android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/passwordTxt"
         android:layout_marginTop="25dp"
         android:textAlignment="center"
         android:fontFamily="@font/boogaloo"
         android:textColor="@android:color/holo_green_dark"
-        android:textSize="20dp"
+        android:textSize="30dp"
         android:text="Sign Up" />
 
     <TextView
@@ -68,6 +68,6 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/signupBtn"
         android:text="Already have an account? Please sign in here"
-        android:textSize="17dp" />
+        android:textSize="27dp" />
 
 </RelativeLayout>
