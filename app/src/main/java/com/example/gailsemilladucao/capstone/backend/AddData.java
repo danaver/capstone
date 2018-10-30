@@ -3,13 +3,17 @@ package com.example.gailsemilladucao.capstone.backend;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -27,6 +31,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.gailsemilladucao.capstone.Gson;
 import com.example.gailsemilladucao.capstone.MainActivity;
 import com.example.gailsemilladucao.capstone.R;
 import com.example.gailsemilladucao.capstone.model.Bistalk;
@@ -46,11 +51,13 @@ import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 
 public class AddData extends AppCompatActivity {
 
@@ -513,11 +520,31 @@ public class AddData extends AppCompatActivity {
         word.setCebuano(cebText.getText().toString());
 
         //image to json and copy to internal
-        File imgname =new File(imageFileUri.getPath());
-        String imgextension = imgname.getAbsolutePath().substring(imgname.getAbsolutePath().lastIndexOf("."));
-        String imgFile = imgname.getName() + imgextension;
-        File img = new File(getFilesDir(),"images/"+imgFile);
-        word.setPicture(imgFile);
+        ContextWrapper wrapper = null;
+        try{
+
+            //image to local
+            ParcelFileDescriptor parcelFileDescriptorImage =
+                    getContentResolver().openFileDescriptor(imageFileUri, "r");
+            FileDescriptor imagefileDescriptor = parcelFileDescriptorImage.getFileDescriptor();
+            Bitmap bitmap = BitmapFactory.decodeFileDescriptor(imagefileDescriptor);
+
+            wrapper = new ContextWrapper(getApplicationContext());
+
+            //change the name to proper name
+            File imgFile = new File(wrapper.getFilesDir() + "/images","AAA"+".png");
+
+            OutputStream istream = null;
+            istream = new FileOutputStream(imgFile);
+            bitmap.compress(Bitmap.CompressFormat.PNG,100,istream);
+            istream.flush();
+            istream.close();
+
+            Toast.makeText(AddData.this, imageFileUri.toString(), Toast.LENGTH_SHORT).show();
+
+        }catch(IOException e) {
+            e.printStackTrace();
+        }
 
         //audio to json and copy to internal
         File audioname = new File(audioFileUri.getPath());
@@ -532,6 +559,8 @@ public class AddData extends AppCompatActivity {
         File fx = new File(getFilesDir(),"effects/"+fxFile);
         word.setAudio(fxFile);
 
+
+        //setting words in json
         word.setPronunciation("null");
         word.setPos("null");
 
