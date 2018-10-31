@@ -2,6 +2,7 @@ package com.example.gailsemilladucao.capstone.backend;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,6 +45,7 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnPausedListener;
 import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -58,6 +62,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.UUID;
 
 public class AddData extends AppCompatActivity {
 
@@ -119,11 +124,10 @@ public class AddData extends AppCompatActivity {
 
 
         //spinner
-      ArrayAdapter<String> adapter = new ArrayAdapter<>(AddData.this,
-                        android.R.layout.simple_list_item_1,
-                        getResources().getStringArray(R.array.post));
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                drop.setAdapter(adapter);
+        String pos [] =  getResources().getStringArray(R.array.post);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddData.this,R.layout.spinner,pos);
+        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // drop.setAdapter(adapter);
 
         //json
         jsonstring = readFromFile();
@@ -136,8 +140,8 @@ public class AddData extends AppCompatActivity {
         addData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadFile();
-                //localAdd(bistalk);
+                //uploadFile();
+                localAdd(bistalk);
             }
         });
         //from android m, you need request runtime permission
@@ -513,65 +517,135 @@ public class AddData extends AppCompatActivity {
 
     public void localAdd(Bistalk bistalk){
 
+        String jeng,jceb,jaud=null,jfx=null,jpos,jpru=null,jimg;
+        int jstat;
+
         boolean internet = false;
         wordbanks word = new wordbanks();
 
-        word.setEnglish(engText.getText().toString());
-        word.setCebuano(cebText.getText().toString());
+        //getiing the  text
+        jeng = engText.getText().toString();
+        jceb = cebText.getText().toString();
+
 
         //image to json and copy to internal
-        ContextWrapper wrapper = null;
-        try{
+        //image to local
+        if(imageFileUri!=null) {
+            try {
+                //image to local
 
-            //image to local
-            ParcelFileDescriptor parcelFileDescriptorImage =
-                    getContentResolver().openFileDescriptor(imageFileUri, "r");
-            FileDescriptor imagefileDescriptor = parcelFileDescriptorImage.getFileDescriptor();
-            Bitmap bitmap = BitmapFactory.decodeFileDescriptor(imagefileDescriptor);
+                ParcelFileDescriptor parcelFileDescriptorImage =
+                        getContentResolver().openFileDescriptor(imageFileUri, "r");
+                FileDescriptor imagefileDescriptor = parcelFileDescriptorImage.getFileDescriptor();
+                Bitmap bitmap = BitmapFactory.decodeFileDescriptor(imagefileDescriptor);
 
-            wrapper = new ContextWrapper(getApplicationContext());
+                ContextWrapper wrapper = new ContextWrapper(getApplicationContext());
 
-            //change the name to proper name
-            File imgFile = new File(wrapper.getFilesDir() + "/images","AAA"+".png");
+                //change the name to proper name
+                File imgFile = new File(wrapper.getFilesDir() + "/images", jeng + ".png");
 
-            OutputStream istream = null;
-            istream = new FileOutputStream(imgFile);
-            bitmap.compress(Bitmap.CompressFormat.PNG,100,istream);
-            istream.flush();
-            istream.close();
+                OutputStream istream = null;
+                istream = new FileOutputStream(imgFile);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, istream);
+                istream.flush();
+                istream.close();
 
-            Toast.makeText(AddData.this, imageFileUri.toString(), Toast.LENGTH_SHORT).show();
-
-        }catch(IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            Toast.makeText(AddData.this, "Please Include an Image", Toast.LENGTH_SHORT).show();
         }
 
-        //audio to json and copy to internal
-        File audioname = new File(audioFileUri.getPath());
-        String audextension = audioname.getAbsolutePath().substring(audioname.getAbsolutePath().lastIndexOf("."));
-        String audFile = audioname.getName()+audextension;
-        File aud = new File(getFilesDir(),"audio/"+audFile);
-        word.setAudio(audFile);
-
-        File fxname = new File(audioFileUri.getPath());
-        String fxextension = fxname.getAbsolutePath().substring(fxname.getAbsolutePath().lastIndexOf("."));
-        String fxFile = fxname.getName()+fxextension;
-        File fx = new File(getFilesDir(),"effects/"+fxFile);
-        word.setAudio(fxFile);
 
 
-        //setting words in json
+        //audiofx to json and copy to internal
+        if(audioFxUri!= null) {
+            File audfx = new File(getFilesDir() + "/effects", jeng + ".mp3");
+
+            ContentResolver contentResolver = getContentResolver();
+            InputStream in = null;
+            try {
+                in = contentResolver.openInputStream(audioFxUri);
+                OutputStream out = new FileOutputStream(audfx);
+                // Copy the bits from instream to outstream
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                in.close();
+                out.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else {
+            jfx=null;
+        }
+        //audio to internal
+        if(audioFileUri!=null) {
+            File aud = new File(getFilesDir() + "/audio", jceb + ".mp3");
+
+            ContentResolver contentResolver = getContentResolver();
+            InputStream in = null;
+            try {
+                in = contentResolver.openInputStream(audioFileUri);
+                OutputStream out = new FileOutputStream(aud);
+                // Copy the bits from instream to outstream
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                in.close();
+                out.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            Toast.makeText(AddData.this, "Please include an audio", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+        //INSERT WORDS HERE NA
+        word.setEnglish(jeng);
+        word.setCebuano(jceb);
         word.setPronunciation("null");
+
+        for (int i = 0; bistalk.getWordbankList().size()>i;i++){
+            if(bistalk.getWordbankList().get(i).getAudio().equals(jceb+".mp3")){
+                jceb = jceb+"1";
+            }
+        }
+
+
+        word.setAudio(jceb+".mp3");
+
+
+        word.setPicture(jeng+".png");
         word.setPos("null");
 
+        if(audioFxUri != null){
+            word.setEffect(jfx);
+        }
         internet = isNetworkConnected();
         if(internet == false){
             word.setStatus(2);
         }else{
             word.setStatus(3);
         }
+        if(!jeng.equals("")&&!jceb.equals("")){
+            bistalk.getWordbankList().add(word);
+        }else{
+            Toast.makeText(AddData.this, "Please fill", Toast.LENGTH_SHORT).show();
+        }
 
-        bistalk.getWordbankList().add(word);
+
 
         try {
             GsontoJson(bistalk);

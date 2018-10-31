@@ -8,10 +8,14 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
@@ -50,6 +54,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +68,7 @@ public class Gson extends AppCompatActivity {
     Uri audioFileUri;
     Uri audioFxUri;
     Uri imageFileUri;
+    Uri uri;
 
     Context context;
     final int REQUEST_PERMISSION_CODE = 1000;
@@ -167,49 +173,76 @@ public class Gson extends AppCompatActivity {
 
                 //audiooooooo
 
-                //          File fxFile = new File(getFilesDir() + "/effects","AAA"+".mp3");
 
-                //this is our try out code that didnt work. we dunno why it didnt work
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                FileInputStream fis;
+
+                ////////////////////////////////////////////////////////////////////////
+                File targetLocation= new File (getFilesDir()+"/audio","AA2.mp3");
+
+                ContentResolver contentResolver = getContentResolver();
+                InputStream in =null ;
                 try {
-                    fis = new FileInputStream(new File(audioFxUri.getPath()));
+                    in = contentResolver.openInputStream(audioFxUri);
+                    OutputStream out = new FileOutputStream(targetLocation);
+                    // Copy the bits from instream to outstream
                     byte[] buf = new byte[1024];
-                    int n;
-                    while (-1 != (n = fis.read(buf)))
-                        baos.write(buf, 0, n);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                byte[] bbytes = baos.toByteArray();
-
-                //byte to file
-                File output = new File(getFilesDir() + "/audio","AAA"+".mp3");
-                FileOutputStream fileoutputstream = null;
-                try {
-                    fileoutputstream = new FileOutputStream(output);
-                    fileoutputstream.write(bbytes);
-                    fileoutputstream.close();
+                    int len;
+                    while ((len = in.read(buf)) > 0) {
+                        out.write(buf, 0, len);
+                    }
+                    in.close();
+                    out.close();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-//            File output = new File(getFilesDir() + "/audio","AAA.mp3");
-//
-//             boolean val =copyFile(audioFxUri.getPath(), output.toString());
-//             Toast.makeText(Gson.this,audioFxUri.getPath(), Toast.LENGTH_SHORT).show();
-//
-//                Toast.makeText(Gson.this, ""+val, Toast.LENGTH_SHORT).show();
-//
-//                Uri gamana =copyFile(audioFxUri);
-//
-//                Toast.makeText(Gson.this, gamana.toString(), Toast.LENGTH_SHORT).show();
 
             }
         });
     }
+
+
+    public String getRealPathFromURI(Uri contentUri)
+    {
+        String res;
+        Cursor cursor = getContentResolver().query(contentUri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
+        res = cursor.getString(idx);
+        cursor.close();
+        return res;
+    }
+
+    public byte[] toByteArray(InputStream in) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        int read = 0;
+        byte[] buffer = new byte[1024];
+        while (read != -1) {
+            read = in.read(buffer);
+            if (read != -1)
+                out.write(buffer,0,read);
+        }
+        out.close();
+        return out.toByteArray();
+    }
+
+    public byte[] convert(String path) throws IOException {
+
+        FileInputStream fis = new FileInputStream(path);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] b = new byte[1024];
+
+        for (int readNum; (readNum = fis.read(b)) != -1;) {
+            bos.write(b, 0, readNum);
+        }
+
+        byte[] bytes = bos.toByteArray();
+
+        return bytes;
+    }
+
+
 
     public static boolean copyFiles(String from, String to) {
         try {
@@ -277,6 +310,7 @@ public class Gson extends AppCompatActivity {
         // Image File
         if(requestCode == REQUEST_PERMISSION_GALLERY && resultCode == RESULT_OK) {
             Uri imageUri = data.getData();
+
             CropImage.activity(imageUri)
                     .setGuidelines(CropImageView.Guidelines.ON) //crop guide lines
                     .setAspectRatio(1, 1) //square croping

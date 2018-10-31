@@ -32,6 +32,11 @@
             android:name=".view.ShowData"
             android:screenOrientation="landscape" />
         <activity android:name=".backend.AddData">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
 
@@ -47,11 +52,7 @@
             android:name=".view.viewCateg"
             android:screenOrientation="landscape" />
         <activity android:name=".Gson">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".signup"
