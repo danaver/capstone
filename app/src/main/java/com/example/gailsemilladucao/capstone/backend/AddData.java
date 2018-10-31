@@ -124,10 +124,11 @@ public class AddData extends AppCompatActivity {
 
 
         //spinner
-        String pos [] =  getResources().getStringArray(R.array.post);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddData.this,R.layout.spinner,pos);
-        // adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // drop.setAdapter(adapter);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(AddData.this,
+                android.R.layout.simple_list_item_1,
+                getResources().getStringArray(R.array.post));
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        drop.setAdapter(adapter);
 
         //json
         jsonstring = readFromFile();
@@ -170,59 +171,7 @@ public class AddData extends AppCompatActivity {
             }
         });
 
-        recstop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mediaRecorder.stop();
-                recstop.setEnabled(false);
-                play.setEnabled(true);
-                recstart.setEnabled(true);
-                pause.setEnabled(false);
-            }
-        });
 
-        //The Play Button is an event that plays the record
-        play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(audioFileUri != null || savepath != "") {
-                    pause.setEnabled(true);
-                    recstop.setEnabled(false);
-                    recstart.setEnabled(false);
-                    play.setEnabled(false);
-
-                    mediaPlayer = new MediaPlayer();
-
-                    try {
-                        //It checks wether the TextView->Where the file path of the attach file is shown, is empty or not
-                        //if it is empty, then it will assume that it will play on the recorded audio
-                        if (savepath != "" && info.getText().toString() == savepath) {
-                            mediaPlayer.setDataSource(savepath);
-                            mediaPlayer.prepare();
-                            mediaPlayer.start();
-                            Toast.makeText(AddData.this, "Playing Recorded Audio...", Toast.LENGTH_SHORT).show();
-                        }
-                        //else, it will read the filepath inn the textview and play the audio
-                        else {
-                            //code here is needed to play the attach audio file
-                            savepath = info.getText().toString();//this portion gets the text that was in the TextView
-                            fxpath = info_effect.getText().toString(); // this portion gets the effect text.
-                            mediaPlayer.setDataSource(AddData.this, audioFileUri);//will read the path
-                            mediaPlayer.prepare();
-                            mediaPlayer.start();
-                            Toast.makeText(AddData.this, "Playing Attached Audio...", Toast.LENGTH_SHORT).show();
-
-                        }
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Toast.makeText(AddData.this, "File attach is not found", Toast.LENGTH_SHORT).show();
-                    }
-                }else{
-                    Toast.makeText(AddData.this, "Please Record or Attach a Files ", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
 
 
@@ -279,14 +228,6 @@ public class AddData extends AppCompatActivity {
         }
     }
 
-
-    private void setupMediaRecorder() {
-        mediaRecorder = new MediaRecorder();
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        mediaRecorder.setOutputFile(savepath);
-    }
 
     private void requestPermission(){
         ActivityCompat.requestPermissions(this,new String[]{
@@ -440,7 +381,6 @@ public class AddData extends AppCompatActivity {
             }
 
             // Upload for Image
-
             if(imageFileUri != null){
                 imageReference.putFile(imageFileUri)
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -517,7 +457,7 @@ public class AddData extends AppCompatActivity {
 
     public void localAdd(Bistalk bistalk){
 
-        String jeng,jceb,jaud=null,jfx=null,jpos,jpru=null,jimg;
+        String jeng,jceb,jaud,jfx="null",jpru;
         int jstat;
 
         boolean internet = false;
@@ -526,134 +466,149 @@ public class AddData extends AppCompatActivity {
         //getiing the  text
         jeng = engText.getText().toString();
         jceb = cebText.getText().toString();
+        jpru = drop.getSelectedItem().toString();
+
+        String match = "";
 
 
-        //image to json and copy to internal
-        //image to local
-        if(imageFileUri!=null) {
-            try {
-                //image to local
 
-                ParcelFileDescriptor parcelFileDescriptorImage =
-                        getContentResolver().openFileDescriptor(imageFileUri, "r");
-                FileDescriptor imagefileDescriptor = parcelFileDescriptorImage.getFileDescriptor();
-                Bitmap bitmap = BitmapFactory.decodeFileDescriptor(imagefileDescriptor);
 
-                ContextWrapper wrapper = new ContextWrapper(getApplicationContext());
-
-                //change the name to proper name
-                File imgFile = new File(wrapper.getFilesDir() + "/images", jeng + ".png");
-
-                OutputStream istream = null;
-                istream = new FileOutputStream(imgFile);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, istream);
-                istream.flush();
-                istream.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (jeng.equals("")&&jceb.equals("")){
+            Toast.makeText(AddData.this, "Please fill all blanks", Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(AddData.this, "Please Include an Image", Toast.LENGTH_SHORT).show();
-        }
+            //image to json and copy to internal
+            //image to local
+            if(imageFileUri==null) {
+                Toast.makeText(AddData.this, "Please Include an Image", Toast.LENGTH_SHORT).show();
+            }else{
+                try {
+                    //image to local
 
+                    ParcelFileDescriptor parcelFileDescriptorImage =
+                            getContentResolver().openFileDescriptor(imageFileUri, "r");
+                    FileDescriptor imagefileDescriptor = parcelFileDescriptorImage.getFileDescriptor();
+                    Bitmap bitmap = BitmapFactory.decodeFileDescriptor(imagefileDescriptor);
 
+                    ContextWrapper wrapper = new ContextWrapper(getApplicationContext());
 
-        //audiofx to json and copy to internal
-        if(audioFxUri!= null) {
-            File audfx = new File(getFilesDir() + "/effects", jeng + ".mp3");
+                    //change the name to proper name
+                    File imgFile = new File(wrapper.getFilesDir() + "/images", jeng + ".png");
 
-            ContentResolver contentResolver = getContentResolver();
-            InputStream in = null;
-            try {
-                in = contentResolver.openInputStream(audioFxUri);
-                OutputStream out = new FileOutputStream(audfx);
-                // Copy the bits from instream to outstream
-                byte[] buf = new byte[1024];
-                int len;
-                while ((len = in.read(buf)) > 0) {
-                    out.write(buf, 0, len);
+                    OutputStream istream = null;
+                    istream = new FileOutputStream(imgFile);
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, istream);
+                    istream.flush();
+                    istream.close();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                in.close();
-                out.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }else {
-            jfx=null;
-        }
-        //audio to internal
-        if(audioFileUri!=null) {
-            File aud = new File(getFilesDir() + "/audio", jceb + ".mp3");
 
-            ContentResolver contentResolver = getContentResolver();
-            InputStream in = null;
-            try {
-                in = contentResolver.openInputStream(audioFileUri);
-                OutputStream out = new FileOutputStream(aud);
-                // Copy the bits from instream to outstream
-                byte[] buf = new byte[1024];
-                int len;
-                while ((len = in.read(buf)) > 0) {
-                    out.write(buf, 0, len);
+                //audiofx to json and copy to internal
+                if(audioFxUri== null) {
+                    jfx="null";
+                }else {
+                        File audfx = new File(getFilesDir() + "/effects", jeng + ".mp3");
+
+                        ContentResolver contentResolver = getContentResolver();
+                        InputStream in = null;
+                        try {
+                            in = contentResolver.openInputStream(audioFxUri);
+                            OutputStream out = new FileOutputStream(audfx);
+                            // Copy the bits from instream to outstream
+                            byte[] buf = new byte[1024];
+                            int len;
+                            while ((len = in.read(buf)) > 0) {
+                                out.write(buf, 0, len);
+                            }
+                            in.close();
+                            out.close();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                //audio to internal
+                if(audioFileUri==null) {
+                    Toast.makeText(AddData.this, "Please attach an audio file", Toast.LENGTH_SHORT).show();
+
+                }else{
+                    File aud = new File(getFilesDir() + "/audio", jceb + ".mp3");
+
+                    ContentResolver contentResolvers = getContentResolver();
+                    InputStream ins = null;
+                    try {
+                        ins = contentResolvers.openInputStream(audioFileUri);
+                        OutputStream out = new FileOutputStream(aud);
+                        // Copy the bits from instream to outstream
+                        byte[] buf = new byte[1024];
+                        int len;
+                        while ((len = ins.read(buf)) > 0) {
+                            out.write(buf, 0, len);
+                        }
+                        ins.close();
+                        out.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    //INSERT WORDS HERE NA
+                    word.setEnglish(jeng.toLowerCase());
+                    word.setCebuano(jceb.toLowerCase());
+                    word.setPronunciation(jpru);
+
+                    for (int i = 0; bistalk.getWordbankList().size()>i;i++){
+                        if(bistalk.getWordbankList().get(i).getAudio().equals(jceb+".mp3")){
+                            jceb = jceb+"1";
+                        }
+                    }
+
+
+                    word.setAudio(jceb+".mp3");
+                    word.setPicture(jeng+".png");
+                    word.setPos(jpru);
+                    word.setEffect(jfx);
+
+                    if(audioFxUri != null){
+                        word.setEffect(jfx);
+                    }
+                    internet = isNetworkConnected();
+                    if(internet == false){
+                        word.setStatus(2);
+                    }else{
+                        word.setStatus(3);
+                    }
+
+
+                    String val = wordExist(jeng);
+                    if(val == null){
+                        bistalk.getWordbankList().add(word);
+                        try {
+                            GsontoJson(bistalk);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Intent lol = new Intent(AddData.this,MainActivity.class);
+                        startActivity(lol);
+                    }else{
+                        Toast.makeText(AddData.this, "Word is already exist", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                in.close();
-                out.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-        }else{
-            Toast.makeText(AddData.this, "Please include an audio", Toast.LENGTH_SHORT).show();
         }
+    }
 
-
-
-        //INSERT WORDS HERE NA
-        word.setEnglish(jeng);
-        word.setCebuano(jceb);
-        word.setPronunciation("null");
-
+    private String wordExist(String word){
+        String match = null;
         for (int i = 0; bistalk.getWordbankList().size()>i;i++){
-            if(bistalk.getWordbankList().get(i).getAudio().equals(jceb+".mp3")){
-                jceb = jceb+"1";
+            if(bistalk.getWordbankList().get(i).getEnglish().equals(word.toLowerCase())){
+               return match = bistalk.getWordbankList().get(i).getEnglish();
             }
         }
-
-
-        word.setAudio(jceb+".mp3");
-
-
-        word.setPicture(jeng+".png");
-        word.setPos("null");
-
-        if(audioFxUri != null){
-            word.setEffect(jfx);
-        }
-        internet = isNetworkConnected();
-        if(internet == false){
-            word.setStatus(2);
-        }else{
-            word.setStatus(3);
-        }
-        if(!jeng.equals("")&&!jceb.equals("")){
-            bistalk.getWordbankList().add(word);
-        }else{
-            Toast.makeText(AddData.this, "Please fill", Toast.LENGTH_SHORT).show();
-        }
-
-
-
-        try {
-            GsontoJson(bistalk);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
+        return match;
     }
 
     private boolean isNetworkConnected() {
@@ -665,15 +620,6 @@ public class AddData extends AppCompatActivity {
 
         //Gson gson = new Gson(); raman ta na idk nganong mo error haahaha
         com.google.gson.Gson gson = new com.google.gson.Gson();
-
-        //initialize a wordbanks to add new word, since you passed besh(ang gson array) you can append it der
-        //just comment this out if ever
-        //if naay kuwang sa constructor just add sa wordbanks og lain constructor
-        // wordbanks wordo = new wordbanks("meow", "meow", "meow", "meow", "meow");
-
-        //you have added to the array
-        //to append it you have to access the "WordbankList" sooo besh.getWordbankList.add()
-        // besh.getWordbankList().add(wordo);
 
         Bistalk bistalk = new Bistalk(besh.getUserList(),besh.getWordbankList());
         String json = gson.toJson(bistalk);

@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent lol = new Intent(MainActivity.this, ShowData.class);
                         //converted the
 //
-                        if(res.getStatus() == 1){
+                        if(res.getStatus() != 0){
                             lol.putExtra("res", res);
                             startActivity(lol);
                         }else{
@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
                         if (res != null) {
                             Intent lol = new Intent(MainActivity.this, ShowData.class);
                             //converted the
-                            if(res.getStatus() == 1){
+                            if(res.getStatus() != 0){
                                 lol.putExtra("res", res);
                                 startActivity(lol);
                             }else{
