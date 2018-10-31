@@ -5,59 +5,97 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".backend.AddData"
-    android:layout_marginLeft="10dp">
+
+    android:background="@drawable/bg2">
 
     <TextView
-        android:id="@+id/info_effect"
-        android:layout_width="wrap_content"
+        android:id="@+id/info_audio"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
-        android:layout_marginLeft="240dp"
-        android:text="adsgadg" />
+        android:layout_below="@id/attach"
+        android:layout_marginLeft="50dp"
+        android:textColor="@color/dirty"
+        android:textAlignment="center"
+        android:text="afdsfdafdsa.mp3" />
 
     <Button
         android:id="@+id/attach_effect"
+        android:layout_below="@id/info_audio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="190dp"
-        android:text="Attach Effect" />
+       android:background="@drawable/button"
+        android:layout_marginLeft="100dp"
+        android:text="Effect" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textSize="20dp"
+        android:layout_marginLeft="100dp"
+        android:textColor="@color/dirty"
+        android:fontFamily="@font/boogaloo"
         android:text="Text Visual"/>
     <EditText
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:id="@+id/engtb"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:hint="Enter English Word" />
+        android:layout_marginLeft="40dp"
+        android:background="@drawable/boxtrans"
+        android:hint="English Word"
+        android:textAlignment="center"/>
     <EditText
-        android:layout_marginTop="80dp"
         android:id="@+id/bistb"
+        android:layout_below="@id/engtb"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:hint="Enter Bisaya Word" />
+        android:background="@drawable/boxtrans"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:hint="Bisaya Word" />
+    <EditText
+        android:id="@+id/prunoun"
+        android:layout_below="@id/bistb"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:background="@drawable/boxtrans"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:hint="Prunounciation" />
     <TextView
+        android:layout_below="@id/prunoun"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Audio Visual"
-        android:layout_marginTop="120dp"/>
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/boogaloo"
+        android:textColor="@color/dirty"
+        android:textSize="20dp"
+        android:layout_marginLeft="100dp"
+        />
 
 
 
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="250dp"
+        android:layout_marginLeft="50dp"
+        android:layout_below="@id/attach_effect"
+        android:textAlignment="center"
+        android:textColor="@color/dirty"
         android:text="Attach Audio"/>
     <Button
         android:id="@+id/attach"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="File"
-        android:layout_marginTop="270dp"/>
+        android:text="Audio"
+        android:background="@drawable/button"
+        android:layout_marginTop="205dp"
+        android:layout_marginLeft="100dp"/>
     <TextView
         android:id="@+id/info"
         android:layout_width="wrap_content"
@@ -68,36 +106,48 @@
     <ImageView
         android:id="@+id/image"
         android:background="@drawable/cam"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="340dp"/>
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/spin"
+        android:layout_marginLeft="350dp"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="CANCEL"
         android:onClick="menu"
-        android:layout_marginLeft="250dp"/>
+        android:background="@drawable/button"
+        android:backgroundTint="@android:color/holo_red_dark"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/image"
+        android:layout_marginLeft="480dp"/>
     <Button
         android:id="@+id/addData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ADD DATA"
-        android:layout_marginLeft="250dp"
-        android:layout_marginTop="450dp"/>
+        android:text="Add Word"
+        android:background="@drawable/button"
+        android:backgroundTint="@android:color/holo_green_dark"
+        android:layout_below="@id/image"
+        android:layout_marginLeft="350dp"
+        android:layout_marginTop="10dp"/>
 
-    <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="235dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="300dp" />
 
-    <Spinner
-        android:id="@+id/pos"
-        android:layout_width="140dp"
-        android:layout_height="50dp"
-        android:layout_marginLeft="220dp"
-        android:layout_marginTop="100dp"
-        android:backgroundTint="@color/addcolor" />
+    <RelativeLayout
+        android:id="@+id/spin"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="350dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button">
+        <Spinner
+            android:id="@+id/pos"
+            android:layout_width="220dp"
+            android:layout_height="40dp"
+            android:textAlignment="center"
+            />
+    </RelativeLayout>
+
+
 
 </RelativeLayout>

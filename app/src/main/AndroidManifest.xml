@@ -31,7 +31,7 @@
         <activity
             android:name=".view.ShowData"
             android:screenOrientation="landscape" />
-        <activity android:name=".backend.AddData">
+        <activity android:name=".backend.AddData" android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

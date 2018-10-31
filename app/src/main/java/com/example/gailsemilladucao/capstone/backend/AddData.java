@@ -67,12 +67,12 @@ import java.util.UUID;
 public class AddData extends AppCompatActivity {
 
     ImageView mimage;
-    Button recstart,recstop,play,pause,attach,addData, attach_fx;
+    Button recstop,play,attach,addData, attach_fx;
     String savepath = "",fxpath = "",srcPath =null,jsonstring;
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
     TextView info,info_effect;
-    EditText engText,cebText;
+    EditText engText,cebText,prunoun;
     Uri audioFileUri, audioFxUri, imageFileUri;
     Bistalk bistalk;
     Spinner drop;
@@ -95,7 +95,7 @@ public class AddData extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_data);
-        initControls();
+
 
         gayson();
 
@@ -121,6 +121,7 @@ public class AddData extends AppCompatActivity {
         engText = findViewById(R.id.engtb);
         cebText = findViewById(R.id.bistb);
         drop = findViewById(R.id.pos);
+        prunoun = findViewById(R.id.prunoun);
 
 
         //spinner
@@ -189,44 +190,8 @@ public class AddData extends AppCompatActivity {
         });
     }
 
-    // Adjust Volume Settings
-    private void initControls() {
-        try
-        {
-            //binding
-            volumeSeekbar = (SeekBar)findViewById(R.id.seekBar);
-            audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-            volumeSeekbar.setMax(audioManager
-                    .getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-            volumeSeekbar.setProgress(audioManager
-                    .getStreamVolume(AudioManager.STREAM_MUSIC));
 
 
-            volumeSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
-            {
-                @Override
-                public void onStopTrackingTouch(SeekBar arg0)
-                {
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar arg0)
-                {
-                }
-
-                @Override
-                public void onProgressChanged(SeekBar arg0, int progress, boolean arg2)
-                {
-                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
-                            progress, 0);
-                }
-            });
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
 
 
     private void requestPermission(){
@@ -457,7 +422,7 @@ public class AddData extends AppCompatActivity {
 
     public void localAdd(Bistalk bistalk){
 
-        String jeng,jceb,jaud,jfx="null",jpru;
+        String jeng,jceb,jfx="null",jpru="";
         int jstat;
 
         boolean internet = false;
@@ -466,9 +431,8 @@ public class AddData extends AppCompatActivity {
         //getiing the  text
         jeng = engText.getText().toString();
         jceb = cebText.getText().toString();
-        jpru = drop.getSelectedItem().toString();
+        jpru = prunoun.toString();
 
-        String match = "";
 
 
 

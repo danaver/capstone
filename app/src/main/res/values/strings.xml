@@ -1,9 +1,16 @@
 <resources>
     <string name="app_name">capstone</string>
     <string-array name="post">
-        <item>noun</item>
-        <item>verb</item>
+        <item>animal</item>
         <item>adjective</item>
+        <item>body part</item>
+        <item>event</item>
+        <item>food</item>
+        <item>number</item>
+        <item>person</item>
+        <item>place</item>
+        <item>thing</item>
+        <item>verb</item>
     </string-array>
 
     <!-- Navigation Drawer -->
