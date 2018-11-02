@@ -533,7 +533,7 @@ public class AddData extends AppCompatActivity {
 
                     word.setAudio(jceb+".mp3");
                     word.setPicture(jeng+".png");
-                    word.setPos(jpru);
+                    word.setCategory(jpru);
                     word.setEffect(jfx);
 
                     if(audioFxUri != null){

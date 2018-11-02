@@ -8,8 +8,7 @@ public class wordbanks implements Serializable {
     private String English;
     private String Cebuano;
     private String Pronunciation;
-    @SerializedName("POS")
-    private String pos;
+    private String Category;
     private String Audio;
     private String Picture;
     private String Effect;
@@ -18,31 +17,31 @@ public class wordbanks implements Serializable {
     public wordbanks() {
     }
 
-    public wordbanks(String english, String cebuano, String pronunciation, String pos, String audio, int status) {
+    public wordbanks(String english, String cebuano, String pronunciation, String category, String audio, int status) {
         English = english;
         Cebuano = cebuano;
         Pronunciation = pronunciation;
-        this.pos = pos;
+        Category = category;
         Audio = audio;
         Status = status;
     }
 
-    public wordbanks(String english, String cebuano, String pronunciation, String pos, String audio, String picture, String effect, int status) {
+    public wordbanks(String english, String cebuano, String pronunciation, String category, String audio, String picture, String effect, int status) {
         English = english;
         Cebuano = cebuano;
         Pronunciation = pronunciation;
-        this.pos = pos;
+        Category = category;
         Audio = audio;
         Picture = picture;
         Effect = effect;
         Status = status;
     }
 
-    public wordbanks(String english, String cebuano, String pronunciation, String pos, String audio, String picture, int status) {
+    public wordbanks(String english, String cebuano, String pronunciation, String category, String audio, String picture, int status) {
         English = english;
         Cebuano = cebuano;
         Pronunciation = pronunciation;
-        this.pos = pos;
+        Category = category;
         Audio = audio;
         Picture = picture;
         Status = status;
@@ -54,6 +53,30 @@ public class wordbanks implements Serializable {
         Audio = audio;
         Picture = picture;
         Effect = effect;
+    }
+
+    public String getPicture() {
+        return Picture;
+    }
+
+    public void setPicture(String picture) {
+        Picture = picture;
+    }
+
+    public String getEffect() {
+        return Effect;
+    }
+
+    public void setEffect(String effect) {
+        Effect = effect;
+    }
+
+    public int getStatus() {
+        return Status;
+    }
+
+    public void setStatus(int status) {
+        Status = status;
     }
 
     public String getEnglish() {
@@ -80,12 +103,12 @@ public class wordbanks implements Serializable {
         Pronunciation = pronunciation;
     }
 
-    public String getPos() {
-        return pos;
+    public String getCategory() {
+        return Category;
     }
 
-    public void setPos(String pos) {
-        this.pos = pos;
+    public void setCategory(String category) {
+        Category = category;
     }
 
     public String getAudio() {
@@ -94,29 +117,5 @@ public class wordbanks implements Serializable {
 
     public void setAudio(String audio) {
         Audio = audio;
-    }
-
-    public String getPicture() {
-        return Picture;
-    }
-
-    public void setPicture(String picture) {
-        Picture = picture;
-    }
-
-    public String getEffect() {
-        return Effect;
-    }
-
-    public void setEffect(String effect) {
-        Effect = effect;
-    }
-
-    public int getStatus() {
-        return Status;
-    }
-
-    public void setStatus(int status) {
-        Status = status;
     }
 }

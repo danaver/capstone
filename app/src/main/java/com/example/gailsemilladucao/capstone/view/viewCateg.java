@@ -48,7 +48,7 @@ public class viewCateg extends AppCompatActivity {
             for (int i = 0; i <jsonArray.length();i++) {
                 JSONObject word = jsonArray.getJSONObject(i);
 
-                if (word.getString("POS").equals(categ)) {
+                if (word.getString("Category").equals(categ)) {
                     String eng = word.getString("English");
                     String ceb = word.getString("Cebuano");
                     String aud = word.getString("Audio");

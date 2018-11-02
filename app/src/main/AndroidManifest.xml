@@ -25,6 +25,11 @@
         <activity
             android:name=".view.DownloadCateg"
             android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
 
         </activity>
@@ -32,11 +37,7 @@
             android:name=".view.ShowData"
             android:screenOrientation="landscape" />
         <activity android:name=".backend.AddData" android:screenOrientation="landscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
 

@@ -17,158 +17,339 @@
         android:background="@drawable/data_background"
         >
 
+        <!-- =================== TEXTS ==================== -->
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DOWNLOAD PACKAGE"
+            android:text="Adjective"
             android:textColor="@color/dirty"
-            android:textSize="30dp"
-            android:layout_centerHorizontal="true"/>
+            android:textSize="20dp"
+            android:layout_marginLeft="15dp"/>
 
-        <RelativeLayout
-            android:layout_centerVertical="true"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="65dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Animals"
+            android:textColor="@color/dirty"
+            android:textSize="20dp"
+            android:layout_marginLeft="125dp"/>
 
-            <RelativeLayout
-                android:layout_marginTop="15dp"
-                android:background="@drawable/box"
-                android:layout_width="600dp"
-                android:layout_height="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Body Parts"
+            android:textColor="@color/dirty"
+            android:textSize="20dp"
+            android:layout_marginLeft="215dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:paddingLeft="20dp"
-                    android:textSize="30dp"
-                    android:text="Noun Set"
-                    android:textColor="@color/dirty"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Events"
+            android:textColor="@color/dirty"
+            android:textSize="20dp"
+            android:layout_marginLeft="330dp"/>
 
-                <Button
-                    android:id="@+id/noun"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:background="@drawable/buttondl"
-                    android:layout_centerVertical="true"
-                    android:text="Download"
-                    android:layout_marginLeft="250dp"
-                    />
-                <Button
-                    android:id="@+id/delnoun"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/del1"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="490dp"
-                    />
-                <Button
-                    android:id="@+id/viewnoun"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:background="@drawable/buttonview"
-                    android:layout_centerVertical="true"
-                    android:text="view"
-                    android:layout_marginLeft="360dp"
-                    />
-            </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Food"
+            android:textColor="@color/dirty"
+            android:textSize="20dp"
+            android:layout_marginLeft="440dp"/>
 
-            <RelativeLayout
-                android:layout_marginTop="80dp"
-                android:background="@drawable/box"
-                android:layout_width="600dp"
-                android:layout_height="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Numbers"
+            android:textColor="@color/dirty"
+            android:textSize="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="160dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:paddingLeft="20dp"
-                    android:textSize="30dp"
-                    android:text="Verb Set"
-                    android:textColor="@color/dirty"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Persons"
+            android:textColor="@color/dirty"
+            android:textSize="20dp"
+            android:layout_marginLeft="125dp"
+            android:layout_marginTop="160dp"/>
 
-                <Button
-                    android:id="@+id/verb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:background="@drawable/buttondl"
-                    android:layout_centerVertical="true"
-                    android:text="Download"
-                    android:layout_marginLeft="250dp"
-                    />
-                <Button
-                    android:id="@+id/delverb"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/del1"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="490dp"
-                    />
-                <Button
-                    android:id="@+id/viewverb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:background="@drawable/buttonview"
-                    android:layout_centerVertical="true"
-                    android:text="view"
-                    android:layout_marginLeft="360dp"
-                    />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_marginTop="145dp"
-                android:background="@drawable/box"
-                android:layout_width="600dp"
-                android:layout_height="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Places"
+            android:textColor="@color/dirty"
+            android:textSize="20dp"
+            android:layout_marginLeft="230dp"
+            android:layout_marginTop="160dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:paddingLeft="20dp"
-                    android:textSize="30dp"
-                    android:text="Adjective Set"
-                    android:textColor="@color/dirty"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Things"
+            android:textColor="@color/dirty"
+            android:textSize="20dp"
+            android:layout_marginLeft="330dp"
+            android:layout_marginTop="160dp"/>
 
-                <Button
-                    android:id="@+id/adjective"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:background="@drawable/buttondl"
-                    android:layout_centerVertical="true"
-                    android:text="Download"
-                    android:layout_marginLeft="250dp"
-                    />
-                <Button
-                    android:id="@+id/deladjective"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/del1"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="490dp"
-                    />
-                <Button
-                    android:id="@+id/viewadj"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:background="@drawable/buttonview"
-                    android:layout_centerVertical="true"
-                    android:text="view"
-                    android:layout_marginLeft="360dp"
-                    />
-            </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Verb"
+            android:textColor="@color/dirty"
+            android:textSize="20dp"
+            android:layout_marginLeft="440dp"
+            android:layout_marginTop="160dp"/>
 
-            <Button
-                android:id="@+id/main"
-                android:background="@drawable/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="220dp"
-                android:layout_marginLeft="490dp"
-                android:text="Menu"/>
-        </RelativeLayout>
+        <!-- =================== IMAGES ==================== -->
+
+        <Button
+            android:id="@+id/viewadj"
+            android:layout_width="122dp"
+            android:layout_height="99dp"
+            android:background="@drawable/adjective"
+            android:layout_marginTop="20dp"/>
+
+        <Button
+            android:id="@+id/viewanimal"
+            android:layout_width="122dp"
+            android:layout_height="99dp"
+            android:layout_marginLeft="100dp"
+            android:background="@drawable/animals"
+            android:layout_marginTop="20dp"/>
+
+        <Button
+            android:id="@+id/viewbody"
+            android:layout_width="122dp"
+            android:layout_height="99dp"
+            android:layout_marginLeft="200dp"
+            android:background="@drawable/body_part"
+            android:layout_marginTop="20dp"/>
+
+        <Button
+            android:id="@+id/viewevent"
+            android:layout_width="122dp"
+            android:layout_height="99dp"
+            android:layout_marginLeft="300dp"
+            android:background="@drawable/events"
+            android:layout_marginTop="20dp"/>
+
+        <Button
+            android:id="@+id/viewfood"
+            android:layout_width="122dp"
+            android:layout_height="99dp"
+            android:layout_marginLeft="400dp"
+            android:background="@drawable/food"
+            android:layout_marginTop="20dp"/>
+
+        <Button
+            android:id="@+id/viewnumber"
+            android:layout_width="122dp"
+            android:layout_height="99dp"
+            android:background="@drawable/number"
+            android:layout_marginTop="180dp"/>
+
+        <Button
+            android:id="@+id/viewperson"
+            android:layout_width="122dp"
+            android:layout_height="99dp"
+            android:background="@drawable/person"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="180dp"/>
+
+        <Button
+            android:id="@+id/viewplace"
+            android:layout_width="122dp"
+            android:layout_height="99dp"
+            android:background="@drawable/place"
+            android:layout_marginLeft="200dp"
+            android:layout_marginTop="180dp"/>
+
+        <Button
+            android:id="@+id/viewthing"
+            android:layout_width="122dp"
+            android:layout_height="99dp"
+            android:background="@drawable/thing"
+            android:layout_marginLeft="300dp"
+            android:layout_marginTop="180dp"/>
+
+        <Button
+            android:id="@+id/viewverb"
+            android:layout_width="108dp"
+            android:layout_height="93dp"
+            android:layout_marginLeft="410dp"
+            android:layout_marginTop="182dp"
+            android:background="@drawable/verb" />
+
+        <!-- ================== DL BUTTONS ================== -->
+
+        <Button
+            android:id="@+id/adjective"
+            android:layout_width="36dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="115dp"
+            android:background="@drawable/download" />
+
+        <Button
+            android:id="@+id/animal"
+            android:layout_width="36dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="126dp"
+            android:layout_marginTop="115dp"
+            android:background="@drawable/download" />
+
+        <Button
+            android:id="@+id/body"
+            android:layout_width="36dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="226dp"
+            android:layout_marginTop="115dp"
+            android:background="@drawable/download" />
+
+        <Button
+            android:id="@+id/event"
+            android:layout_width="36dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="326dp"
+            android:layout_marginTop="115dp"
+            android:background="@drawable/download" />
+
+        <Button
+            android:id="@+id/food"
+            android:layout_width="36dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="426dp"
+            android:layout_marginTop="115dp"
+            android:background="@drawable/download" />
+
+        <Button
+            android:id="@+id/number"
+            android:layout_width="36dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="275dp"
+            android:background="@drawable/download" />
+
+        <Button
+            android:id="@+id/person"
+            android:layout_width="36dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="126dp"
+            android:layout_marginTop="275dp"
+            android:background="@drawable/download" />
+
+        <Button
+            android:id="@+id/place"
+            android:layout_width="36dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="226dp"
+            android:layout_marginTop="275dp"
+            android:background="@drawable/download" />
+
+        <Button
+            android:id="@+id/thing"
+            android:layout_width="36dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="326dp"
+            android:layout_marginTop="275dp"
+            android:background="@drawable/download" />
+
+        <Button
+            android:id="@+id/verb"
+            android:layout_width="36dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="426dp"
+            android:layout_marginTop="275dp"
+            android:background="@drawable/download" />
+
+        <!-- ================= DEL BUTTONS ================= -->
+
+        <Button
+            android:id="@+id/deladjective"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="59dp"
+            android:layout_marginTop="115dp"
+            android:background="@drawable/delete" />
+
+        <Button
+            android:id="@+id/delanimal"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="165dp"
+            android:layout_marginTop="115dp"
+            android:background="@drawable/delete" />
+
+        <Button
+            android:id="@+id/delbody"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="265dp"
+            android:layout_marginTop="115dp"
+            android:background="@drawable/delete" />
+
+        <Button
+            android:id="@+id/delevent"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="365dp"
+            android:layout_marginTop="115dp"
+            android:background="@drawable/delete" />
+
+        <Button
+            android:id="@+id/delfood"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="465dp"
+            android:layout_marginTop="115dp"
+            android:background="@drawable/delete" />
+
+        <Button
+            android:id="@+id/delnumber"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="59dp"
+            android:layout_marginTop="275dp"
+            android:background="@drawable/delete" />
+
+        <Button
+            android:id="@+id/delperson"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="165dp"
+            android:layout_marginTop="275dp"
+            android:background="@drawable/delete" />
+
+        <Button
+            android:id="@+id/delplace"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="265dp"
+            android:layout_marginTop="275dp"
+            android:background="@drawable/delete" />
+
+        <Button
+            android:id="@+id/delthing"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="365dp"
+            android:layout_marginTop="275dp"
+            android:background="@drawable/delete" />
+
+        <Button
+            android:id="@+id/delverb"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginLeft="465dp"
+            android:layout_marginTop="275dp"
+            android:background="@drawable/delete" />
+
     </RelativeLayout>
+
     <!-- Side Navigation Bar Button -->
     <RelativeLayout
         android:layout_width="match_parent"
