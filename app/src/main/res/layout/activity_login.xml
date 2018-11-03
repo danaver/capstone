@@ -28,7 +28,9 @@
         android:textAlignment="center"
         android:fontFamily="@font/boogaloo"
         android:textSize="25dp"
-        android:hint="Email" />
+        android:hint="Email"
+        android:singleLine="true"
+        android:inputType="text"/>
 
     <EditText
         android:id="@+id/passwordView"
@@ -42,7 +44,9 @@
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/boogaloo"
         android:textSize="25dp"
-        android:hint="Password" />
+        android:hint="Password"
+
+        />
 
     <Button
         android:id="@+id/signinBtn"
@@ -56,4 +60,5 @@
         android:textSize="25dp"
         android:textColor="@android:color/holo_green_dark"
         android:text="Sign In" />
+
 </RelativeLayout>

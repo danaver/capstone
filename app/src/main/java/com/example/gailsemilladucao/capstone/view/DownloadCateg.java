@@ -5,15 +5,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.net.ConnectivityManager;
+import android.net.wifi.hotspot2.pps.HomeSp;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.gailsemilladucao.capstone.Login;
+import com.example.gailsemilladucao.capstone.MainActivity;
 import com.example.gailsemilladucao.capstone.R;
+import com.example.gailsemilladucao.capstone.backend.AddData;
 import com.example.gailsemilladucao.capstone.model.Bistalk;
 import com.example.gailsemilladucao.capstone.model.categ;
 import com.example.gailsemilladucao.capstone.model.categAdapter;
@@ -46,6 +54,9 @@ public class DownloadCateg extends AppCompatActivity {
     Bistalk list;
 
 
+    // Navigation Drawer
+    private DrawerLayout dl;
+    private ActionBarDrawerToggle abdt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +66,32 @@ public class DownloadCateg extends AppCompatActivity {
         String[] categor = getResources().getStringArray(R.array.post);
         String[] name = getResources().getStringArray(R.array.categ);
         TypedArray imgs = getResources().obtainTypedArray(R.array.draw);
+        dl = findViewById(R.id.dl);
+
+        // Navigation Drawer
+        abdt = new ActionBarDrawerToggle(DownloadCateg.this, dl, R.string.open, R.string.close);
+        dl.addDrawerListener(abdt);
+        abdt.syncState();
+
+        NavigationView nav_view = findViewById(R.id.nav_view);
+        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                int id = menuItem.getItemId();
+
+                if(id == R.id.add_word){
+                    Intent intent = new Intent(DownloadCateg.this,AddData.class);
+                    startActivity(intent);
+                }else if(id == R.id.home){
+                    Intent intent = new Intent(DownloadCateg.this, MainActivity.class);
+                    startActivity(intent);
+                }else if(id == R.id.action_logout){
+                    Intent intent = new Intent(DownloadCateg.this, Login.class);
+                    startActivity(intent);
+                }
+                return true;
+            }
+        });
 
         createFolder();
         // gayson();

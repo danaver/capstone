@@ -1,35 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.DrawerLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".dl"
-    android:background="@drawable/data_background">
-    <TextView
-        android:id="@+id/hi"
-        android:textSize="25dp"
-        android:textColor="@color/dirty"
-        android:fontFamily="@font/boogaloo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Download Category"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity"
+    android:orientation="horizontal"
+    android:id="@+id/dl">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".dl"
+        android:background="@drawable/data_background">
+        <TextView
+            android:id="@+id/hi"
+            android:textSize="25dp"
+            android:textColor="@color/dirty"
+            android:fontFamily="@font/boogaloo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Download Category"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"/>
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv"
-            android:layout_below="@id/hi"
-            android:layout_width="match_parent"
-            android:layout_height="290dp"
-            >
-        </android.support.v7.widget.RecyclerView>
-    <TextView
-        android:layout_width="70dp"
-        android:layout_height="35dp"
-        android:background="@drawable/down"
-        android:layout_below="@id/rv"
-        android:layout_centerHorizontal="true"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv"
+                android:layout_below="@id/hi"
+                android:layout_width="match_parent"
+                android:layout_height="290dp"
+                >
+            </android.support.v7.widget.RecyclerView>
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:background="@drawable/down"
+            android:layout_below="@id/rv"
+            android:layout_centerHorizontal="true"/>
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="43dp"
+            android:layout_height="110dp"
+            android:layout_marginLeft="0dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="180dp"
+            app:srcCompat="@drawable/next_btn" />
+    </RelativeLayout>
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="false"
+        app:headerLayout="@layout/navigation_header"
+        app:menu="@menu/navigation_menu">
+
+    </android.support.design.widget.NavigationView>
+</android.support.v4.widget.DrawerLayout>
