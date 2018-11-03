@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">capstone</string>
     <string-array name="post">
-        <item>animal</item>
         <item>adjective</item>
+        <item>animal</item>
         <item>body part</item>
         <item>event</item>
         <item>food</item>
@@ -13,18 +13,6 @@
         <item>verb</item>
     </string-array>
 
-    <string-array name="cardview">
-        <item>adjective</item>
-        <item>animal</item>
-        <item>body part</item>
-        <item>event</item>
-        <item>food</item>
-        <item>number</item>
-        <item>person</item>
-        <item>place</item>
-        <item>thing</item>
-        <item>verb</item>
-    </string-array>
 
     <string-array name="categ">
         <item>Adjective</item>

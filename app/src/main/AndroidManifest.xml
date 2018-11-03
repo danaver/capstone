@@ -38,7 +38,13 @@
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".view.viewCateg"
             android:screenOrientation="landscape" />
@@ -53,11 +59,7 @@
 
         <activity android:name=".backend.EditData"></activity>
         <activity android:name=".dl" android:screenOrientation="landscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

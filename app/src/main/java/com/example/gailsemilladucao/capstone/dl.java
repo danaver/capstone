@@ -2,6 +2,7 @@ package com.example.gailsemilladucao.capstone;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.example.gailsemilladucao.capstone.model.Bistalk;
 import com.example.gailsemilladucao.capstone.model.categ;
 import com.example.gailsemilladucao.capstone.model.categAdapter;
 import com.example.gailsemilladucao.capstone.view.DownloadCateg;
+import com.example.gailsemilladucao.capstone.view.viewCateg;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -50,6 +52,7 @@ public class dl extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dl);
 
+        String[] categor = getResources().getStringArray(R.array.post);
         String[] name = getResources().getStringArray(R.array.categ);
         TypedArray imgs = getResources().obtainTypedArray(R.array.draw);
 
@@ -62,7 +65,7 @@ public class dl extends AppCompatActivity {
         clist = new ArrayList<>();
 
         for (int i = 0; i< name.length;i++){
-            clist.add(new categ(name[i],imgs.getResourceId(i, -1)));
+            clist.add(new categ(name[i],categor[i],imgs.getResourceId(i, -1)));
         }
 
         buildRV();
@@ -80,71 +83,67 @@ public class dl extends AppCompatActivity {
 
         adapter.setOnItemClickListener(new categAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int i) {
-
+            public void onDownloadClick(int i) {
                 try {
-                    String categ = clist.get(i).getName();
-                    downloads(categ);
+                    String categ = clist.get(i).getCateg();
+                    downloadCateg(categ);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
+            }
 
+            @Override
+            public void onDeleteClick(int i) {
+                try {
+                    String categ = clist.get(i).getCateg();
+                    deleteCateg(categ);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
+            @Override
+            public void onViewClick(int i) {
+                    String categ = clist.get(i).getCateg();
+                    Intent lol = new Intent(dl.this,viewCateg.class);
+                    lol.putExtra("Val",categ);
+                    startActivity(lol);
             }
         });
 
     }
 
-    private void download(String categ) throws JSONException{
-        final StorageReference lol = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("pictures/thing/airplane.png");
-
-        Toast.makeText(dl.this, categ, Toast.LENGTH_SHORT).show();
-        final File myFile = new File(getFilesDir(),"images/airplane.png");
-       lol.getFile(myFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(dl.this, myFile.getName(), Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(dl.this, "Download was unsuccessful", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
-
-            }
-        });
-    }
-
-    private void downloads(String categ) throws JSONException{
 
 
+    private void deleteCateg(String categ) throws JSONException {
+
+        String imgpath;
+        String audiopath;
+        String fxpath;
         for (int i = 0; i < list.getWordbankList().size(); i++) {
-            Toast.makeText(dl.this, ""+list.getWordbankList().size(), Toast.LENGTH_SHORT).show();
-            if (list.getWordbankList().get(i).getCategory().equals(categ)) {
+            if(list.getWordbankList().get(i).getCategory().equals(categ)){
+                imgpath = getFilesDir() + "/images/" + list.getWordbankList().get(i).getPicture();
+                File imgfile = new File(imgpath);
+                imgfile.delete();
 
-                //images
-                final StorageReference pictureReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("pictures/" + categ + "/" + list.getWordbankList().get(i).getPicture());
-                final File imageFile = new File(getFilesDir(), "images/" + list.getWordbankList().get(i).getPicture());
+                fxpath = getFilesDir() + "/effects/" + list.getWordbankList().get(i).getEffect();
+                File fxfile = new File(fxpath);
+                fxfile.delete();
 
-                pictureReference.getFile(imageFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
 
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
+                audiopath = getFilesDir() + "/audio/" + list.getWordbankList().get(i).getAudio();
+                File audiofile = new File(audiopath);
+                audiofile.delete();
 
-                    }
-                });
+                list.getWordbankList().get(i).setStatus(0);
             }
         }
-    }
 
+        GsontoJson(list);
+
+        Toast.makeText(this, "All Data in "+categ+" has been deleted", Toast.LENGTH_SHORT).show();
+    }
 
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

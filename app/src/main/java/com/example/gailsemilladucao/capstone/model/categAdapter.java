@@ -61,7 +61,9 @@ public class categAdapter extends RecyclerView.Adapter<categAdapter.MyViewHolder
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener{
-        void onItemClick(int i);
+        void onDownloadClick(int i);
+        void onDeleteClick(int i);
+        void onViewClick(int i);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -91,7 +93,31 @@ public class categAdapter extends RecyclerView.Adapter<categAdapter.MyViewHolder
                     if(listener!= null){
                         int i = getAdapterPosition();
                         if(i != RecyclerView.NO_POSITION){
-                             listener.onItemClick(i);
+                             listener.onDownloadClick(i);
+                        }
+                    }
+                }
+            });
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(listener!= null){
+                        int i = getAdapterPosition();
+                        if(i != RecyclerView.NO_POSITION){
+                            listener.onDeleteClick(i);
+                        }
+                    }
+                }
+            });
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(listener!= null){
+                        int i = getAdapterPosition();
+                        if(i != RecyclerView.NO_POSITION){
+                            listener.onViewClick(i);
                         }
                     }
                 }

@@ -2,7 +2,7 @@ package com.example.gailsemilladucao.capstone.model;
 
 public class categ {
     String name;
-    String view;
+    String categ;
     int img;
     String download;
     String delete;
@@ -10,16 +10,17 @@ public class categ {
     public categ() {
     }
 
-    public categ(String name, String view, int img, String download, String delete) {
+    public categ(String name, String categ, int img, String download, String delete) {
         this.name = name;
-        this.view = view;
+        this.categ = categ;
         this.img = img;
         this.download = download;
         this.delete = delete;
     }
 
-    public categ(String name, int img) {
+    public categ(String name, String categ, int img) {
         this.name = name;
+        this.categ = categ;
         this.img = img;
     }
 
@@ -39,12 +40,12 @@ public class categ {
         this.name = name;
     }
 
-    public String getView() {
-        return view;
+    public String getCateg() {
+        return categ;
     }
 
-    public void setView(String view) {
-        this.view = view;
+    public void setCateg(String categ) {
+        this.categ = categ;
     }
 
     public String getDownload() {
