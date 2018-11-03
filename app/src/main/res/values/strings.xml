@@ -13,6 +13,45 @@
         <item>verb</item>
     </string-array>
 
+    <string-array name="cardview">
+        <item>adjective</item>
+        <item>animal</item>
+        <item>body part</item>
+        <item>event</item>
+        <item>food</item>
+        <item>number</item>
+        <item>person</item>
+        <item>place</item>
+        <item>thing</item>
+        <item>verb</item>
+    </string-array>
+
+    <string-array name="categ">
+        <item>Adjective</item>
+        <item>Animal</item>
+        <item>Body part</item>
+        <item>Events</item>
+        <item>Food</item>
+        <item>Number</item>
+        <item>Person</item>
+        <item>Place</item>
+        <item>Thing</item>
+        <item>Verb</item>
+    </string-array>
+
+    <array name="draw">
+        <item>@drawable/adjective</item>
+        <item>@drawable/animals</item>
+        <item>@drawable/body_part</item>
+        <item>@drawable/events</item>
+        <item>@drawable/food</item>
+        <item>@drawable/number</item>
+        <item>@drawable/person</item>
+        <item>@drawable/place</item>
+        <item>@drawable/thing</item>
+        <item>@drawable/verb</item>
+    </array>
+
     <!-- Navigation Drawer -->
     <string name="close">Close</string>
     <string name="open">Open</string>

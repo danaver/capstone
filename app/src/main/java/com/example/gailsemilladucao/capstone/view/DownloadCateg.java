@@ -490,10 +490,8 @@ public class DownloadCateg extends AppCompatActivity {
 
         for (int i = 0; i < list.getWordbankList().size(); i++){
 
-
+            //images
             if(list.getWordbankList().get(i).getCategory().equals(categ)) {
-
-                //images
                 final StorageReference pictureReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("pictures/"+categ+"/" + list.getWordbankList().get(i).getPicture());
                 final File imageFile = new File(getFilesDir(), "images/" + list.getWordbankList().get(i).getPicture());
 
