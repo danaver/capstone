@@ -3,23 +3,21 @@ package com.example.gailsemilladucao.capstone.view;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.net.ConnectivityManager;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.gailsemilladucao.capstone.MainActivity;
 import com.example.gailsemilladucao.capstone.R;
-import com.example.gailsemilladucao.capstone.backend.AddData;
 import com.example.gailsemilladucao.capstone.model.Bistalk;
+import com.example.gailsemilladucao.capstone.model.categ;
+import com.example.gailsemilladucao.capstone.model.categAdapter;
+import com.example.gailsemilladucao.capstone.view.viewCateg;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -36,414 +34,88 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DownloadCateg extends AppCompatActivity {
 
-    // View buttons
-    Button viewadj, viewanimal, viewbody, viewevent, viewfood, viewnumber, viewperson, viewplace, viewthing, viewverb;
-
-    // Delete buttons
-    Button deladj, delanimal, delbody, delevent, delfood, delnumber, delperson, delplace, delthing, delverb;
-
-    // Download buttons
-    Button adj, animal, body, event, food, number, person, place, thing, verb;
-
+    List<categ> clist;
     String jsonfile;
-
     FirebaseStorage storage = FirebaseStorage.getInstance();
-
     Bistalk list;
 
-    // Navigation Drawer
-    private DrawerLayout dl;
-    private ActionBarDrawerToggle abdt;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download_categ);
 
-        adj = findViewById(R.id.adjective);
-        animal = findViewById(R.id.animal);
-        body = findViewById(R.id.body);
-        event = findViewById(R.id.event);
-        food = findViewById(R.id.food);
-        number = findViewById(R.id.number);
-        person = findViewById(R.id.person);
-        place = findViewById(R.id.place);
-        thing = findViewById(R.id.thing);
-        verb = findViewById(R.id.verb);
-
-        deladj = findViewById(R.id.deladjective);
-        delanimal = findViewById(R.id.delanimal);
-        delbody = findViewById(R.id.delbody);
-        delevent = findViewById(R.id.delevent);
-        delfood = findViewById(R.id.delfood);
-        delnumber = findViewById(R.id.delnumber);
-        delperson = findViewById(R.id.delperson);
-        delplace = findViewById(R.id.delplace);
-        delthing = findViewById(R.id.delthing);
-        delverb = findViewById(R.id.delverb);
-
-        viewadj = findViewById(R.id.viewadj);
-        viewanimal = findViewById(R.id.viewanimal);
-        viewbody = findViewById(R.id.viewbody);
-        viewevent = findViewById(R.id.viewevent);
-        viewfood = findViewById(R.id.viewfood);
-        viewnumber = findViewById(R.id.viewnumber);
-        viewperson = findViewById(R.id.viewperson);
-        viewplace = findViewById(R.id.viewplace);
-        viewthing = findViewById(R.id.viewthing);
-        viewverb = findViewById(R.id.viewverb);
+        String[] categor = getResources().getStringArray(R.array.post);
+        String[] name = getResources().getStringArray(R.array.categ);
+        TypedArray imgs = getResources().obtainTypedArray(R.array.draw);
 
         createFolder();
-       // gayson();
+        // gayson();
 
         jsonfile = readFromFile();
         list = JsontoGson();
 
-        dl = findViewById(R.id.dl);
+        clist = new ArrayList<>();
 
-        // Navigation Drawer
-        abdt = new ActionBarDrawerToggle(DownloadCateg.this, dl, R.string.open, R.string.close);
-        dl.addDrawerListener(abdt);
-        abdt.syncState();
+        for (int i = 0; i< name.length;i++){
+            clist.add(new categ(name[i],categor[i],imgs.getResourceId(i, -1)));
+        }
 
-        NavigationView nav_view = findViewById(R.id.nav_view);
-        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        buildRV();
+
+        Toast.makeText(DownloadCateg.this, "Scroll down for more categories", Toast.LENGTH_SHORT).show();
+
+
+
+    }
+
+    public void buildRV(){
+        RecyclerView view = findViewById(R.id.rv);
+        categAdapter adapter = new categAdapter(this, clist);
+        view.setLayoutManager(new GridLayoutManager(this, 3 ));
+        view.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new categAdapter.OnItemClickListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                int id = menuItem.getItemId();
-
-                if(id == R.id.add_word){
-                    Intent intent = new Intent(DownloadCateg.this,AddData.class);
-                    startActivity(intent);
-                }else if(id == R.id.home){
-                    Intent intent = new Intent(DownloadCateg.this, MainActivity.class);
-                    startActivity(intent);
-                }
-                return true;
-            }
-        });
-
-
-        adj.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            public void onDownloadClick(int i) {
                 try {
-                    downloadCateg("adjective");
-                }catch(JSONException e) {
+                    String categ = clist.get(i).getCateg();
+                    downloadCateg(categ);
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-        });
 
-        animal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    downloadCateg("animal");
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
             }
-        });
 
-        body.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onDeleteClick(int i) {
                 try {
-                    downloadCateg("body part");
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        event.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    downloadCateg("event");
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        food.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    downloadCateg("food");
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        number.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    downloadCateg("number");
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        person.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    downloadCateg("person");
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        place.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    downloadCateg("place");
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        thing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    downloadCateg("thing");
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        verb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    downloadCateg("verb");
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        deladj.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    deleteCateg("adjective");
+                    String categ = clist.get(i).getCateg();
+                    deleteCateg(categ);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-        });
 
-        delanimal.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                try {
-                    deleteCateg("animal");
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        delbody.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    deleteCateg("body part");
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        delevent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    deleteCateg("event");
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        delfood.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    deleteCateg("food");
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        delnumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    deleteCateg("number");
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        delperson.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    deleteCateg("person");
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        delplace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    deleteCateg("place");
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        delthing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    deleteCateg("thing");
-                }catch(JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        delverb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    deleteCateg("verb");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        viewadj.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            public void onViewClick(int i) {
+                String categ = clist.get(i).getCateg();
                 Intent lol = new Intent(DownloadCateg.this,viewCateg.class);
-                lol.putExtra("Val","adjective");
-                startActivity(lol);
-            }
-        });
-
-        viewanimal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent lol = new Intent(DownloadCateg.this,viewCateg.class);
-                lol.putExtra("Val","animal");
-                startActivity(lol);
-            }
-        });
-
-        viewbody.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent lol = new Intent(DownloadCateg.this,viewCateg.class);
-                lol.putExtra("Val","body part");
-                startActivity(lol);
-            }
-        });
-
-        viewevent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent lol = new Intent(DownloadCateg.this,viewCateg.class);
-                lol.putExtra("Val","event");
-                startActivity(lol);
-            }
-        });
-
-        viewfood.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent lol = new Intent(DownloadCateg.this,viewCateg.class);
-                lol.putExtra("Val","food");
-                startActivity(lol);
-            }
-        });
-
-        viewnumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent lol = new Intent(DownloadCateg.this,viewCateg.class);
-                lol.putExtra("Val","number");
-                startActivity(lol);
-            }
-        });
-
-        viewperson.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent lol = new Intent(DownloadCateg.this,viewCateg.class);
-                lol.putExtra("Val","person");
-                startActivity(lol);
-            }
-        });
-
-        viewplace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent lol = new Intent(DownloadCateg.this,viewCateg.class);
-                lol.putExtra("Val","place");
-                startActivity(lol);
-            }
-        });
-
-        viewthing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent lol = new Intent(DownloadCateg.this,viewCateg.class);
-                lol.putExtra("Val","thing");
-                startActivity(lol);
-            }
-        });
-
-        viewverb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent lol = new Intent(DownloadCateg.this,viewCateg.class);
-                lol.putExtra("Val","verb");
+                lol.putExtra("Val",categ);
                 startActivity(lol);
             }
         });
 
     }
 
-    //returns true if connected
-    private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null;
-    }
+
 
     private void deleteCateg(String categ) throws JSONException {
 
@@ -451,8 +123,6 @@ public class DownloadCateg extends AppCompatActivity {
         String audiopath;
         String fxpath;
         for (int i = 0; i < list.getWordbankList().size(); i++) {
-
-
             if(list.getWordbankList().get(i).getCategory().equals(categ)){
                 imgpath = getFilesDir() + "/images/" + list.getWordbankList().get(i).getPicture();
                 File imgfile = new File(imgpath);
@@ -476,6 +146,10 @@ public class DownloadCateg extends AppCompatActivity {
         Toast.makeText(this, "All Data in "+categ+" has been deleted", Toast.LENGTH_SHORT).show();
     }
 
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
 
     private void downloadCateg(String categ) throws JSONException {
 
@@ -490,8 +164,10 @@ public class DownloadCateg extends AppCompatActivity {
 
         for (int i = 0; i < list.getWordbankList().size(); i++){
 
-            //images
+
             if(list.getWordbankList().get(i).getCategory().equals(categ)) {
+
+                //images
                 final StorageReference pictureReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("pictures/"+categ+"/" + list.getWordbankList().get(i).getPicture());
                 final File imageFile = new File(getFilesDir(), "images/" + list.getWordbankList().get(i).getPicture());
 
@@ -525,21 +201,21 @@ public class DownloadCateg extends AppCompatActivity {
 
 
 
-            //audio file
-            final StorageReference audioReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("audio/"+categ+"/"+list.getWordbankList().get(i).getAudio());
-            final File audioFile = new File(getFilesDir(),"audio/"+list.getWordbankList().get(i).getAudio());
+                //audio file
+                final StorageReference audioReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("audio/"+categ+"/"+list.getWordbankList().get(i).getAudio());
+                final File audioFile = new File(getFilesDir(),"audio/"+list.getWordbankList().get(i).getAudio());
 
-            audioReference.getFile(audioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                audioReference.getFile(audioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
 
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    //Toast.makeText(MainActivity.this, "Audio is not downloaded", Toast.LENGTH_SHORT).show();
-                }
-            });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        //Toast.makeText(MainActivity.this, "Audio is not downloaded", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
                 list.getWordbankList().get(i).setStatus(1);
             }
@@ -548,6 +224,7 @@ public class DownloadCateg extends AppCompatActivity {
         GsontoJson(list);
 
     }
+
 
     private String readFromFile() {
         String ret = "";
@@ -578,18 +255,27 @@ public class DownloadCateg extends AppCompatActivity {
         return ret;
     }
 
-    private void createFolder() {
-        final File image = new File(getFilesDir(), "images");
-        final File effect = new File(getFilesDir(), "effects");
-        final File audio = new File(getFilesDir(), "audio");
+    private Bistalk JsontoGson(){
+        Bistalk bistalk = new com.google.gson.Gson().fromJson(jsonfile, Bistalk.class);
+        return bistalk;
+    }
 
-        if (!image.exists() || !effect.exists()|| !audio.exists()) {
-            if (!image.mkdir() || !effect.mkdir() || !audio.exists()) {
-                effect.mkdir();
-                image.mkdir();
-                audio.mkdir();
-            }
+    public void GsontoJson(Bistalk besh) throws JSONException {
+
+
+        com.google.gson.Gson gson = new com.google.gson.Gson();
+
+        Bistalk bistalk = new Bistalk(besh.getUserList(),besh.getWordbankList());
+        String json = gson.toJson(bistalk);
+
+        // this will overwrite the jsonfile
+        try {
+            writeFile(json);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+
     }
 
     private void gayson() {
@@ -623,29 +309,6 @@ public class DownloadCateg extends AppCompatActivity {
 
     }
 
-    private Bistalk JsontoGson(){
-        Bistalk bistalk = new com.google.gson.Gson().fromJson(jsonfile, Bistalk.class);
-        return bistalk;
-    }
-
-    public void GsontoJson(Bistalk besh) throws JSONException {
-
-
-        com.google.gson.Gson gson = new com.google.gson.Gson();
-
-        Bistalk bistalk = new Bistalk(besh.getUserList(),besh.getWordbankList());
-        String json = gson.toJson(bistalk);
-
-        // this will overwrite the jsonfile
-        try {
-            writeFile(json);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
     void writeFile(String data) throws IOException {
         File outFile = new File(getFilesDir(), "wordbank.json");
         FileOutputStream out = new FileOutputStream(outFile, false);
@@ -655,5 +318,18 @@ public class DownloadCateg extends AppCompatActivity {
         out.close();
     }
 
+    private void createFolder() {
+        final File image = new File(getFilesDir(), "images");
+        final File effect = new File(getFilesDir(), "effects");
+        final File audio = new File(getFilesDir(), "audio");
+
+        if (!image.exists() || !effect.exists()|| !audio.exists()) {
+            if (!image.mkdir() || !effect.mkdir() || !audio.exists()) {
+                effect.mkdir();
+                image.mkdir();
+                audio.mkdir();
+            }
+        }
+    }
 
 }

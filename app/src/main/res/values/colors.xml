@@ -10,4 +10,6 @@
     <color name="opaque">#BFecf0f1</color>
     <color name="yelo">#b3f1c40f</color>
     <color name="yellor">#ffff00</color>
+    <color name="download">#76c2af</color>
+    <color name="delete">#ed5050</color>
 </resources>
