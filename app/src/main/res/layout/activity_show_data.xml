@@ -9,7 +9,7 @@
         android:id="@+id/imgfx"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="90dp"
         android:layout_marginTop="20dp"
         android:background="@null"
         android:scaleType="fitXY"/>
@@ -18,7 +18,7 @@
     <RelativeLayout
         android:layout_width="290dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="300dp">
+        android:layout_marginLeft="350dp">
 
         <TextView
             android:id="@+id/cebTxt"
@@ -61,7 +61,4 @@
         android:layout_marginTop="280dp"
         android:layout_marginLeft="10dp"
         android:background="@drawable/back" />
-
-
-
 </RelativeLayout>
