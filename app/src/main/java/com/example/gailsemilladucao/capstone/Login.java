@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
-    Button signinBtn;
+    Button signinBtn,register;
     EditText emailtxt, passwordtxt;
 
     ProgressDialog progressDialog;
@@ -41,6 +41,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         signinBtn = (Button) findViewById(R.id.signinBtn); //if using signupBtn program wont crash
         emailtxt = (EditText) findViewById(R.id.emailView);
         passwordtxt = (EditText) findViewById(R.id.passwordView);
+        register = (Button)findViewById(R.id.register);
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Login.this, signup.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         progressDialog = new ProgressDialog(this);
 

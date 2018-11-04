@@ -11,7 +11,8 @@
         android:layout_height="250dp"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="20dp"
-        android:background="@null" />
+        android:background="@null"
+        android:scaleType="fitXY"/>
 
 
     <RelativeLayout

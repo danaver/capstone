@@ -67,6 +67,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/signupBtn"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/boogaloo"
         android:text="Already have an account? Please sign in here"
         android:textSize="17dp" />
 

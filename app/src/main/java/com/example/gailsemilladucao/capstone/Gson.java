@@ -407,7 +407,7 @@ public class Gson extends AppCompatActivity {
         //to append it you have to access the "WordbankList" sooo besh.getWordbankList.add()
         // besh.getWordbankList().add(wordo);
 
-        Bistalk bistalk = new Bistalk(besh.getUserList(),besh.getWordbankList());
+        Bistalk bistalk = new Bistalk(besh.getUpdate(), besh.getUserList(),besh.getWordbankList());
         String json = gson.toJson(bistalk);
 
         // this will overwrite the jsonfile

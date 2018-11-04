@@ -5,13 +5,27 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class Bistalk {
+
+    String update;
     @SerializedName("users")
     List<users> userList;
     @SerializedName("wordbank")
     List<wordbanks> wordbankList;
 
+    public Bistalk(String update) {
+        this.update = update;
+    }
 
-    public Bistalk(List<users> userList, List<wordbanks> wordbankList) {
+    public String getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(String update) {
+        this.update = update;
+    }
+
+    public Bistalk(String update, List<users> userList, List<wordbanks> wordbankList) {
+        this.update = update;
         this.userList = userList;
         this.wordbankList = wordbankList;
     }

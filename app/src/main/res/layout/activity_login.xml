@@ -61,4 +61,17 @@
         android:textColor="@android:color/holo_green_dark"
         android:text="Sign In" />
 
+    <Button
+        android:id="@+id/register"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/signinBtn"
+        android:layout_marginTop="10dp"
+        android:background="@null"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/boogaloo"
+        android:textSize="20dp"
+        android:textColor="#FFFFFF"
+        android:text="Create a New Account" />
+
 </RelativeLayout>

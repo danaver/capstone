@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/data_background">
@@ -8,23 +9,25 @@
     <ImageButton
         android:id="@+id/imgfx"
         android:layout_width="470dp"
-        android:layout_height="393dp"
-        android:layout_marginLeft="35dp"
+        android:layout_height="365dp"
+        android:layout_marginLeft="50dp"
         android:layout_marginTop="30dp"
-        android:background="@null" />
+        android:background="@null"
+        android:scaleType="fitXY"/>
 
 
 
     <RelativeLayout
-        android:layout_width="400dp"
+        android:layout_width="500dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="540dp">
+        android:layout_marginLeft="500dp">
+
         <TextView
             android:id="@+id/cebTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
+            android:layout_marginLeft="165dp"
             android:fontFamily="@font/boogaloo"
             android:hint="Enter an english word"
             android:inputType="textPersonName"
@@ -61,7 +64,7 @@
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:layout_marginLeft="40dp"
-        android:layout_marginTop="425dp"
+        android:layout_marginTop="440dp"
         android:background="@drawable/back" />
 
 
