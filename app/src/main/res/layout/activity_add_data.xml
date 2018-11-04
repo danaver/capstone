@@ -14,9 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/attach"
         android:layout_marginLeft="50dp"
-        android:textColor="@color/dirty"
         android:textAlignment="center"
-        android:text="afdsfdafdsa.mp3" />
+        android:textColor="@color/dirty" />
 
     <Button
         android:id="@+id/attach_effect"

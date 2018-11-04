@@ -23,6 +23,7 @@ import com.example.gailsemilladucao.capstone.model.Bistalk;
 import com.example.gailsemilladucao.capstone.model.wordbanks;
 import com.example.gailsemilladucao.capstone.view.DownloadCateg;
 import com.example.gailsemilladucao.capstone.view.ShowData;
+import com.example.gailsemilladucao.capstone.view.Tips;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -90,8 +91,11 @@ public class MainActivity extends AppCompatActivity {
                 }else if(id == R.id.download_package){
                     Intent intent = new Intent(MainActivity.this, DownloadCateg.class);
                     startActivity(intent);
-                }else if(id == R.id.action_logout){
+                }else if(id == R.id.action_login){
                     Intent intent = new Intent(MainActivity.this, Login.class);
+                    startActivity(intent);
+                }else if(id == R.id.tips){
+                    Intent intent = new Intent(MainActivity.this, Tips.class);
                     startActivity(intent);
                 }
                 return true;

@@ -85,8 +85,11 @@ public class DownloadCateg extends AppCompatActivity {
                 }else if(id == R.id.home){
                     Intent intent = new Intent(DownloadCateg.this, MainActivity.class);
                     startActivity(intent);
-                }else if(id == R.id.action_logout){
+                }else if(id == R.id.action_login){
                     Intent intent = new Intent(DownloadCateg.this, Login.class);
+                    startActivity(intent);
+                }else if(id == R.id.tips){
+                    Intent intent = new Intent(DownloadCateg.this, Tips.class);
                     startActivity(intent);
                 }
                 return true;
