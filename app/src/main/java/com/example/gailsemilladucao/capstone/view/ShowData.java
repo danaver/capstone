@@ -52,7 +52,7 @@ public class ShowData extends AppCompatActivity {
 
 
         cebword = val.getCebuano();
-        pruword = val.getCategory();
+        pruword = val.getPronunciation();
         imgName = val.getPicture();
         audname = val.getAudio();
         if(!val.getEffect().equals("null")){
