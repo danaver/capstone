@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.ListView;
 
 import com.example.gailsemilladucao.capstone.R;
+import com.example.gailsemilladucao.capstone.model.Bistalk;
 import com.example.gailsemilladucao.capstone.model.wordAdapter;
 import com.example.gailsemilladucao.capstone.model.wordbanks;
 
@@ -25,6 +26,7 @@ public class viewCateg extends AppCompatActivity {
     String categ,jsonfile;
     ArrayList<wordbanks> wordlist;
     ListView listView;
+    Bistalk bistalk;
 
 
     @Override
@@ -36,43 +38,29 @@ public class viewCateg extends AppCompatActivity {
 
         wordlist = new ArrayList<wordbanks>();
 
+
         categ = getIntent().getStringExtra("Val");
         jsonfile = readFromFile();
+        bistalk = JsontoGson();
 
-        String img=null,fx=null;
-        try {
-            JSONObject jsonObject = new JSONObject(jsonfile);
-            JSONArray jsonArray = null;
 
-            jsonArray = jsonObject.getJSONArray("wordbank");
-            for (int i = 0; i <jsonArray.length();i++) {
-                JSONObject word = jsonArray.getJSONObject(i);
 
-                if (word.getString("Category").equals(categ)) {
-                    String eng = word.getString("English");
-                    String ceb = word.getString("Cebuano");
-                    String aud = word.getString("Audio");
-                    if (word.has("Picture")) {
-                        img = word.getString("Picture");
-                    }else{
-                        img = null;
-                    }
-                    if (word.has("Effect")) {
-                        fx = word.getString("Effect");
-                    }else{
-                        fx = null;
-                    }
+        for (int i =0; i < bistalk.getWordbankList().size();i++) {
+            if (bistalk.getWordbankList().get(i).getCategory().equals(categ)){
+                String eng = bistalk.getWordbankList().get(i).getEnglish();
+                String ceb = bistalk.getWordbankList().get(i).getCebuano();
+                String aud = bistalk.getWordbankList().get(i).getAudio();
+                String img = bistalk.getWordbankList().get(i).getPicture();
+                String pru = bistalk.getWordbankList().get(i).getPronunciation();
+                String cat = bistalk.getWordbankList().get(i).getCategory();
+                String fx = bistalk.getWordbankList().get(i).getEffect();
+                int stat = bistalk.getWordbankList().get(i).getStatus();
 
-                    wordlist.add(new wordbanks(eng, ceb, aud, img, fx));
-                }
+                wordlist.add(new wordbanks(eng, ceb,pru, cat,aud, img, fx,stat));
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
-
         wordAdapter adapter = new wordAdapter(this, R.layout.row, wordlist);
         listView.setAdapter(adapter);
-
         listView.invalidateViews();
 
     }
@@ -105,5 +93,10 @@ public class viewCateg extends AppCompatActivity {
         }
 
         return ret;
+    }
+
+    private Bistalk JsontoGson(){
+        Bistalk bistalk = new com.google.gson.Gson().fromJson(jsonfile, Bistalk.class);
+        return bistalk;
     }
 }

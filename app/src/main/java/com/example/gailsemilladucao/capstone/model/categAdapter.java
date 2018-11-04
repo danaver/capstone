@@ -25,7 +25,7 @@ import java.io.File;
 import java.util.List;
 
 public class categAdapter extends RecyclerView.Adapter<categAdapter.MyViewHolder> {
-    
+
     private Context mcontext;
     private List<categ> mdata;
 
@@ -93,7 +93,7 @@ public class categAdapter extends RecyclerView.Adapter<categAdapter.MyViewHolder
                     if(listener!= null){
                         int i = getAdapterPosition();
                         if(i != RecyclerView.NO_POSITION){
-                             listener.onDownloadClick(i);
+                            listener.onDownloadClick(i);
                         }
                     }
                 }

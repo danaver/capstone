@@ -5,27 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.net.ConnectivityManager;
-import android.net.wifi.hotspot2.pps.HomeSp;
 import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.gailsemilladucao.capstone.Login;
-import com.example.gailsemilladucao.capstone.MainActivity;
 import com.example.gailsemilladucao.capstone.R;
-import com.example.gailsemilladucao.capstone.backend.AddData;
 import com.example.gailsemilladucao.capstone.model.Bistalk;
 import com.example.gailsemilladucao.capstone.model.categ;
 import com.example.gailsemilladucao.capstone.model.categAdapter;
-import com.example.gailsemilladucao.capstone.view.viewCateg;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -42,7 +33,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,11 +42,9 @@ public class DownloadCateg extends AppCompatActivity {
     String jsonfile;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     Bistalk list;
+    File mayson;
 
 
-    // Navigation Drawer
-    private DrawerLayout dl;
-    private ActionBarDrawerToggle abdt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,38 +54,15 @@ public class DownloadCateg extends AppCompatActivity {
         String[] categor = getResources().getStringArray(R.array.post);
         String[] name = getResources().getStringArray(R.array.categ);
         TypedArray imgs = getResources().obtainTypedArray(R.array.draw);
-        dl = findViewById(R.id.dl);
-
-        // Navigation Drawer
-        abdt = new ActionBarDrawerToggle(DownloadCateg.this, dl, R.string.open, R.string.close);
-        dl.addDrawerListener(abdt);
-        abdt.syncState();
-
-        NavigationView nav_view = findViewById(R.id.nav_view);
-        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                int id = menuItem.getItemId();
-
-                if(id == R.id.add_word){
-                    Intent intent = new Intent(DownloadCateg.this,AddData.class);
-                    startActivity(intent);
-                }else if(id == R.id.home){
-                    Intent intent = new Intent(DownloadCateg.this, MainActivity.class);
-                    startActivity(intent);
-                }else if(id == R.id.action_login){
-                    Intent intent = new Intent(DownloadCateg.this, Login.class);
-                    startActivity(intent);
-                }else if(id == R.id.tips){
-                    Intent intent = new Intent(DownloadCateg.this, Tips.class);
-                    startActivity(intent);
-                }
-                return true;
-            }
-        });
+        mayson = new File(getFilesDir(),"wordbank.json");
 
         createFolder();
-        // gayson();
+
+        if(!mayson.exists()) {
+            gayson();
+        }
+
+        updateson();
 
         jsonfile = readFromFile();
         list = JsontoGson();
@@ -131,7 +96,6 @@ public class DownloadCateg extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
 
             @Override
@@ -305,7 +269,7 @@ public class DownloadCateg extends AppCompatActivity {
 
         com.google.gson.Gson gson = new com.google.gson.Gson();
 
-        Bistalk bistalk = new Bistalk(besh.getUpdate(), besh.getUserList(),besh.getWordbankList());
+        Bistalk bistalk = new Bistalk(besh.getUpdate(),besh.getUserList(),besh.getWordbankList());
         String json = gson.toJson(bistalk);
 
         // this will overwrite the jsonfile
@@ -322,31 +286,61 @@ public class DownloadCateg extends AppCompatActivity {
 
         if (isNetworkConnected() == false) {
             Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+        }else{
+            String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/wordbank.json?alt=media&token=21f68d7f-7a1c-4b1d-aab1-0790bbe5644c";
+            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+            StorageReference reference = firebaseStorage.getReferenceFromUrl(storageUrl);
+
+
+            reference.getFile(mayson).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(DownloadCateg.this, mayson.getName(), Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Toast.makeText(DownloadCateg.this, "Download was unsuccessful", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
+
+                }
+            });
         }
 
-        String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/wordbank.json?alt=media&token=21f68d7f-7a1c-4b1d-aab1-0790bbe5644c";
-        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-        StorageReference reference = firebaseStorage.getReferenceFromUrl(storageUrl);
+    }
 
-        final File myFile = new File(getFilesDir(),"wordbank.json");
-        reference.getFile(myFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(DownloadCateg.this, myFile.getName(), Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(DownloadCateg.this, "Download was unsuccessful", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
+    private void check(){}
 
-            }
-        });
+    private void updateson() {
 
+        if (isNetworkConnected() == false) {
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+        }else{
+            String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/update.json?alt=media&token=bd058cf6-8410-453d-9216-76f30e46f8b5";
+            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+            StorageReference reference = firebaseStorage.getReferenceFromUrl(storageUrl);
 
+            final File upson = new File(getFilesDir(),"update.json");
+            reference.getFile(upson).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(DownloadCateg.this, upson.getName(), Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Toast.makeText(DownloadCateg.this, "Download was unsuccessful", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
+
+                }
+            });
+        }
     }
 
     void writeFile(String data) throws IOException {
@@ -370,6 +364,10 @@ public class DownloadCateg extends AppCompatActivity {
                 audio.mkdir();
             }
         }
+    }
+
+    private void addUpdate(){
+
     }
 
 }

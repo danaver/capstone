@@ -71,16 +71,12 @@ public class AddData extends AppCompatActivity {
     String savepath = "",fxpath = "",srcPath =null,jsonstring;
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
-    TextView info,info_effect;
+    TextView info_audio,info_effect;
     EditText engText,cebText,prunoun;
     Uri audioFileUri, audioFxUri, imageFileUri;
     Bistalk bistalk;
     Spinner drop;
 
-
-    private SeekBar volumeSeekbar = null;
-    private AudioManager audioManager = null;
-    private static final String LOG_TAG = "Audio Record Test";
 
 
     final int REQUEST_PERMISSION_CODE = 1000;
@@ -97,7 +93,7 @@ public class AddData extends AppCompatActivity {
         setContentView(R.layout.activity_add_data);
 
 
-        gayson();
+        // gayson();
 
 
         // Create a storage reference from our app
@@ -108,12 +104,10 @@ public class AddData extends AppCompatActivity {
             requestPermission();
 
         //binding
-        info = findViewById(R.id.info);
+        info_audio = findViewById(R.id.info_audio);
         attach = findViewById(R.id.attach);
         mimage = findViewById(R.id.image);
 
-        recstop =  findViewById(R.id.recstop);
-        play = findViewById(R.id.play);
 
         addData = findViewById(R.id.addData);
         attach_fx = findViewById(R.id.attach_effect);
@@ -274,7 +268,7 @@ public class AddData extends AppCompatActivity {
                 audioFileUri = data.getData();
                 // This lets you set the path sa TextView
                 srcPath = audioFileUri.getPath();
-                info.setText(audioFileUri.toString() + "\n" + srcPath);
+                info_audio.setText(srcPath);
 
             }
         }
@@ -285,7 +279,7 @@ public class AddData extends AppCompatActivity {
                 audioFxUri = data.getData();
                 //vvv This lets you set the path sa TextView
                 srcPath = audioFxUri.getPath();
-                info_effect.setText(audioFxUri.toString() + "\n" + srcPath);
+                info_effect.setText(srcPath);
 
             }
         }
@@ -422,7 +416,7 @@ public class AddData extends AppCompatActivity {
 
     public void localAdd(Bistalk bistalk){
 
-        String jeng,jceb,jfx="null",jpru="";
+        String jeng,jceb,jfx="null",jpru="",jcateg;
         int jstat;
 
         boolean internet = false;
@@ -431,7 +425,8 @@ public class AddData extends AppCompatActivity {
         //getiing the  text
         jeng = engText.getText().toString();
         jceb = cebText.getText().toString();
-        jpru = prunoun.toString();
+        jpru = prunoun.getText().toString();
+        jcateg = drop.getSelectedItem().toString();
 
 
 
@@ -472,34 +467,33 @@ public class AddData extends AppCompatActivity {
                 if(audioFxUri== null) {
                     jfx="null";
                 }else {
-                        File audfx = new File(getFilesDir() + "/effects", jeng + ".mp3");
+                    File audfx = new File(getFilesDir() + "/effects", jeng + ".mp3");
 
-                        ContentResolver contentResolver = getContentResolver();
-                        InputStream in = null;
-                        try {
-                            in = contentResolver.openInputStream(audioFxUri);
-                            OutputStream out = new FileOutputStream(audfx);
-                            // Copy the bits from instream to outstream
-                            byte[] buf = new byte[1024];
-                            int len;
-                            while ((len = in.read(buf)) > 0) {
-                                out.write(buf, 0, len);
-                            }
-                            in.close();
-                            out.close();
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                    ContentResolver contentResolver = getContentResolver();
+                    InputStream in = null;
+                    try {
+                        in = contentResolver.openInputStream(audioFxUri);
+                        OutputStream out = new FileOutputStream(audfx);
+                        // Copy the bits from instream to outstream
+                        byte[] buf = new byte[1024];
+                        int len;
+                        while ((len = in.read(buf)) > 0) {
+                            out.write(buf, 0, len);
                         }
+                        in.close();
+                        out.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+                }
                 //audio to internal
                 if(audioFileUri==null) {
                     Toast.makeText(AddData.this, "Please attach an audio file", Toast.LENGTH_SHORT).show();
 
                 }else{
                     File aud = new File(getFilesDir() + "/audio", jceb + ".mp3");
-
                     ContentResolver contentResolvers = getContentResolver();
                     InputStream ins = null;
                     try {
@@ -533,7 +527,7 @@ public class AddData extends AppCompatActivity {
 
                     word.setAudio(jceb+".mp3");
                     word.setPicture(jeng+".png");
-                    word.setCategory(jpru);
+                    word.setCategory(jcateg);
                     word.setEffect(jfx);
 
                     if(audioFxUri != null){
@@ -569,7 +563,7 @@ public class AddData extends AppCompatActivity {
         String match = null;
         for (int i = 0; bistalk.getWordbankList().size()>i;i++){
             if(bistalk.getWordbankList().get(i).getEnglish().equals(word.toLowerCase())){
-               return match = bistalk.getWordbankList().get(i).getEnglish();
+                return match = bistalk.getWordbankList().get(i).getEnglish();
             }
         }
         return match;
@@ -585,7 +579,7 @@ public class AddData extends AppCompatActivity {
         //Gson gson = new Gson(); raman ta na idk nganong mo error haahaha
         com.google.gson.Gson gson = new com.google.gson.Gson();
 
-        Bistalk bistalk = new Bistalk(besh.getUpdate(), besh.getUserList(),besh.getWordbankList());
+        Bistalk bistalk = new Bistalk(besh.getUpdate(),besh.getUserList(),besh.getWordbankList());
         String json = gson.toJson(bistalk);
 
         // this will overwrite the jsonfile

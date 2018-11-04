@@ -3,6 +3,7 @@ package com.example.gailsemilladucao.capstone.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 public class wordbanks implements Serializable {
     private String English;
@@ -25,6 +26,8 @@ public class wordbanks implements Serializable {
         Audio = audio;
         Status = status;
     }
+
+
 
     public wordbanks(String english, String cebuano, String pronunciation, String category, String audio, String picture, String effect, int status) {
         English = english;

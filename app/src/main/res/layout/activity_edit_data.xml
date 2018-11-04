@@ -4,72 +4,96 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".backend.AddData"
-    android:layout_marginLeft="10dp">
+    tools:context=".backend.EditData"
+    android:background="@drawable/bg2">
 
     <TextView
-        android:id="@+id/info_effect"
-        android:layout_width="wrap_content"
+        android:id="@+id/info_audio"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
-        android:layout_marginLeft="240dp"
-        android:text="adsgadg" />
+        android:layout_below="@id/editAud"
+        android:layout_marginLeft="50dp"
+        android:textColor="@color/dirty"
+        android:textAlignment="center"
+        android:text="" />
 
     <Button
-        android:id="@+id/attach_effect"
+        android:id="@+id/editFx"
+        android:layout_below="@id/info_audio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="190dp"
-        android:text="Attach Effect" />
+        android:background="@drawable/button"
+        android:layout_marginLeft="100dp"
+        android:text="Effect" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textSize="20dp"
+        android:layout_marginLeft="100dp"
+        android:textColor="@color/dirty"
+        android:fontFamily="@font/boogaloo"
         android:text="Text Visual"/>
     <EditText
-        android:layout_marginTop="40dp"
-        android:id="@+id/editeng"
+        android:layout_marginTop="30dp"
+        android:id="@+id/editEng"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:hint="Enter English Word" />
+        android:layout_marginLeft="40dp"
+        android:background="@drawable/boxtrans"
+        android:hint="English Word"
+        android:textAlignment="center"/>
     <EditText
-        android:layout_marginTop="80dp"
-        android:id="@+id/editceb"
+        android:id="@+id/editCeb"
+        android:layout_below="@id/editEng"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:hint="Enter Bisaya Word" />
+        android:background="@drawable/boxtrans"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:hint="Bisaya Word" />
+    <EditText
+        android:id="@+id/editPrunoun"
+        android:layout_below="@id/editCeb"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:background="@drawable/boxtrans"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:hint="Prunounciation" />
     <TextView
+        android:layout_below="@id/editPrunoun"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Audio Visual"
-        android:layout_marginTop="120dp"/>
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/boogaloo"
+        android:textColor="@color/dirty"
+        android:textSize="20dp"
+        android:layout_marginLeft="100dp"
+        />
 
-    <Button
-        android:id="@+id/recstop"
-        android:layout_marginTop="140dp"
-        android:layout_marginLeft="70dp"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        android:text="STOP"/>
-
-    <Button
-        android:id="@+id/play"
-        android:layout_marginTop="140dp"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        android:text="PLAY"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/info_effect"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="250dp"
-        android:text="Attach Audio"/>
+        android:layout_below="@id/editFx"
+        android:layout_marginLeft="50dp"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="@color/dirty" />
     <Button
-        android:id="@+id/editattach"
+        android:id="@+id/editAud"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="File"
-        android:layout_marginTop="270dp"/>
+        android:text="Audio"
+        android:background="@drawable/button"
+        android:layout_marginTop="205dp"
+        android:layout_marginLeft="100dp"/>
     <TextView
         android:id="@+id/info"
         android:layout_width="wrap_content"
@@ -78,32 +102,48 @@
         android:text=""/>
 
     <ImageView
-        android:id="@+id/editimg"
-        android:background="@drawable/cam"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="340dp"/>
+        android:id="@+id/editImg"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/spin"
+        android:layout_marginLeft="350dp"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="CANCEL"
         android:onClick="menu"
-        android:layout_marginLeft="250dp"/>
+        android:background="@drawable/button"
+        android:backgroundTint="@android:color/holo_red_dark"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/editImg"
+        android:layout_marginLeft="480dp"/>
     <Button
-        android:id="@+id/editData"
+        android:id="@+id/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save DATA"
-        android:layout_marginLeft="250dp"
-        android:layout_marginTop="450dp"/>
+        android:text="Save"
+        android:background="@drawable/button"
+        android:backgroundTint="@color/download"
+        android:layout_below="@id/editImg"
+        android:layout_marginLeft="350dp"
+        android:layout_marginTop="10dp"/>
 
 
-    <Spinner
-        android:id="@+id/pos"
-        android:layout_width="140dp"
-        android:layout_height="50dp"
-        android:layout_marginLeft="220dp"
-        android:layout_marginTop="100dp"
-        />
+    <RelativeLayout
+        android:id="@+id/spin"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="350dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button">
+        <Spinner
+            android:id="@+id/pos"
+            android:layout_width="220dp"
+            android:layout_height="40dp"
+            android:textAlignment="center"
+            />
+    </RelativeLayout>
+
 
 </RelativeLayout>

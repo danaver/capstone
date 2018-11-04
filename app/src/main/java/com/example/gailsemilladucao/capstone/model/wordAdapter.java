@@ -67,6 +67,7 @@ public class wordAdapter extends ArrayAdapter {
 
                 Intent i = new Intent(context, EditData.class);
                 i.putExtra("res", wl);
+                //i.putExtra("position", position);
                 context.startActivity(i);
             }
         });
