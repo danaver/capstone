@@ -72,11 +72,28 @@ public class DownloadCateg extends AppCompatActivity {
 
         createFolder();
 
+
         if(!mayson.exists()) {
             gayson();
         }
 
-        updateson();
+        jsonfile = readFromFile("wordbank.json");
+        jsonupdate =readFromFile("update.json");
+        list = JsontoGson(jsonfile);
+        upson = JsontoGson(jsonupdate);
+
+        if(isNetworkConnected()){
+            updateson();
+            update = checkUpdate(list,upson);
+            if(update == true){
+                try {
+                    appendUpdate();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
 
         // Navigation Drawer
         abdt = new ActionBarDrawerToggle(DownloadCateg.this, dl, R.string.open, R.string.close);
@@ -110,20 +127,9 @@ public class DownloadCateg extends AppCompatActivity {
         });
 
 
-        jsonfile = readFromFile("wordbank.json");
-        jsonupdate =readFromFile("update.json");
-        list = JsontoGson(jsonfile);
-        upson = JsontoGson(jsonupdate);
 
-        update = checkUpdate(list,upson);
 
-        if(update == true){
-            try {
-                appendUpdate();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+
 
 
         clist = new ArrayList<>();
@@ -134,7 +140,7 @@ public class DownloadCateg extends AppCompatActivity {
 
         buildRV();
 
-        Toast.makeText(DownloadCateg.this, "Scroll down for more categories", Toast.LENGTH_SHORT).show();
+
     }
 
     public void buildRV(){
@@ -423,6 +429,7 @@ public class DownloadCateg extends AppCompatActivity {
     private void appendUpdate() throws JSONException {
         for (int i = 0; i <upson.getWordbankList().size();i++){
             list.getWordbankList().add(upson.getWordbankList().get(i));
+
         }
         list.setUpdate(upson.getUpdate());
         GsontoJson(list);
