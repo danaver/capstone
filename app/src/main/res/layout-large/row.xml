@@ -16,7 +16,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="10dp"
             android:gravity="center"
             android:textSize="24dp"
             android:text="english"/>
@@ -26,28 +26,28 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:layout_marginLeft="250dp"
+            android:layout_marginLeft="230dp"
             android:textSize="24dp"
             android:text="cebuano"/>
         <CheckBox
             android:id="@+id/cimg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="513dp"
+            android:layout_marginLeft="493dp"
             android:clickable="false"
             android:layout_centerVertical="true"/>
         <CheckBox
             android:id="@+id/caud"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="613dp"
+            android:layout_marginLeft="593dp"
             android:clickable="false"
             android:layout_centerVertical="true"/>
         <CheckBox
             android:id="@+id/cfx"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="713dp"
+            android:layout_marginLeft="693dp"
             android:clickable="false"
             android:layout_centerVertical="true"
             />

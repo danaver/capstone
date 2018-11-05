@@ -61,6 +61,10 @@ public class wordAdapter extends ArrayAdapter {
             cimg.setChecked(true);
         }
 
+        if(wl.getStatus() == 0){
+            cedt.setEnabled(false);
+        }
+
         cedt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
