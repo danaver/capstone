@@ -40,7 +40,7 @@
             android:name=".Login"
             android:screenOrientation="landscape"></activity>
         <activity
-            android:name=".view.Tips"
+            android:name=".view.DownloadCateg"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -63,7 +63,7 @@
         <activity android:name=".backend.EditData" android:screenOrientation="landscape">
 
         </activity>
-        <activity android:name=".view.DownloadCateg"
+        <activity android:name=".view.Tips"
             android:screenOrientation="landscape">
         </activity>
     </application>

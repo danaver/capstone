@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".backend.EditData"
+    android:background="@drawable/bg2">
+
+    <TextView
+        android:id="@+id/info_audio"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editAud"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="2dp"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="@color/dirty" />
+
+    <Button
+        android:id="@+id/editFx"
+        android:layout_below="@id/info_audio"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:textSize="20dp"
+        android:background="@drawable/button"
+        android:layout_marginLeft="140dp"
+        android:layout_marginTop="10dp"
+        android:text="Effect" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textSize="25dp"
+        android:layout_marginLeft="140dp"
+        android:textColor="@color/dirty"
+        android:fontFamily="@font/boogaloo"
+        android:text="Text Visual"/>
+    <EditText
+        android:layout_marginTop="50dp"
+        android:id="@+id/editEng"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:textSize="20dp"
+        android:layout_marginLeft="40dp"
+        android:background="@drawable/boxtrans"
+        android:hint="English Word"
+        android:textAlignment="center"/>
+    <EditText
+        android:id="@+id/editCeb"
+        android:layout_below="@id/editEng"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:textSize="20dp"
+        android:background="@drawable/boxtrans"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:hint="Bisaya Word" />
+    <EditText
+        android:id="@+id/editPrunoun"
+        android:layout_below="@id/editCeb"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:textSize="20dp"
+        android:background="@drawable/boxtrans"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:hint="Prunounciation" />
+    <TextView
+        android:layout_below="@id/editPrunoun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Audio Visual"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/boogaloo"
+        android:textColor="@color/dirty"
+        android:textSize="25dp"
+        android:layout_marginLeft="140dp"
+        />
+
+
+    <TextView
+        android:id="@+id/info_effect"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editFx"
+        android:layout_marginLeft="40dp"
+        android:text=""
+        android:textAlignment="center"
+        android:textColor="@color/dirty" />
+    <Button
+        android:id="@+id/editAud"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:text="Audio"
+        android:textSize="20dp"
+        android:background="@drawable/button"
+        android:layout_marginTop="300dp"
+        android:layout_marginLeft="140dp"/>
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="325dp"
+        android:text=""/>
+
+    <ImageView
+        android:id="@+id/editImg"
+        android:layout_width="340dp"
+        android:layout_height="340dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/spin"
+        android:layout_marginLeft="550dp"/>
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:text="CANCEL"
+        android:textSize="25dp"
+        android:onClick="menu"
+        android:background="@drawable/button"
+        android:backgroundTint="@android:color/holo_red_dark"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/editImg"
+        android:layout_marginLeft="740dp"/>
+    <Button
+        android:id="@+id/save"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:text="Save"
+        android:textSize="25dp"
+        android:background="@drawable/button"
+        android:backgroundTint="@color/download"
+        android:layout_below="@id/editImg"
+        android:layout_marginLeft="550dp"
+        android:layout_marginTop="10dp"/>
+
+
+    <RelativeLayout
+        android:id="@+id/spin"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="550dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button">
+        <Spinner
+            android:id="@+id/pos"
+            android:layout_width="340dp"
+            android:layout_height="50dp"
+            android:textAlignment="center"
+            />
+    </RelativeLayout>
+
+
+</RelativeLayout>

@@ -98,7 +98,7 @@ public class EditData extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         pus.setAdapter(adapter);
 
-        Toast.makeText(EditData.this, val.getCategory(), Toast.LENGTH_SHORT).show();
+
 
 
 
@@ -122,7 +122,6 @@ public class EditData extends AppCompatActivity {
 
         // get uri for LocalEdit
         audioFileUri = Uri.parse(getFilesDir()+"/audio/"+val.getAudio());
-        Toast.makeText(EditData.this, audioFileUri.getPath(), Toast.LENGTH_SHORT).show();
         imageFileUri = Uri.parse(getFilesDir()+"/images/"+val.getPicture());
 
         position = wordExist(val.getEnglish());
@@ -312,8 +311,6 @@ public class EditData extends AppCompatActivity {
                     File to        = new File(directory, jeng + ".png");
                     if(from.exists()) {
                         from.renameTo(to);
-                    }else{
-                        Toast.makeText(EditData.this, "DIS DOES NOT EXIST PIVTURE", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -342,8 +339,6 @@ public class EditData extends AppCompatActivity {
                         File to        = new File(directory, jeng + ".mp3");
                         if(from.exists()) {
                             from.renameTo(to);
-                        }else{
-                            Toast.makeText(EditData.this, "DIS DOES NOT EXIST FX", Toast.LENGTH_SHORT).show();
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -377,8 +372,6 @@ public class EditData extends AppCompatActivity {
                         File to        = new File(directory, jceb + ".mp3");
                         if(from.exists()) {
                             from.renameTo(to);
-                        }else{
-                            Toast.makeText(EditData.this, "DIS DOES NOT EXIST AUDIO", Toast.LENGTH_SHORT).show();
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -496,39 +489,9 @@ public class EditData extends AppCompatActivity {
     }
 
 
-    public  void copys(File src, File dst) throws IOException {
-        InputStream in = new FileInputStream(src);
-        try {
-            OutputStream out = new FileOutputStream(dst);
-            try {
-                // Transfer bytes from in to out
-                Toast.makeText(EditData.this, "BROOOOOOOOOOOOMMM", Toast.LENGTH_SHORT).show();
-                byte[] buf = new byte[1024];
-                int len;
-                while ((len = in.read(buf)) > 0) {
-                    out.write(buf, 0, len);
-                }
-            } finally {
-                out.close();
-            }
-        } finally {
-            in.close();
-        }
-    }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static void copy(File src, File dst) throws IOException {
-        try (InputStream in = new FileInputStream(src)) {
-            try (OutputStream out = new FileOutputStream(dst)) {
-                // Transfer bytes from in to out
-                byte[] buf = new byte[1024];
-                int len;
-                while ((len = in.read(buf)) > 0) {
-                    out.write(buf, 0, len);
-                }
-            }
-        }
-    }
+
+
 
 
 }

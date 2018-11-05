@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:background="@color/transi"
+        android:id="@+id/box"
+        android:padding="7dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/engword"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:gravity="center"
+            android:textSize="24dp"
+            android:text="english"/>
+        <TextView
+            android:id="@+id/cebword"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_marginLeft="250dp"
+            android:textSize="24dp"
+            android:text="cebuano"/>
+        <CheckBox
+            android:id="@+id/cimg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="513dp"
+            android:clickable="false"
+            android:layout_centerVertical="true"/>
+        <CheckBox
+            android:id="@+id/caud"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="613dp"
+            android:clickable="false"
+            android:layout_centerVertical="true"/>
+        <CheckBox
+            android:id="@+id/cfx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="713dp"
+            android:clickable="false"
+            android:layout_centerVertical="true"
+            />
+        <Button
+            android:id="@+id/cedit"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:textSize="20dp"
+            android:layout_marginLeft="800dp"
+            android:background="@drawable/button"
+            android:backgroundTint="@android:color/holo_green_light"/>
+    </RelativeLayout>
+</RelativeLayout>

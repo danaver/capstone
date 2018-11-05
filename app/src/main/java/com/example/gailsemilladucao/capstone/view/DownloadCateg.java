@@ -46,9 +46,9 @@ import java.util.List;
 public class DownloadCateg extends AppCompatActivity {
 
     List<categ> clist;
-    String jsonfile;
+    String jsonfile,jsonupdate;
     FirebaseStorage storage = FirebaseStorage.getInstance();
-    Bistalk list;
+    Bistalk list,upson;
     File mayson;
 
     // Navigation Drawer
@@ -66,8 +66,17 @@ public class DownloadCateg extends AppCompatActivity {
         String[] name = getResources().getStringArray(R.array.categ);
         TypedArray imgs = getResources().obtainTypedArray(R.array.draw);
         mayson = new File(getFilesDir(),"wordbank.json");
-
         dl = findViewById(R.id.dl);
+
+        boolean update;
+
+        createFolder();
+
+        if(!mayson.exists()) {
+            gayson();
+        }
+
+        updateson();
 
         // Navigation Drawer
         abdt = new ActionBarDrawerToggle(DownloadCateg.this, dl, R.string.open, R.string.close);
@@ -83,13 +92,16 @@ public class DownloadCateg extends AppCompatActivity {
                 if(id == R.id.add_word){
                     Intent intent = new Intent(DownloadCateg.this,AddData.class);
                     startActivity(intent);
+                }else if(id == R.id.download_package){
+                    Intent intent = new Intent(DownloadCateg.this, DownloadCateg.class);
+                    startActivity(intent);
                 }else if(id == R.id.action_login){
                     Intent intent = new Intent(DownloadCateg.this, Login.class);
                     startActivity(intent);
                 }else if(id == R.id.tips){
                     Intent intent = new Intent(DownloadCateg.this, Tips.class);
                     startActivity(intent);
-                }else if(id == R.id.home){
+                }else if(id == R.id.home) {
                     Intent intent = new Intent(DownloadCateg.this, MainActivity.class);
                     startActivity(intent);
                 }
@@ -97,16 +109,22 @@ public class DownloadCateg extends AppCompatActivity {
             }
         });
 
-        createFolder();
 
-        if(!mayson.exists()) {
-            gayson();
+        jsonfile = readFromFile("wordbank.json");
+        jsonupdate =readFromFile("update.json");
+        list = JsontoGson(jsonfile);
+        upson = JsontoGson(jsonupdate);
+
+        update = checkUpdate(list,upson);
+
+        if(update == true){
+            try {
+                appendUpdate();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
-        updateson();
-
-        jsonfile = readFromFile();
-        list = JsontoGson();
 
         clist = new ArrayList<>();
 
@@ -117,9 +135,6 @@ public class DownloadCateg extends AppCompatActivity {
         buildRV();
 
         Toast.makeText(DownloadCateg.this, "Scroll down for more categories", Toast.LENGTH_SHORT).show();
-
-
-
     }
 
     public void buildRV(){
@@ -159,8 +174,6 @@ public class DownloadCateg extends AppCompatActivity {
         });
 
     }
-
-
 
     private void deleteCateg(String categ) throws JSONException {
 
@@ -271,11 +284,11 @@ public class DownloadCateg extends AppCompatActivity {
     }
 
 
-    private String readFromFile() {
+    private String readFromFile(String json) {
         String ret = "";
 
         try {
-            InputStream inputStream = openFileInput("wordbank.json");
+            InputStream inputStream = openFileInput(json);
 
             if ( inputStream != null ) {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -300,13 +313,12 @@ public class DownloadCateg extends AppCompatActivity {
         return ret;
     }
 
-    private Bistalk JsontoGson(){
-        Bistalk bistalk = new com.google.gson.Gson().fromJson(jsonfile, Bistalk.class);
+    private Bistalk JsontoGson(String jsonstring){
+        Bistalk bistalk = new com.google.gson.Gson().fromJson(jsonstring, Bistalk.class);
         return bistalk;
     }
 
     public void GsontoJson(Bistalk besh) throws JSONException {
-
 
         com.google.gson.Gson gson = new com.google.gson.Gson();
 
@@ -353,7 +365,7 @@ public class DownloadCateg extends AppCompatActivity {
 
     }
 
-    private void check(){}
+
 
     private void updateson() {
 
@@ -368,7 +380,7 @@ public class DownloadCateg extends AppCompatActivity {
             reference.getFile(upson).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(DownloadCateg.this, upson.getName(), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(DownloadCateg.this, upson.getName(), Toast.LENGTH_SHORT).show();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -407,8 +419,30 @@ public class DownloadCateg extends AppCompatActivity {
         }
     }
 
-    private void addUpdate(){
-
+    //it will add at the last of the wordbank
+    private void appendUpdate() throws JSONException {
+        for (int i = 0; i <upson.getWordbankList().size();i++){
+            list.getWordbankList().add(upson.getWordbankList().get(i));
+        }
+        list.setUpdate(upson.getUpdate());
+        GsontoJson(list);
+        Toast.makeText(DownloadCateg.this, "Please Re-download the packages to include newly added words", Toast.LENGTH_LONG).show();
     }
+
+    //if it returns true it means update has a new update
+    private boolean checkUpdate(Bistalk wb,Bistalk up){
+        boolean toUpdate = false;
+        int updatewb,updateup;
+
+        updatewb = wb.getUpdate();
+        updateup =up.getUpdate();
+
+        if(updatewb < updateup){
+            toUpdate = true;
+        }
+        return toUpdate;
+    }
+
+
 
 }
