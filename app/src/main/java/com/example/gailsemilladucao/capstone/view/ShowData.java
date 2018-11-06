@@ -32,6 +32,8 @@ public class ShowData extends AppCompatActivity {
 
     JSONObject instance;
 
+    MediaPlayer player = new MediaPlayer();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class ShowData extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ShowData.this, MainActivity.class);
                 startActivity(intent);
+                onBackPressed();
             }
         });
 
@@ -77,7 +80,8 @@ public class ShowData extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                MediaPlayer player = new MediaPlayer();
+                    stopPlaying();
+                    player = new MediaPlayer();
                     player.setAudioStreamType(AudioManager.STREAM_MUSIC);
                     player.setDataSource(getFilesDir()+"/effects/"+fxname);
                     player.prepare();
@@ -93,7 +97,8 @@ public class ShowData extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    MediaPlayer player = new MediaPlayer();
+                    stopPlaying();
+                    player = new MediaPlayer();
                     player.setAudioStreamType(AudioManager.STREAM_MUSIC);
                     player.setDataSource(getFilesDir()+"/audio/"+audname);
                     player.prepare();
@@ -104,14 +109,22 @@ public class ShowData extends AppCompatActivity {
 
             }
         });
+    }
 
+    private void stopPlaying() {
+        if (player != null) {
+            player.stop();
+            player.release();
+            player = null;
+        }
+    }
 
-//        query_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//
-//            }
-//        });
+    @Override
+    public void onBackPressed() {
+        if(player.isPlaying()){
+            player.stop();
+            player.release();
+        }
+        super.onBackPressed();
     }
 }

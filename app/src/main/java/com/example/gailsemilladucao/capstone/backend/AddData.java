@@ -90,7 +90,7 @@ public class AddData extends AppCompatActivity {
 
 
         // Create a storage reference from our app
-        storageRef = FirebaseStorage.getInstance().getReference("temp");
+        storageRef = FirebaseStorage.getInstance().getReference();
 
         //request runtime permission
         if(!checkPermissionFromDevice())
@@ -129,8 +129,8 @@ public class AddData extends AppCompatActivity {
         addData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //uploadFile();
-                localAdd(bistalk);
+                uploadFile();
+                //localAdd(bistalk);
             }
         });
         //from android m, you need request runtime permission
@@ -285,9 +285,9 @@ public class AddData extends AppCompatActivity {
         progressDialog.show();
 
         if (audioFileUri != null) {
-            StorageReference imageReference = storageRef.child("images").child(engText.getText().toString().trim() + "");
-            StorageReference audioRef = storageRef.child("audio").child(engText.getText().toString().trim() + ""); // storage location to firebase.
-            StorageReference fxRef = storageRef.child("effects").child(engText.getText().toString().trim() + ""); // storage location to firebase
+            StorageReference imageReference = storageRef.child("updates_photo").child(engText.getText().toString().trim() + "");
+            StorageReference audioRef = storageRef.child("updates_audio").child(engText.getText().toString().trim() + ""); // storage location to firebase.
+            StorageReference fxRef = storageRef.child("updates_effect").child(engText.getText().toString().trim() + ""); // storage location to firebase
 
             // Upload attach audio file
             audioRef.putFile(audioFileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
