@@ -147,8 +147,10 @@ public class AddData extends AppCompatActivity {
         addData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadFile();
-                //localAdd(bistalk);
+                if(isNetworkConnected()==true){
+                    uploadFile();
+                }
+                localAdd(bistalk);
             }
         });
         //from android m, you need request runtime permission
@@ -639,30 +641,6 @@ public class AddData extends AppCompatActivity {
         out.close();
     }
 
-    private void gayson() {
-
-        String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/wordbank.json?alt=media&token=21f68d7f-7a1c-4b1d-aab1-0790bbe5644c";
-        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-        StorageReference reference = firebaseStorage.getReferenceFromUrl(storageUrl);
-
-        final File myFile = new File(getFilesDir(),"wordbank.json");
-        reference.getFile(myFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                //  Toast.makeText(MainActivity.this, myFile.getName(), Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(AddData.this, "Download was unsuccessful", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
-
-            }
-        });
-    }
 }
 
 

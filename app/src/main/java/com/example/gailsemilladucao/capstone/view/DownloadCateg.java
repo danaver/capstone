@@ -169,6 +169,11 @@ public class DownloadCateg extends AppCompatActivity {
         dlg.show(getSupportFragmentManager(), "Update");
     }
 
+    public void delDialog(){
+        deletedia lol= new deletedia();
+        lol.show(getSupportFragmentManager(), "Update");
+    }
+
     public void buildRV(){
         RecyclerView view = findViewById(R.id.rv);
         categAdapter adapter = new categAdapter(this, clist);
@@ -187,14 +192,32 @@ public class DownloadCateg extends AppCompatActivity {
             }
 
             @Override
-            public void onDeleteClick(int i) {
-                try {
-                    String categ = clist.get(i).getCateg();
-                    deleteCateg(categ);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            public void onDeleteClick(final int i) {
+
+                final int idx = i;
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(DownloadCateg.this);
+                alert.setTitle("Delete Data in "+clist.get(idx).getName()+ "?");
+                alert.setMessage("Are you sure you want to delete?");
+                alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            String categ = clist.get(idx).getCateg();
+                            deleteCateg(categ);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // close dialog
+                        dialog.cancel();
+                    }
+                });
+                alert.show();
             }
+
 
             @Override
             public void onViewClick(int i) {
