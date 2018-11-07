@@ -6,29 +6,29 @@ import java.util.List;
 
 public class Bistalk {
     int update;
-    int adjective;
-    int animal;
-    @SerializedName("body part")
-    int body_part;
-    int event;
-    int food;
-    int number;
-    int person;
-    int place;
-    int thing;
-    int verb;
+    @SerializedName("category status")
+    List<categStatus> cStats;
     @SerializedName("users")
     List<users> userList;
     @SerializedName("wordbank")
     List<wordbanks> wordbankList;
 
 
-    public Bistalk(int update,List<users> userList, List<wordbanks> wordbankList) {
+
+    public Bistalk(int update, List<categStatus> cStats, List<users> userList, List<wordbanks> wordbankList) {
         this.update = update;
+        this.cStats = cStats;
         this.userList = userList;
         this.wordbankList = wordbankList;
     }
 
+    public List<categStatus> getcStats() {
+        return cStats;
+    }
+
+    public void setcStats(List<categStatus> cStats) {
+        this.cStats = cStats;
+    }
 
     public int getUpdate() {
         return update;
@@ -57,4 +57,7 @@ public class Bistalk {
     public void setWordbankList(List<wordbanks> wordbankList) {
         this.wordbankList = wordbankList;
     }
+
+
+
 }

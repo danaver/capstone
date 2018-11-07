@@ -6,6 +6,7 @@ public class categ {
     int img;
     String download;
     String delete;
+    int status;
 
     public categ() {
     }
@@ -22,6 +23,13 @@ public class categ {
         this.name = name;
         this.categ = categ;
         this.img = img;
+    }
+
+    public categ(String name, String categ, int img, int status) {
+        this.name = name;
+        this.categ = categ;
+        this.img = img;
+        this.status = status;
     }
 
     public int getImg() {

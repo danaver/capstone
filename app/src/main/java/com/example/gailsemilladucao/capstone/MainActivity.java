@@ -158,20 +158,20 @@ public class MainActivity extends AppCompatActivity {
 
 
         //download json
-        //gayson();
+        gayson();
 
         //part na na parse na and placed sa string
         //this also is used global in searchWord()
         jsonString = readFromFile();
         bistalk = JsontoGson();
 
-        if(isNetworkConnected() ==  true){
-            try {
-                delayUpload();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+//        if(isNetworkConnected() ==  true){
+//            try {
+//                delayUpload();
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
 
         searchy.setOnClickListener(new View.OnClickListener() {
@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
         if (isNetworkConnected() == false) {
             Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
         }else {
-            String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/wordbank.json?alt=media&token=c8d6231f-5333-4d3f-89b9-25729708784a";
+            String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/wordbank.json?alt=media&token=a0bf9ad1-0386-4b68-b1cc-3f7667d3acba";
             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
             StorageReference reference = firebaseStorage.getReferenceFromUrl(storageUrl);
 
@@ -507,7 +507,7 @@ public class MainActivity extends AppCompatActivity {
         //Gson gson = new Gson(); raman ta na idk nganong mo error haahaha
         com.google.gson.Gson gson = new com.google.gson.Gson();
 
-        Bistalk bistalk = new Bistalk(besh.getUpdate(),besh.getUserList(),besh.getWordbankList());
+        Bistalk bistalk = new Bistalk(besh.getUpdate(),besh.getcStats(),besh.getUserList(),besh.getWordbankList());
         String json = gson.toJson(bistalk);
 
         // this will overwrite the jsonfile

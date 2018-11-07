@@ -148,12 +148,6 @@ public class DownloadCateg extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
-
         clist = new ArrayList<>();
 
         for (int i = 0; i< name.length;i++){
@@ -169,10 +163,6 @@ public class DownloadCateg extends AppCompatActivity {
         dlg.show(getSupportFragmentManager(), "Update");
     }
 
-    public void delDialog(){
-        deletedia lol= new deletedia();
-        lol.show(getSupportFragmentManager(), "Update");
-    }
 
     public void buildRV(){
         RecyclerView view = findViewById(R.id.rv);
@@ -377,7 +367,7 @@ public class DownloadCateg extends AppCompatActivity {
 
         com.google.gson.Gson gson = new com.google.gson.Gson();
 
-        Bistalk bistalk = new Bistalk(besh.getUpdate(),besh.getUserList(),besh.getWordbankList());
+        Bistalk bistalk = new Bistalk(besh.getUpdate(),besh.getcStats(),besh.getUserList(),besh.getWordbankList());
         String json = gson.toJson(bistalk);
 
         // this will overwrite the jsonfile

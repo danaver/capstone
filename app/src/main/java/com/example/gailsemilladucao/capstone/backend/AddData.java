@@ -620,7 +620,7 @@ public class AddData extends AppCompatActivity {
         //Gson gson = new Gson(); raman ta na idk nganong mo error haahaha
         com.google.gson.Gson gson = new com.google.gson.Gson();
 
-        Bistalk bistalk = new Bistalk(besh.getUpdate(),besh.getUserList(),besh.getWordbankList());
+        Bistalk bistalk = new Bistalk(besh.getUpdate(),besh.getcStats(),besh.getUserList(),besh.getWordbankList());
         String json = gson.toJson(bistalk);
 
         // this will overwrite the jsonfile
