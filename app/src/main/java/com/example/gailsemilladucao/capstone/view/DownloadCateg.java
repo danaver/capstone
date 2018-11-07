@@ -1,7 +1,9 @@
 package com.example.gailsemilladucao.capstone.view;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -74,7 +76,6 @@ public class DownloadCateg extends AppCompatActivity {
         String[] categor = getResources().getStringArray(R.array.post);
         String[] name = getResources().getStringArray(R.array.categ);
         TypedArray imgs = getResources().obtainTypedArray(R.array.draw);
-        mayson = new File(getFilesDir(),"wordbank.json");
         dl = findViewById(R.id.dl);
 
         boolean update;
@@ -82,9 +83,7 @@ public class DownloadCateg extends AppCompatActivity {
         createFolder();
 
 
-        if(!mayson.exists()) {
-            gayson();
-        }
+
 
         jsonfile = readFromFile("wordbank.json");
         jsonupdate =readFromFile("update.json");
@@ -97,6 +96,7 @@ public class DownloadCateg extends AppCompatActivity {
             if(update == true){
                 try {
                     appendUpdate();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -162,7 +162,11 @@ public class DownloadCateg extends AppCompatActivity {
 
         buildRV();
 
+    }
 
+    public void openDialog(){
+        dialog dlg = new dialog();
+        dlg.show(getSupportFragmentManager(), "Update");
     }
 
     public void buildRV(){
@@ -363,35 +367,6 @@ public class DownloadCateg extends AppCompatActivity {
 
     }
 
-    private void gayson() {
-
-        if (isNetworkConnected() == false) {
-            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
-        }else{
-            String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/wordbank.json?alt=media&token=ed8c3982-e11b-4084-833e-2255301ead1f";
-            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-            StorageReference reference = firebaseStorage.getReferenceFromUrl(storageUrl);
-
-
-            reference.getFile(mayson).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(DownloadCateg.this, mayson.getName(), Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(DownloadCateg.this, "Download was unsuccessful", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
-
-                }
-            });
-        }
-
-    }
 
 
 
@@ -455,7 +430,7 @@ public class DownloadCateg extends AppCompatActivity {
         }
         list.setUpdate(upson.getUpdate());
         GsontoJson(list);
-        Toast.makeText(DownloadCateg.this, "Please Re-download the packages to include newly added words", Toast.LENGTH_LONG).show();
+        openDialog();
     }
 
     //if it returns true it means update has a new update

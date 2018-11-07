@@ -11,9 +11,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gailsemilladucao.capstone.R;
 import com.example.gailsemilladucao.capstone.backend.EditData;
+import com.example.gailsemilladucao.capstone.view.ShowData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,8 +73,21 @@ public class wordAdapter extends ArrayAdapter {
 
                 Intent i = new Intent(context, EditData.class);
                 i.putExtra("res", wl);
-                //i.putExtra("position", position);
+
                 context.startActivity(i);
+            }
+        });
+
+        row.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(context, ShowData.class);
+                i.putExtra("res", wl);
+                if(wl.getStatus() != 0) {
+                    context.startActivity(i);
+                }else{
+                    Toast.makeText(context, "Please download to view", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

@@ -22,7 +22,7 @@
             android:fontFamily="@font/boogaloo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+
             android:text="Download Category"
             android:gravity="center"
             android:layout_centerHorizontal="true"/>
@@ -33,7 +33,7 @@
             android:layout_below="@id/hi"
             android:layout_width="match_parent"
             android:layout_height="290dp"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="10dp"
             >
         </android.support.v7.widget.RecyclerView>
         <TextView

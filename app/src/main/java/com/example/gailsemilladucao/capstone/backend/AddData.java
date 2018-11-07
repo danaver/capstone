@@ -62,7 +62,7 @@ import java.io.OutputStream;
 public class AddData extends AppCompatActivity {
 
     ImageView mimage;
-    Button recstop,play,attach,addData, attach_fx;
+    Button remove,attach,addData, attach_fx;
     String savepath = "",fxpath = "",srcPath =null,jsonstring;
     MediaRecorder mediaRecorder;
     MediaPlayer mediaPlayer;
@@ -115,6 +115,9 @@ public class AddData extends AppCompatActivity {
         cebText = findViewById(R.id.bistb);
         drop = findViewById(R.id.pos);
         prunoun = findViewById(R.id.prunoun);
+        remove = findViewById(R.id.none);
+
+        remove.setVisibility(View.GONE);
 
 
         //spinner
@@ -128,6 +131,15 @@ public class AddData extends AppCompatActivity {
         jsonstring = readFromFile();
 
         bistalk = JsontoGson();
+
+        remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                audioFxUri = null;
+                info_effect.setText("");
+                remove.setVisibility(View.GONE);
+            }
+        });
 
 
 
@@ -151,6 +163,7 @@ public class AddData extends AppCompatActivity {
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Open Audio Effect (mp3) file"), RQS_OPEN_AUDIO_FX);
                 fxpath = info_effect.getText().toString();
+
             }
         });
 
@@ -279,7 +292,7 @@ public class AddData extends AppCompatActivity {
                 //vvv This lets you set the path sa TextView
                 srcPath = audioFxUri.getPath();
                 info_effect.setText(srcPath);
-
+                remove.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -449,9 +462,9 @@ public class AddData extends AppCompatActivity {
         wordbanks word = new wordbanks();
 
         //getiing the  text
-        jeng = engText.getText().toString();
-        jceb = cebText.getText().toString();
-        jpru = prunoun.getText().toString();
+        jeng = engText.getText().toString().toLowerCase();
+        jceb = cebText.getText().toString().toLowerCase();
+        jpru = prunoun.getText().toString().toLowerCase();
         jcateg = drop.getSelectedItem().toString();
 
 

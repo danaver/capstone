@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     Editor editor;
 
     String jsonString;
-
+    File gaysonFile,downsonFile ;
     FirebaseStorage storage = FirebaseStorage.getInstance();
 
     @Override
@@ -88,6 +89,18 @@ public class MainActivity extends AppCompatActivity {
         // Session
         pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         editor = pref.edit();
+
+        //initializing
+        gaysonFile = new File(getFilesDir(),"wordbank.json");
+        downsonFile =new File(getFilesDir(),"update.json");
+
+        if(!gaysonFile.exists()){
+            gayson();
+        }
+
+        if(!downsonFile.exists()){
+            upson();
+        }
 
         // Navigation Drawer
         abdt = new ActionBarDrawerToggle(MainActivity.this, dl, R.string.open, R.string.close);
@@ -142,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                message = wordie.getText().toString();
+                message = wordie.getText().toString().toLowerCase();
                 if (!message.equals("")) {
                     //JSONObject res = null;
                     wordbanks res = null;
@@ -208,30 +221,66 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void gayson() {
+        if (isNetworkConnected() == false) {
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+        }else {
+            String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/wordbank.json?alt=media&token=21f68d7f-7a1c-4b1d-aab1-0790bbe5644c";
+            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+            StorageReference reference = firebaseStorage.getReferenceFromUrl(storageUrl);
 
-        String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/wordbank.json?alt=media&token=21f68d7f-7a1c-4b1d-aab1-0790bbe5644c";
-        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-        StorageReference reference = firebaseStorage.getReferenceFromUrl(storageUrl);
 
-        final File myFile = new File(getFilesDir(),"wordbank.json");
-        reference.getFile(myFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                //  Toast.makeText(MainActivity.this, myFile.getName(), Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(MainActivity.this, "Download was unsuccessful", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
+            reference.getFile(gaysonFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    //  Toast.makeText(MainActivity.this, myFile.getName(), Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Toast.makeText(MainActivity.this, "Download was unsuccessful", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
+    private void upson() {
+
+        if (isNetworkConnected() == false) {
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
+        }else{
+            String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/update.json?alt=media&token=ffea4fb6-6673-4ecc-b3f1-b93110041931";
+            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+            StorageReference reference = firebaseStorage.getReferenceFromUrl(storageUrl);
+
+
+            reference.getFile(downsonFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    // Toast.makeText(DownloadCateg.this, upson.getName(), Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Toast.makeText(MainActivity.this, "Download was unsuccessful", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
+
+                }
+            });
+        }
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
 
     //called in xml
     public void getSpeechInput(View view) {

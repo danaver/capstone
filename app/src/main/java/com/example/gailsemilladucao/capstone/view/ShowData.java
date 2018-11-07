@@ -30,7 +30,7 @@ public class ShowData extends AppCompatActivity {
 
     String imgName=null,audname=null,cebword=null,fxname = null,pruword=null;
 
-    JSONObject instance;
+
 
     MediaPlayer player = new MediaPlayer();
 
@@ -64,9 +64,7 @@ public class ShowData extends AppCompatActivity {
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ShowData.this, MainActivity.class);
-                startActivity(intent);
-                onBackPressed();
+                ShowData.super.onBackPressed();
             }
         });
 
