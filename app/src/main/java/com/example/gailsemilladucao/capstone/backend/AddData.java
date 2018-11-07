@@ -36,6 +36,8 @@ import com.example.gailsemilladucao.capstone.model.Bistalk;
 import com.example.gailsemilladucao.capstone.model.wordbanks;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnPausedListener;
@@ -79,6 +81,7 @@ public class AddData extends AppCompatActivity {
 
     //FIREBASE
     StorageReference storageRef;
+    DatabaseReference databaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +94,9 @@ public class AddData extends AppCompatActivity {
 
         // Create a storage reference from our app
         storageRef = FirebaseStorage.getInstance().getReference();
+
+        // Database Reference
+        databaseRef = FirebaseDatabase.getInstance().getReference("updates");
 
         //request runtime permission
         if(!checkPermissionFromDevice())
@@ -351,6 +357,36 @@ public class AddData extends AppCompatActivity {
                     }
                 });
             }
+
+
+            // Upload editText value to RDBM
+            DatabaseReference englishRef = databaseRef.child("381");
+
+            String english = engText.getText().toString();
+            String cebuano = cebText.getText().toString();
+            String pronunciation = prunoun.getText().toString();
+            String audio = engText.getText().toString() + ".mp3";
+            String image = engText.getText().toString() + ".png";
+            String fx = engText.getText().toString() + ".mp3";
+            String category = drop.getSelectedItem().toString();
+            int status = 3;
+
+            // push to the firabase database
+            String id = englishRef.push().getKey();
+            databaseRef.child(id).child("Audio").setValue(audio);
+            databaseRef.child(id).child("Category").setValue(category);
+            databaseRef.child(id).child("Cebuano").setValue(cebuano);
+            databaseRef.child(id).child("Effect").setValue(fx);
+            databaseRef.child(id).child("English").setValue(english);
+            databaseRef.child(id).child("Picture").setValue(image);
+            databaseRef.child(id).child("Pronunciation").setValue(pronunciation);
+            databaseRef.child(id).child("Status").setValue(status);
+
+            // if audiofx is empty or don't have any file selected
+            if(audioFxUri == null){
+                databaseRef.child(id).child("Effect").setValue("null");
+            }
+
         } else {
             progressDialog.dismiss();
             Toast.makeText(getApplicationContext(), "No file selected. Audio File Required!", Toast.LENGTH_LONG).show();
