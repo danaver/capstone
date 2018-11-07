@@ -19,46 +19,19 @@
         android:textSize="50dp"
         android:layout_centerHorizontal="true"/>
 
-    <EditText
-        android:background="@drawable/box"
-        android:id="@+id/emailTxt"
-        android:layout_width="500dp"
-        android:layout_height="70dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/signupTxt"
-        android:layout_marginTop="10dp"
-        android:hint="Email"
-        android:textSize="35dp"
-        android:fontFamily="@font/boogaloo"
-        android:textAlignment="center"/>
-
-    <EditText
-        android:id="@+id/passwordTxt"
-        android:background="@drawable/box"
-        android:layout_width="500dp"
-        android:layout_height="70dp"
-        android:layout_below="@+id/emailTxt"
-        android:inputType="textPassword"
-        android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
-        android:hint="Password"
-        android:textSize="35dp"
-        android:fontFamily="@font/boogaloo"
-        android:textAlignment="center"/>
-
     <Button
         android:id="@+id/signupBtn"
         android:background="@drawable/button"
         android:layout_width="500dp"
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/passwordTxt"
+        android:layout_below="@id/signupTxt"
         android:layout_marginTop="25dp"
         android:textAlignment="center"
         android:fontFamily="@font/boogaloo"
         android:textColor="@android:color/holo_green_dark"
         android:textSize="30dp"
-        android:text="Sign Up" />
+        android:text="Register for Premium" />
 
     <TextView
         android:id="@+id/signinText"
@@ -69,7 +42,7 @@
         android:layout_below="@id/signupBtn"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/boogaloo"
-        android:text="Already have an account? Please sign in here"
+        android:text="Already have an account? Please log in here"
         android:textSize="30dp" />
 
 </RelativeLayout>

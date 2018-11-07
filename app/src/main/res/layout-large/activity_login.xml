@@ -13,9 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="25dp"
         android:text="SIGN IN"
-        android:textSize="70dp"
+        android:textSize="60dp"
         android:fontFamily="@font/boogaloo"/>
 
     <EditText
@@ -24,7 +24,7 @@
         android:layout_width="500dp"
         android:layout_height="70dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="120dp"
         android:textAlignment="center"
         android:fontFamily="@font/boogaloo"
         android:textSize="35dp"
@@ -48,7 +48,7 @@
         android:id="@+id/signinBtn"
         android:layout_width="500dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/passwordView"
         android:background="@drawable/button"
         android:layout_centerHorizontal="true"
@@ -59,15 +59,28 @@
         android:text="Sign In" />
 
     <Button
-        android:id="@+id/register"
+        android:id="@+id/free"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/signinBtn"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="2dp"
         android:background="@null"
         android:layout_centerHorizontal="true"
         android:fontFamily="@font/boogaloo"
         android:textSize="25dp"
         android:textColor="#FFFFFF"
-        android:text="Create a New Account" />
+        android:text="Continue as Free" />
+
+    <Button
+        android:id="@+id/register"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/free"
+        android:layout_marginTop="2dp"
+        android:background="@null"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/boogaloo"
+        android:textSize="25dp"
+        android:textColor="#FFFFFF"
+        android:text="Get Premium" />
 </RelativeLayout>

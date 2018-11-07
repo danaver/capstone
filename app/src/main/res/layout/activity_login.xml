@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:text="SIGN IN"
         android:textSize="40dp"
         android:fontFamily="@font/boogaloo"/>
@@ -62,7 +62,7 @@
         android:text="Sign In" />
 
     <Button
-        android:id="@+id/register"
+        android:id="@+id/free"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/signinBtn"
@@ -72,6 +72,18 @@
         android:fontFamily="@font/boogaloo"
         android:textSize="20dp"
         android:textColor="#FFFFFF"
-        android:text="Create a New Account" />
+        android:text="Continue as Free" />
+
+    <Button
+        android:id="@+id/register"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/free"
+        android:background="@null"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/boogaloo"
+        android:textSize="20dp"
+        android:textColor="#FFFFFF"
+        android:text="Get Premium" />
 
 </RelativeLayout>

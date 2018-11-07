@@ -22,6 +22,12 @@
         >
     </item>
     <item
+        android:id="@+id/action_premium"
+        android:title= "Get Premium"
+        android:icon="@drawable/premium"
+        >
+    </item>
+    <item
         android:id="@+id/tips"
         android:title= "Tips"
         android:icon="@drawable/help"
@@ -29,8 +35,15 @@
     </item>
     <item
         android:id="@+id/action_login"
-        android:title="Login"
+        android:title= "Login"
         android:icon="@drawable/login"
-        app:showAsAction="always"/>
-
+        app:showAsAction="always"
+        >
+    </item>
+    <item
+        android:id="@+id/logout"
+        android:title= "Logout"
+        android:icon="@drawable/logout"
+        >
+    </item>
 </menu>

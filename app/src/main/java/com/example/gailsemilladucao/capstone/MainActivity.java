@@ -2,7 +2,10 @@ package com.example.gailsemilladucao.capstone;
 
 // =========== API =========== //
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     public TextView txvResult;
     public String message ="";
-    Button searchy;
+    Button searchy, logout, login;
     EditText wordie;
     Bistalk bistalk;
 
@@ -58,9 +61,15 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle abdt;
 
+    // Session
+    private static final String PREF_NAME = "MyPrefs";
+    private static final String IS_FREE = "isFree";
+    public static final String KEY_PASSWORD = "password";
+    public static final String KEY_EMAIL = "email";
+    SharedPreferences pref;
+    Editor editor;
+
     String jsonString;
-
-
 
     FirebaseStorage storage = FirebaseStorage.getInstance();
 
@@ -73,6 +82,12 @@ public class MainActivity extends AppCompatActivity {
         searchy = findViewById(R.id.searching);
         wordie = findViewById(R.id.wordie);
         dl = findViewById(R.id.dl);
+        logout = findViewById(R.id.logout);
+        login = findViewById(R.id.action_login);
+
+        // Session
+        pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        editor = pref.edit();
 
         // Navigation Drawer
         abdt = new ActionBarDrawerToggle(MainActivity.this, dl, R.string.open, R.string.close);
@@ -85,8 +100,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
 
-                if(id == R.id.add_word){
-                    Intent intent = new Intent(MainActivity.this,AddData.class);
+                if(id == R.id.add_word && pref.getBoolean(IS_FREE, true)) {
+                    Toast.makeText(MainActivity.this, "Get Premium", Toast.LENGTH_SHORT).show();
+                }else if(id == R.id.add_word && !pref.getBoolean(IS_FREE, true)) {
+                    Intent intent = new Intent(MainActivity.this, AddData.class);
                     startActivity(intent);
                 }else if(id == R.id.download_package){
                     Intent intent = new Intent(MainActivity.this, DownloadCateg.class);
@@ -96,6 +113,14 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }else if(id == R.id.tips){
                     Intent intent = new Intent(MainActivity.this, Tips.class);
+                    startActivity(intent);
+                }else if(id == R.id.action_premium){
+                    Intent intent = new Intent(MainActivity.this, signup.class);
+                    startActivity(intent);
+                }else if(id == R.id.logout){
+                    editor.clear();
+                    editor.commit();
+                    Intent intent = new Intent(MainActivity.this, Login.class);
                     startActivity(intent);
                 }
                 return true;
@@ -142,7 +167,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    private void setDefault() {
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(IS_FREE, true);
+        editor.putString(KEY_PASSWORD, "");
+        editor.putString(KEY_EMAIL, "");
+        editor.commit();
+    }
 
 
     private String readFromFile() {

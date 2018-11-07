@@ -3,6 +3,8 @@ package com.example.gailsemilladucao.capstone.view;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.TypedArray;
 import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
@@ -24,6 +26,7 @@ import com.example.gailsemilladucao.capstone.backend.AddData;
 import com.example.gailsemilladucao.capstone.model.Bistalk;
 import com.example.gailsemilladucao.capstone.model.categ;
 import com.example.gailsemilladucao.capstone.model.categAdapter;
+import com.example.gailsemilladucao.capstone.signup;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -55,7 +58,13 @@ public class DownloadCateg extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle abdt;
 
-
+    // Session
+    private static final String PREF_NAME = "MyPrefs";
+    private static final String IS_FREE = "isFree";
+    public static final String KEY_PASSWORD = "password";
+    public static final String KEY_EMAIL = "email";
+    SharedPreferences pref;
+    Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +103,9 @@ public class DownloadCateg extends AppCompatActivity {
             }
         }
 
+        // Session
+        pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        editor = pref.edit();
 
         // Navigation Drawer
         abdt = new ActionBarDrawerToggle(DownloadCateg.this, dl, R.string.open, R.string.close);
@@ -106,8 +118,10 @@ public class DownloadCateg extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
 
-                if(id == R.id.add_word){
-                    Intent intent = new Intent(DownloadCateg.this,AddData.class);
+                if(id == R.id.add_word && pref.getBoolean(IS_FREE, true)) {
+                    Toast.makeText(DownloadCateg.this, "Get Premium", Toast.LENGTH_SHORT).show();
+                }else if(id == R.id.add_word && !pref.getBoolean(IS_FREE, true)) {
+                    Intent intent = new Intent(DownloadCateg.this, AddData.class);
                     startActivity(intent);
                 }else if(id == R.id.download_package){
                     Intent intent = new Intent(DownloadCateg.this, DownloadCateg.class);
@@ -117,6 +131,14 @@ public class DownloadCateg extends AppCompatActivity {
                     startActivity(intent);
                 }else if(id == R.id.tips){
                     Intent intent = new Intent(DownloadCateg.this, Tips.class);
+                    startActivity(intent);
+                }else if(id == R.id.action_premium){
+                    Intent intent = new Intent(DownloadCateg.this, signup.class);
+                    startActivity(intent);
+                }else if(id == R.id.logout){
+                    editor.clear();
+                    editor.commit();
+                    Intent intent = new Intent(DownloadCateg.this, Login.class);
                     startActivity(intent);
                 }else if(id == R.id.home) {
                     Intent intent = new Intent(DownloadCateg.this, MainActivity.class);
