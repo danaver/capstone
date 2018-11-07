@@ -368,7 +368,7 @@ public class DownloadCateg extends AppCompatActivity {
         if (isNetworkConnected() == false) {
             Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
         }else{
-            String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/wordbank.json?alt=media&token=21f68d7f-7a1c-4b1d-aab1-0790bbe5644c";
+            String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/wordbank.json?alt=media&token=ed8c3982-e11b-4084-833e-2255301ead1f";
             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
             StorageReference reference = firebaseStorage.getReferenceFromUrl(storageUrl);
 
@@ -400,7 +400,7 @@ public class DownloadCateg extends AppCompatActivity {
         if (isNetworkConnected() == false) {
             Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
         }else{
-            String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/update.json?alt=media&token=bd058cf6-8410-453d-9216-76f30e46f8b5";
+            String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/update.json?alt=media&token=ffea4fb6-6673-4ecc-b3f1-b93110041931";
             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
             StorageReference reference = firebaseStorage.getReferenceFromUrl(storageUrl);
 
