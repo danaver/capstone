@@ -6,6 +6,17 @@ import java.util.List;
 
 public class Bistalk {
     int update;
+    int adjective;
+    int animal;
+    @SerializedName("body part")
+    int body_part;
+    int event;
+    int food;
+    int number;
+    int person;
+    int place;
+    int thing;
+    int verb;
     @SerializedName("users")
     List<users> userList;
     @SerializedName("wordbank")

@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
         if (isNetworkConnected() == false) {
             Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
         }else {
-            String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/wordbank.json?alt=media&token=21f68d7f-7a1c-4b1d-aab1-0790bbe5644c";
+            String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/wordbank.json?alt=media&token=c8d6231f-5333-4d3f-89b9-25729708784a";
             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
             StorageReference reference = firebaseStorage.getReferenceFromUrl(storageUrl);
 
