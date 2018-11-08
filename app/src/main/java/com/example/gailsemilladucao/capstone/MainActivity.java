@@ -351,8 +351,6 @@ public class MainActivity extends AppCompatActivity {
       public wordbanks searchWord(String msg) {
         wordbanks match = null;
 
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-
 
             for (int i = 0; i < bistalk.getWordbankList().size(); i++) {
                 if (msg.equals(bistalk.getWordbankList().get(i).getEnglish())) {

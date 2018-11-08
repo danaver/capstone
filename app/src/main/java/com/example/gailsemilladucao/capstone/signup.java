@@ -49,6 +49,8 @@ public class signup extends AppCompatActivity {
             public void onClick(View view) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://goo.gl/forms/VAcr3twIBuFhNvXm1"));
                 startActivity(browserIntent);
+                signup.super.finish();
+
             }
         });
 

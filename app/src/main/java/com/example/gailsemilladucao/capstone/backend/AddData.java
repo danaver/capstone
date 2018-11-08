@@ -147,9 +147,6 @@ public class AddData extends AppCompatActivity {
         addData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isNetworkConnected()==true){
-                    uploadFile();
-                }
                 localAdd(bistalk);
             }
         });
@@ -305,7 +302,7 @@ public class AddData extends AppCompatActivity {
         progressDialog.setTitle("Uploading Files, Please wait...");
         progressDialog.show();
 
-        if (audioFileUri != null) {
+        if (audioFileUri != null){
             StorageReference imageReference = storageRef.child("updates_photo").child(engText.getText().toString().trim() + "");
             StorageReference audioRef = storageRef.child("updates_audio").child(engText.getText().toString().trim() + ""); // storage location to firebase.
             StorageReference fxRef = storageRef.child("updates_effect").child(engText.getText().toString().trim() + ""); // storage location to firebase
@@ -451,8 +448,7 @@ public class AddData extends AppCompatActivity {
     }
 
     public void menu(View view) {
-        Intent intent = new Intent(AddData.this, MainActivity.class);
-        startActivity(intent);
+        AddData.super.onBackPressed();
     }
 
     public void localAdd(Bistalk bistalk){
@@ -464,18 +460,22 @@ public class AddData extends AppCompatActivity {
         wordbanks word = new wordbanks();
 
         //getiing the  text
-        jeng = engText.getText().toString().toLowerCase();
-        jceb = cebText.getText().toString().toLowerCase();
-        jpru = prunoun.getText().toString().toLowerCase();
+        jeng = engText.getText().toString().toLowerCase().trim();
+        jceb = cebText.getText().toString().toLowerCase().trim();
+        jpru = prunoun.getText().toString().toLowerCase().trim();
         jcateg = drop.getSelectedItem().toString();
 
 
 
 
 
-        if (jeng.equals("")&&jceb.equals("")){
+        if (jeng.equals("")){
             Toast.makeText(AddData.this, "Please fill all blanks", Toast.LENGTH_SHORT).show();
         }else{
+
+            if(jceb.equals("")){
+                Toast.makeText(AddData.this, "Please fill all blanks", Toast.LENGTH_SHORT).show();
+            }else{
             //image to json and copy to internal
             //image to local
             if(imageFileUri==null) {
@@ -585,6 +585,10 @@ public class AddData extends AppCompatActivity {
                     String val = wordExist(jeng);
                     if(val == null){
                         bistalk.getWordbankList().add(word);
+
+                        if(isNetworkConnected()==true){
+                            uploadFile();
+                        }
                         try {
                             GsontoJson(bistalk);
                         } catch (JSONException e) {
@@ -592,11 +596,13 @@ public class AddData extends AppCompatActivity {
                         }
                         Intent lol = new Intent(AddData.this,MainActivity.class);
                         startActivity(lol);
+                        finish();
                     }else{
                         Toast.makeText(AddData.this, "Word is already exist", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
+        }
         }
     }
 

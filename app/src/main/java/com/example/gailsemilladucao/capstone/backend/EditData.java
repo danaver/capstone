@@ -53,7 +53,7 @@ import java.io.OutputStream;
 public class EditData extends AppCompatActivity {
 
     EditText eEng,eCeb,ePru;
-    Button eAud,eFx,save;
+    Button eAud,eFx,save,remove;
     TextView infoaud,infofx;
     ImageView eImg;
     Spinner pus;
@@ -85,6 +85,7 @@ public class EditData extends AppCompatActivity {
         infofx = findViewById(R.id.info_effect);
         eImg = findViewById(R.id.editImg);
         save = findViewById(R.id.save);
+        remove = findViewById(R.id.none);
 
 
         //spinner
@@ -171,11 +172,21 @@ public class EditData extends AppCompatActivity {
                 }
             }
         });
+
+        remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                audioFxUri = null;
+                infofx.setText("");
+                remove.setVisibility(View.GONE);
+            }
+        });
     }
 
     public void menu(View view) {
-        Intent lol = new Intent(EditData.this,MainActivity.class);
-        startActivity(lol);
+        EditData.super.onBackPressed();
+
+
     }
 
     @Override
@@ -258,6 +269,7 @@ public class EditData extends AppCompatActivity {
                 //vvv This lets you set the path sa TextView
                 srcPath = audioFxUri.getPath();
                 infofx.setText(srcPath);
+                remove.setVisibility(View.VISIBLE);
 
             }
         }
@@ -406,6 +418,7 @@ public class EditData extends AppCompatActivity {
                     GsontoJson(bistalk);
                     Intent lol = new Intent(EditData.this,MainActivity.class);
                     startActivity(lol);
+                    EditData.super.finish();
 
                 }
             }

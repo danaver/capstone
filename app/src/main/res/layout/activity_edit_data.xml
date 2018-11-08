@@ -87,6 +87,15 @@
         android:textAlignment="center"
         android:textColor="@color/dirty" />
     <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/remove"
+        android:layout_below="@id/info_audio"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/dirty"
+        android:id="@+id/none"/>
+    <Button
         android:id="@+id/editAud"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
