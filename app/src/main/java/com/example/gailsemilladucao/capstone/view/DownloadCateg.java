@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.TypedArray;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -28,13 +29,18 @@ import com.example.gailsemilladucao.capstone.backend.AddData;
 import com.example.gailsemilladucao.capstone.model.Bistalk;
 import com.example.gailsemilladucao.capstone.model.categ;
 import com.example.gailsemilladucao.capstone.model.categAdapter;
+import com.example.gailsemilladucao.capstone.model.wordbanks;
 import com.example.gailsemilladucao.capstone.signup;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnPausedListener;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONException;
 
@@ -55,6 +61,9 @@ public class DownloadCateg extends AppCompatActivity {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     Bistalk list,upson;
     File mayson;
+
+    DatabaseReference databaseRef;
+    StorageReference storageRef;
 
     // Navigation Drawer
     private DrawerLayout dl;
@@ -82,6 +91,9 @@ public class DownloadCateg extends AppCompatActivity {
 
         createFolder();
 
+        // Database Reference
+        databaseRef = FirebaseDatabase.getInstance().getReference("updates");
+
 
 
 
@@ -101,7 +113,14 @@ public class DownloadCateg extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+
+            try {
+                delayUpload();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
+
 
         // Session
         pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -155,6 +174,22 @@ public class DownloadCateg extends AppCompatActivity {
         }
 
         buildRV();
+
+    }
+
+    private void delayUpload() throws JSONException {
+        for (int i = 0; i <list.getWordbankList().size();i++){
+            if(list.getWordbankList().get(i).getStatus() == 2){
+                //call uploadtoStorage function
+                // same to ur uploadFile() but instead of from the form.
+                //data will be retrive through bistalk.getWordbankList().get(i).getName and etc
+                //call uploadtoRDBM function
+                uploadFile(list.getWordbankList().get(i));
+                list.getWordbankList().get(i).setStatus(3);
+            }
+        }
+
+        GsontoJson(list);
 
     }
 
@@ -460,6 +495,113 @@ public class DownloadCateg extends AppCompatActivity {
         return toUpdate;
     }
 
+    private void uploadFile(wordbanks word) {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Uploading Files, Please wait...");
+        progressDialog.show();
+
+        Uri audioFileUri = Uri.parse(getFilesDir() + word.getCebuano());
+        Uri imageFileUri = Uri.parse(getFilesDir() + word.getEnglish());
+        Uri audioFxUri = Uri.parse(getFilesDir() + word.getEnglish());
+
+        if (audioFileUri != null) {
+            StorageReference imageReference = storageRef.child("updates_photo").child(word.getEnglish().trim() + "");
+            StorageReference audioRef = storageRef.child("updates_audio").child(word.getCebuano().trim() + ""); // storage location to firebase.
+            StorageReference fxRef = storageRef.child("updates_effect").child(word.getEnglish().trim() + ""); // storage location to firebase
+
+            // Upload attach audio file
+            audioRef.putFile(audioFileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "Audio Uploaded!", Toast.LENGTH_LONG).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+
+            // Upload for attach effects audio file
+            if(audioFxUri != null){
+                fxRef.putFile(audioFxUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        progressDialog.dismiss();
+                        // Toast.makeText(getApplicationContext(), "Audio Effect Uploaded! ", Toast.LENGTH_LONG).show();
+
+                    }
+                }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onPaused(UploadTask.TaskSnapshot taskSnapshot) { // When loading progress is paused
+                        // System.out.println("Upload is paused");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) { // If progress fails
+                        // Toast.makeText(getApplicationContext(), "Audio Effect Failed! ", Toast.LENGTH_LONG).show();
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) { // During upload progress
+//                        double progress = (100.0 * taskSnapshot.getBytesTransferred())/ taskSnapshot.getTotalByteCount();
+//                        System.out.println("Upload is " + progress + " % done");
+                    }
+                });
+            }
+
+            // Upload for Image
+            if(imageFileUri != null){
+                imageReference.putFile(imageFileUri)
+                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                progressDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), "Image File Uploaded ", Toast.LENGTH_LONG).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+
+                        //and displaying error message
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+
+            // Upload editText value to RDBM
+            DatabaseReference englishRef = databaseRef.child("381");
+
+            String english = word.getEnglish();
+            String cebuano = word.getCebuano();
+            String pronunciation = word.getPronunciation();
+            String audio = word.getAudio();
+            String image = word.getPicture();
+            String fx = word.getEffect();
+            String category = word.getCategory();
+            int status = 3;
+
+            // push to the firabase database
+            String id = englishRef.push().getKey();
+            databaseRef.child(id).child("Audio").setValue(audio);
+            databaseRef.child(id).child("Category").setValue(category);
+            databaseRef.child(id).child("Cebuano").setValue(cebuano);
+            databaseRef.child(id).child("Effect").setValue(fx);
+            databaseRef.child(id).child("English").setValue(english);
+            databaseRef.child(id).child("Picture").setValue(image);
+            databaseRef.child(id).child("Pronunciation").setValue(pronunciation);
+            databaseRef.child(id).child("Status").setValue(status);
+
+        } else {
+            progressDialog.dismiss();
+            Toast.makeText(getApplicationContext(), "No file selected. Audio File Required!", Toast.LENGTH_LONG).show();
+        }
+
+    }
 
 
 }
