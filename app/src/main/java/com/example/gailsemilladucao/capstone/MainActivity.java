@@ -79,8 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
     String jsonString;
     File gaysonFile,downsonFile ;
-    DatabaseReference databaseRef;
-    StorageReference storageRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +101,6 @@ public class MainActivity extends AppCompatActivity {
         gaysonFile = new File(getFilesDir(),"wordbank.json");
         downsonFile =new File(getFilesDir(),"update.json");
 
-        // Create a storage reference from our app
-        storageRef = FirebaseStorage.getInstance().getReference();
 
 
 
@@ -157,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //download json
-        gayson();
+       //c gayson();
 
         //part na na parse na and placed sa string
         //this also is used global in searchWord()

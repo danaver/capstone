@@ -60,7 +60,7 @@ public class DownloadCateg extends AppCompatActivity {
     String jsonfile,jsonupdate;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     Bistalk list,upson;
-    File mayson;
+
 
     DatabaseReference databaseRef;
     StorageReference storageRef;
