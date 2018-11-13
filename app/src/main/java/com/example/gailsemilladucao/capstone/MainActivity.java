@@ -78,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
     Editor editor;
 
     String jsonString;
-    File gaysonFile,downsonFile ;
-
+    File gaysonFile,downsonFile, f ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,14 +94,15 @@ public class MainActivity extends AppCompatActivity {
 
         // Session
         pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        editor = pref.edit();
 
         //initializing
         gaysonFile = new File(getFilesDir(),"wordbank.json");
         downsonFile =new File(getFilesDir(),"update.json");
+        f = new File("/data/data/" + getPackageName() + "/shared_prefs/" + PREF_NAME + ".xml");
 
-
-
+        if(!f.exists()) {
+            setDefault();
+        }
 
         if(!gaysonFile.exists()){
             gayson();
@@ -112,14 +112,24 @@ public class MainActivity extends AppCompatActivity {
             upson();
         }
 
-
-
         // Navigation Drawer
         abdt = new ActionBarDrawerToggle(MainActivity.this, dl, R.string.open, R.string.close);
         dl.addDrawerListener(abdt);
         abdt.syncState();
 
         NavigationView nav_view = findViewById(R.id.nav_view);
+
+        // Hiding
+        if(pref.getBoolean(IS_FREE, true)){
+            nav_view.getMenu().findItem(R.id.action_login).setVisible(true);
+            nav_view.getMenu().findItem(R.id.logout).setVisible(false);
+            nav_view.getMenu().findItem(R.id.action_premium).setVisible(true);
+        }else if(!pref.getBoolean(IS_FREE, true)){
+            nav_view.getMenu().findItem(R.id.action_login).setVisible(false);
+            nav_view.getMenu().findItem(R.id.logout).setVisible(true);
+            nav_view.getMenu().findItem(R.id.action_premium).setVisible(false);
+        }
+
         nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -142,9 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 }else if(id == R.id.action_premium){
                     Intent intent = new Intent(MainActivity.this, signup.class);
                     startActivity(intent);
-                }else if(id == R.id.logout){
-                    editor.clear();
-                    editor.commit();
+                }else if(id == R.id.logout && !pref.getBoolean(IS_FREE, true)){
                     Intent intent = new Intent(MainActivity.this, Login.class);
                     startActivity(intent);
                 }
@@ -160,8 +168,6 @@ public class MainActivity extends AppCompatActivity {
         //this also is used global in searchWord()
         jsonString = readFromFile();
         bistalk = JsontoGson();
-
-
 
 
         searchy.setOnClickListener(new View.OnClickListener() {
@@ -200,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
         editor.putString(KEY_EMAIL, "");
         editor.commit();
     }
-
 
     private String readFromFile() {
         String ret = "";

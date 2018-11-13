@@ -72,8 +72,6 @@ public class DownloadCateg extends AppCompatActivity {
     // Session
     private static final String PREF_NAME = "MyPrefs";
     private static final String IS_FREE = "isFree";
-    public static final String KEY_PASSWORD = "password";
-    public static final String KEY_EMAIL = "email";
     SharedPreferences pref;
     Editor editor;
 
@@ -93,8 +91,6 @@ public class DownloadCateg extends AppCompatActivity {
 
         // Database Reference
         databaseRef = FirebaseDatabase.getInstance().getReference("updates");
-
-
 
 
         jsonfile = readFromFile("wordbank.json");
@@ -124,7 +120,6 @@ public class DownloadCateg extends AppCompatActivity {
 
         // Session
         pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        editor = pref.edit();
 
         // Navigation Drawer
         abdt = new ActionBarDrawerToggle(DownloadCateg.this, dl, R.string.open, R.string.close);
@@ -132,6 +127,18 @@ public class DownloadCateg extends AppCompatActivity {
         abdt.syncState();
 
         NavigationView nav_view = findViewById(R.id.nav_view);
+
+        // Hiding
+        if(pref.getBoolean(IS_FREE, true)){
+            nav_view.getMenu().findItem(R.id.action_login).setVisible(true);
+            nav_view.getMenu().findItem(R.id.logout).setVisible(false);
+            nav_view.getMenu().findItem(R.id.action_premium).setVisible(true);
+        }else if(!pref.getBoolean(IS_FREE, true)){
+            nav_view.getMenu().findItem(R.id.action_login).setVisible(false);
+            nav_view.getMenu().findItem(R.id.logout).setVisible(true);
+            nav_view.getMenu().findItem(R.id.action_premium).setVisible(false);
+        }
+
         nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -154,13 +161,8 @@ public class DownloadCateg extends AppCompatActivity {
                 }else if(id == R.id.action_premium){
                     Intent intent = new Intent(DownloadCateg.this, signup.class);
                     startActivity(intent);
-                }else if(id == R.id.logout){
-                    editor.clear();
-                    editor.commit();
+                }else if(id == R.id.logout && !pref.getBoolean(IS_FREE, true)){
                     Intent intent = new Intent(DownloadCateg.this, Login.class);
-                    startActivity(intent);
-                }else if(id == R.id.home) {
-                    Intent intent = new Intent(DownloadCateg.this, MainActivity.class);
                     startActivity(intent);
                 }
                 return true;
