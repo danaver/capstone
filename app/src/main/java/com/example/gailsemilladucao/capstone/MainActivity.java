@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
     String jsonString;
     File gaysonFile,downsonFile, f ;
 
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -242,9 +244,11 @@ public class MainActivity extends AppCompatActivity {
         if (isNetworkConnected() == false) {
             Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
         }else {
-            String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/wordbank.json?alt=media&token=a0bf9ad1-0386-4b68-b1cc-3f7667d3acba";
-            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-            StorageReference reference = firebaseStorage.getReferenceFromUrl(storageUrl);
+//            String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/wordbank.json?alt=media&token=a0bf9ad1-0386-4b68-b1cc-3f7667d3acba";
+//            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+//            StorageReference reference = firebaseStorage.getReferenceFromUrl(storageUrl);
+
+            final StorageReference reference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com/wordbank.json");
 
 
             reference.getFile(gaysonFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
@@ -271,10 +275,11 @@ public class MainActivity extends AppCompatActivity {
         if (isNetworkConnected() == false) {
             Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
         }else{
-            String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/update.json?alt=media&token=ffea4fb6-6673-4ecc-b3f1-b93110041931";
-            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-            StorageReference reference = firebaseStorage.getReferenceFromUrl(storageUrl);
+//            String storageUrl = "https://firebasestorage.googleapis.com/v0/b/bistalk-7833f.appspot.com/o/update.json?alt=media&token=ffea4fb6-6673-4ecc-b3f1-b93110041931";
+//            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+//            StorageReference reference = firebaseStorage.getReferenceFromUrl(storageUrl);
 
+            final StorageReference reference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com/update.json");
 
             reference.getFile(downsonFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
