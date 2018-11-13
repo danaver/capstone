@@ -23,14 +23,15 @@ import java.util.List;
 public class wordAdapter extends ArrayAdapter {
 
     Activity context;
-    int resource;
+    int resource, status;
     ArrayList<wordbanks> list;
 
-    public wordAdapter(@NonNull Activity context, int resource, @NonNull ArrayList<wordbanks> objects) {
+    public wordAdapter(@NonNull Activity context, int resource, @NonNull ArrayList<wordbanks> objects, int status) {
         super(context, resource, objects);
         this.context = context;
         this.resource = resource;
         this.list = objects;
+        this.status = status;
     }
 
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -65,6 +66,10 @@ public class wordAdapter extends ArrayAdapter {
 
         if(wl.getStatus() == 0){
             cedt.setEnabled(false);
+        }
+
+        if(status == 1) {
+            cedt.setVisibility(View.GONE);
         }
 
         cedt.setOnClickListener(new View.OnClickListener() {

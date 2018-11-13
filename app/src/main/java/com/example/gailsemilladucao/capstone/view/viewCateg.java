@@ -1,5 +1,7 @@
 package com.example.gailsemilladucao.capstone.view;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +30,13 @@ public class viewCateg extends AppCompatActivity {
     ListView listView;
     Bistalk bistalk;
 
+    // Session
+    private static final String PREF_NAME = "MyPrefs";
+    private static final String IS_FREE = "isFree";
+    SharedPreferences pref;
+
+    int status;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +52,14 @@ public class viewCateg extends AppCompatActivity {
         jsonfile = readFromFile();
         bistalk = JsontoGson();
 
+        // Session
+        pref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
 
+        if(pref.getBoolean(IS_FREE, true)) {
+            status = 1;
+        }else if(!pref.getBoolean(IS_FREE, true)) {
+            status = 2;
+        }
 
         for (int i =0; i < bistalk.getWordbankList().size();i++) {
             if (bistalk.getWordbankList().get(i).getCategory().equals(categ)){
@@ -59,7 +75,7 @@ public class viewCateg extends AppCompatActivity {
                 wordlist.add(new wordbanks(eng, ceb,pru, cat,aud, img, fx,stat));
             }
         }
-        wordAdapter adapter = new wordAdapter(this, R.layout.row, wordlist);
+        wordAdapter adapter = new wordAdapter(this, R.layout.row, wordlist, status);
         listView.setAdapter(adapter);
         listView.invalidateViews();
 

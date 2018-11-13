@@ -73,7 +73,6 @@ public class DownloadCateg extends AppCompatActivity {
     private static final String PREF_NAME = "MyPrefs";
     private static final String IS_FREE = "isFree";
     SharedPreferences pref;
-    Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
