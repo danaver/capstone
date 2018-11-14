@@ -1,6 +1,7 @@
 package com.example.gailsemilladucao.capstone.backend;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -73,11 +74,11 @@ public class AddData extends AppCompatActivity {
     Spinner drop;
 
 
-
     final int REQUEST_PERMISSION_CODE = 1000;
     final int REQUEST_PERMISSION_GALLERY = 999;
     final static int RQS_OPEN_AUDIO_MP3 = 1;
     final static int RQS_OPEN_AUDIO_FX = 2;
+
 
     //FIREBASE
     StorageReference storageRef;
@@ -96,7 +97,7 @@ public class AddData extends AppCompatActivity {
         storageRef = FirebaseStorage.getInstance().getReference();
 
         // Database Reference
-        databaseRef = FirebaseDatabase.getInstance().getReference("updates");
+        databaseRef = FirebaseDatabase.getInstance().getReference("temp");
 
         //request runtime permission
         if(!checkPermissionFromDevice())
@@ -334,6 +335,7 @@ public class AddData extends AppCompatActivity {
                 }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onPaused(UploadTask.TaskSnapshot taskSnapshot) { // When loading progress is paused
+                        progressDialog.cancel();
                         System.out.println("Upload is paused");
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -370,9 +372,7 @@ public class AddData extends AppCompatActivity {
                 });
             }
 
-
             // Upload editText value to RDBM
-            DatabaseReference englishRef = databaseRef.child("381");
 
             String english = engText.getText().toString();
             String cebuano = cebText.getText().toString();
@@ -384,7 +384,8 @@ public class AddData extends AppCompatActivity {
             int status = 3;
 
             // push to the firabase database
-            String id = englishRef.push().getKey();
+            int i;
+            String id = databaseRef.push().getKey();
             databaseRef.child(id).child("Audio").setValue(audio);
             databaseRef.child(id).child("Category").setValue(category);
             databaseRef.child(id).child("Cebuano").setValue(cebuano);
@@ -403,8 +404,13 @@ public class AddData extends AppCompatActivity {
             progressDialog.dismiss();
             Toast.makeText(getApplicationContext(), "No file selected. Audio File Required!", Toast.LENGTH_LONG).show();
         }
-    }
 
+        if(progressDialog != null && progressDialog.isShowing()){
+            progressDialog.show();
+            progressDialog.dismiss();
+        }
+
+    }
 
 
     private Bistalk JsontoGson(){
