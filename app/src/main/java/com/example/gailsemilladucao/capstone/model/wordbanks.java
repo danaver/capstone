@@ -11,6 +11,7 @@ public class wordbanks implements Serializable {
     private String Pronunciation;
     private String Category;
     private String Audio;
+    private int Id;
     private String Picture;
     private String Effect;
     private int Status;
@@ -27,7 +28,21 @@ public class wordbanks implements Serializable {
         Status = status;
     }
 
+    public wordbanks(String english) {
+        English = english;
+    }
 
+    public wordbanks(String english, String cebuano, String pronunciation, String category, String audio, int id, String picture, String effect, int status) {
+        English = english;
+        Cebuano = cebuano;
+        Pronunciation = pronunciation;
+        Category = category;
+        Audio = audio;
+        Id = id;
+        Picture = picture;
+        Effect = effect;
+        Status = status;
+    }
 
     public wordbanks(String english, String cebuano, String pronunciation, String category, String audio, String picture, String effect, int status) {
         English = english;
@@ -56,6 +71,14 @@ public class wordbanks implements Serializable {
         Audio = audio;
         Picture = picture;
         Effect = effect;
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
     }
 
     public String getPicture() {

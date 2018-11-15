@@ -20,6 +20,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.gailsemilladucao.capstone.Login;
@@ -33,8 +34,12 @@ import com.example.gailsemilladucao.capstone.model.wordbanks;
 import com.example.gailsemilladucao.capstone.signup;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnPausedListener;
@@ -51,17 +56,24 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DownloadCateg extends AppCompatActivity {
 
     List<categ> clist;
+    List<wordbanks>  sample;
     String jsonfile,jsonupdate;
     FirebaseStorage storage = FirebaseStorage.getInstance();
+    FirebaseDatabase db = FirebaseDatabase.getInstance();
+
     Bistalk list,upson;
 
 
+    //Collec
+    DatabaseReference wordbank;
     DatabaseReference databaseRef;
     StorageReference storageRef;
 
@@ -89,6 +101,7 @@ public class DownloadCateg extends AppCompatActivity {
         createFolder();
 
         // Database Reference
+        wordbank = FirebaseDatabase.getInstance().getReference("wordbank");
         databaseRef = FirebaseDatabase.getInstance().getReference("updates");
 
 
@@ -99,6 +112,7 @@ public class DownloadCateg extends AppCompatActivity {
 
         if(isNetworkConnected()){
             updateson();
+            //download updatejson
             update = checkUpdate(list,upson);
             if(update == true){
                 try {
@@ -115,6 +129,9 @@ public class DownloadCateg extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
+        //display object
+
 
 
         // Session
@@ -177,6 +194,10 @@ public class DownloadCateg extends AppCompatActivity {
         buildRV();
 
     }
+
+
+
+
 
     private void delayUpload() throws JSONException {
         for (int i = 0; i <list.getWordbankList().size();i++){
@@ -403,7 +424,7 @@ public class DownloadCateg extends AppCompatActivity {
 
         com.google.gson.Gson gson = new com.google.gson.Gson();
 
-        Bistalk bistalk = new Bistalk(besh.getUpdate(),besh.getcStats(),besh.getUserList(),besh.getWordbankList());
+        Bistalk bistalk = new Bistalk(besh.getUpdate(),besh.getWordbankList());
         String json = gson.toJson(bistalk);
 
         // this will overwrite the jsonfile
@@ -415,8 +436,6 @@ public class DownloadCateg extends AppCompatActivity {
 
 
     }
-
-
 
 
     private void updateson() {
