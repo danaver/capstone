@@ -35,6 +35,7 @@ import com.example.gailsemilladucao.capstone.MainActivity;
 import com.example.gailsemilladucao.capstone.R;
 import com.example.gailsemilladucao.capstone.model.Bistalk;
 import com.example.gailsemilladucao.capstone.model.wordbanks;
+import com.example.gailsemilladucao.capstone.view.DownloadCateg;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -149,7 +150,6 @@ public class AddData extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 localAdd(bistalk);
-                uploadFile();
             }
         });
         //from android m, you need request runtime permission
@@ -474,7 +474,6 @@ public class AddData extends AppCompatActivity {
         if (jeng.equals("")){
             Toast.makeText(AddData.this, "Please fill all blanks", Toast.LENGTH_SHORT).show();
         }else{
-
             if(jceb.equals("")){
                 Toast.makeText(AddData.this, "Please fill all blanks", Toast.LENGTH_SHORT).show();
             }else{
@@ -506,35 +505,9 @@ public class AddData extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                //audiofx to json and copy to internal
-                if(audioFxUri== null) {
-                    jfx="null";
-                }else {
-                    File audfx = new File(getFilesDir() + "/effects", jeng + ".mp3");
-
-                    ContentResolver contentResolver = getContentResolver();
-                    InputStream in = null;
-                    try {
-                        in = contentResolver.openInputStream(audioFxUri);
-                        OutputStream out = new FileOutputStream(audfx);
-                        // Copy the bits from instream to outstream
-                        byte[] buf = new byte[1024];
-                        int len;
-                        while ((len = in.read(buf)) > 0) {
-                            out.write(buf, 0, len);
-                        }
-                        in.close();
-                        out.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
                 //audio to internal
                 if(audioFileUri==null) {
                     Toast.makeText(AddData.this, "Please attach an audio file", Toast.LENGTH_SHORT).show();
-
                 }else{
                     File aud = new File(getFilesDir() + "/audio", jceb + ".mp3");
                     ContentResolver contentResolvers = getContentResolver();
@@ -556,6 +529,33 @@ public class AddData extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
+                    //audiofx to json and copy to internal
+                    if(audioFxUri == null) {
+                        Toast.makeText(AddData.this, "YOLOOO WALA DAW NI SULOD", Toast.LENGTH_SHORT).show();
+                        jfx="null";
+                    }else {
+                        File audfx = new File(getFilesDir() + "/effects", jeng + ".mp3");
+
+                        ContentResolver contentResolver = getContentResolver();
+                        InputStream in = null;
+                        try {
+                            in = contentResolver.openInputStream(audioFxUri);
+                            OutputStream out = new FileOutputStream(audfx);
+                            // Copy the bits from instream to outstream
+                            byte[] buf = new byte[1024];
+                            int len;
+                            while ((len = in.read(buf)) > 0) {
+                                out.write(buf, 0, len);
+                            }
+                            in.close();
+                            out.close();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
                     //INSERT WORDS HERE NA
                     word.setEnglish(jeng.toLowerCase());
                     word.setCebuano(jceb.toLowerCase());
@@ -571,10 +571,12 @@ public class AddData extends AppCompatActivity {
                     word.setAudio(jceb+".mp3");
                     word.setPicture(jeng+".png");
                     word.setCategory(jcateg);
-                    word.setEffect(jfx);
+                    jfx = jeng +".mp3"
+                    ;
 
                     if(audioFxUri != null){
                         word.setEffect(jfx);
+                        Toast.makeText(AddData.this, jfx, Toast.LENGTH_SHORT).show();
                     }
                     internet = isNetworkConnected();
                     if(internet == false){

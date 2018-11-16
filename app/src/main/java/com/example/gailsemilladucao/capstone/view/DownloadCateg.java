@@ -102,7 +102,10 @@ public class DownloadCateg extends AppCompatActivity {
 
         // Database Reference
         wordbank = FirebaseDatabase.getInstance().getReference("wordbank");
-        databaseRef = FirebaseDatabase.getInstance().getReference("updates");
+        databaseRef = FirebaseDatabase.getInstance().getReference("temp");
+
+        // Storage Reference
+        storageRef = FirebaseStorage.getInstance().getReference("updates");
 
 
         jsonfile = readFromFile("wordbank.json");
@@ -451,12 +454,12 @@ public class DownloadCateg extends AppCompatActivity {
             reference.getFile(upson).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                   // Toast.makeText(DownloadCateg.this, upson.getName(), Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(DownloadCateg.this, upson.getName(), Toast.LENGTH_SHORT).show();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                  //  Toast.makeText(DownloadCateg.this, "Download was unsuccessful", Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText(DownloadCateg.this, "Download was unsuccessful", Toast.LENGTH_SHORT).show();
                 }
             }).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
@@ -525,23 +528,23 @@ public class DownloadCateg extends AppCompatActivity {
         Uri audioFxUri = Uri.parse(getFilesDir() + word.getEnglish());
 
         if (audioFileUri != null) {
-            StorageReference imageReference = storageRef.child("updates_photo").child(word.getEnglish().trim() + "");
-            StorageReference audioRef = storageRef.child("updates_audio").child(word.getCebuano().trim() + ""); // storage location to firebase.
-            StorageReference fxRef = storageRef.child("updates_effect").child(word.getEnglish().trim() + ""); // storage location to firebase
+            StorageReference imageReference = storageRef.child("photo").child(word.getEnglish().trim() + "");
+            StorageReference audioRef = storageRef.child("audio").child(word.getCebuano().trim() + ""); // storage location to firebase.
+            StorageReference fxRef = storageRef.child("effect").child(word.getEnglish().trim() + ""); // storage location to firebase
 
             // Upload attach audio file
             audioRef.putFile(audioFileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     progressDialog.dismiss();
-                  //  Toast.makeText(getApplicationContext(), "Audio Uploaded!", Toast.LENGTH_LONG).show();
+                    //  Toast.makeText(getApplicationContext(), "Audio Uploaded!", Toast.LENGTH_LONG).show();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     progressDialog.dismiss();
-                  //
-                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    //
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -551,13 +554,7 @@ public class DownloadCateg extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         progressDialog.dismiss();
-                        // Toast.makeText(getApplicationContext(), "Audio Effect Uploaded! ", Toast.LENGTH_LONG).show();
 
-                    }
-                }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onPaused(UploadTask.TaskSnapshot taskSnapshot) { // When loading progress is paused
-                        // System.out.println("Upload is paused");
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -567,8 +564,8 @@ public class DownloadCateg extends AppCompatActivity {
                 }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onProgress(UploadTask.TaskSnapshot taskSnapshot) { // During upload progress
-//                        double progress = (100.0 * taskSnapshot.getBytesTransferred())/ taskSnapshot.getTotalByteCount();
-//                        System.out.println("Upload is " + progress + " % done");
+                        double progress = (100.0 * taskSnapshot.getBytesTransferred())/ taskSnapshot.getTotalByteCount();
+                        System.out.println("Upload is " + progress + " % done");
                     }
                 });
             }
@@ -580,7 +577,6 @@ public class DownloadCateg extends AppCompatActivity {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 progressDialog.dismiss();
-                             //   Toast.makeText(getApplicationContext(), "Image File Uploaded ", Toast.LENGTH_LONG).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -619,7 +615,7 @@ public class DownloadCateg extends AppCompatActivity {
 
         } else {
             progressDialog.dismiss();
-           // Toast.makeText(getApplicationContext(), "No file selected. Audio File Required!", Toast.LENGTH_LONG).show();
+            // Toast.makeText(getApplicationContext(), "No file selected. Audio File Required!", Toast.LENGTH_LONG).show();
         }
 
     }
