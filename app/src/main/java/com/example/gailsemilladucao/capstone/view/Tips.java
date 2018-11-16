@@ -14,6 +14,8 @@ public class Tips extends AppCompatActivity {
 
     ViewPager viewPager;
     Button exit;
+    private final int page=3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +32,9 @@ public class Tips extends AppCompatActivity {
             }
         });
 
-
         ViewPageAdapter viewPageAdapter = new ViewPageAdapter(this);
         viewPager.setAdapter(viewPageAdapter);
+
     }
+
 }

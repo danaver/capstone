@@ -29,9 +29,6 @@ public class ShowData extends AppCompatActivity {
     public Button audio;
 
     String imgName=null,audname=null,cebword=null,fxname = null,pruword=null;
-
-
-
     MediaPlayer player = new MediaPlayer();
 
 
@@ -64,7 +61,9 @@ public class ShowData extends AppCompatActivity {
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowData.super.onBackPressed();
+                Intent intent = new Intent(ShowData.this, MainActivity.class);
+                startActivity(intent);
+                stopPlaying();
             }
         });
 

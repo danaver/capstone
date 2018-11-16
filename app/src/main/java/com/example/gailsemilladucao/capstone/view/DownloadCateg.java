@@ -104,8 +104,6 @@ public class DownloadCateg extends AppCompatActivity {
         wordbank = FirebaseDatabase.getInstance().getReference("wordbank");
         databaseRef = FirebaseDatabase.getInstance().getReference("temp");
 
-        // Storage Reference
-        storageRef = FirebaseStorage.getInstance().getReference("updates");
 
 
         jsonfile = readFromFile("wordbank.json");
@@ -182,6 +180,9 @@ public class DownloadCateg extends AppCompatActivity {
                     startActivity(intent);
                 }else if(id == R.id.logout && !pref.getBoolean(IS_FREE, true)){
                     Intent intent = new Intent(DownloadCateg.this, Login.class);
+                    startActivity(intent);
+                }else if(id == R.id.home){
+                    Intent intent = new Intent(DownloadCateg.this, MainActivity.class);
                     startActivity(intent);
                 }
                 return true;

@@ -305,9 +305,9 @@ public class AddData extends AppCompatActivity {
         progressDialog.show();
 
         if (audioFileUri != null){
-            StorageReference imageReference = storageRef.child("photo").child(engText.getText().toString().trim() + "" + ".png");
-            StorageReference audioRef = storageRef.child("audio").child(engText.getText().toString().trim() + "" + ".mp3"); // storage location to firebase.
-            StorageReference fxRef = storageRef.child("effect").child(engText.getText().toString().trim() + "" + ".mp3"); // storage location to firebase
+            StorageReference imageReference = storageRef.child("photo").child(engText.getText().toString().trim() + "");
+            StorageReference audioRef = storageRef.child("audio").child(engText.getText().toString().trim() + ""); // storage location to firebase.
+            StorageReference fxRef = storageRef.child("effect").child(engText.getText().toString().trim() + ""); // storage location to firebase
 
             // Upload attach audio file
             audioRef.putFile(audioFileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
