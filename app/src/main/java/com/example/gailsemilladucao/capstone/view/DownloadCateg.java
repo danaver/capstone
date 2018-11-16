@@ -287,20 +287,22 @@ public class DownloadCateg extends AppCompatActivity {
         String fxpath;
         for (int i = 0; i < list.getWordbankList().size(); i++) {
             if(list.getWordbankList().get(i).getCategory().equals(categ)){
-                imgpath = getFilesDir() + "/images/" + list.getWordbankList().get(i).getPicture();
-                File imgfile = new File(imgpath);
-                imgfile.delete();
+                if(list.getWordbankList().get(i).getStatus() == 1 ) {
+                    imgpath = getFilesDir() + "/images/" + list.getWordbankList().get(i).getPicture();
+                    File imgfile = new File(imgpath);
+                    imgfile.delete();
 
-                fxpath = getFilesDir() + "/effects/" + list.getWordbankList().get(i).getEffect();
-                File fxfile = new File(fxpath);
-                fxfile.delete();
+                    fxpath = getFilesDir() + "/effects/" + list.getWordbankList().get(i).getEffect();
+                    File fxfile = new File(fxpath);
+                    fxfile.delete();
 
 
-                audiopath = getFilesDir() + "/audio/" + list.getWordbankList().get(i).getAudio();
-                File audiofile = new File(audiopath);
-                audiofile.delete();
+                    audiopath = getFilesDir() + "/audio/" + list.getWordbankList().get(i).getAudio();
+                    File audiofile = new File(audiopath);
+                    audiofile.delete();
 
-                list.getWordbankList().get(i).setStatus(0);
+                    list.getWordbankList().get(i).setStatus(0);
+                }
             }
         }
 
@@ -326,60 +328,60 @@ public class DownloadCateg extends AppCompatActivity {
 
 
             for (int i = 0; i < list.getWordbankList().size(); i++) {
-
-
                 if (list.getWordbankList().get(i).getCategory().equals(categ)) {
+                    if(list.getWordbankList().get(i).getStatus() == 0) {
 
-                    //images
-                    final StorageReference pictureReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("pictures/" + categ + "/" + list.getWordbankList().get(i).getPicture());
-                    final File imageFile = new File(getFilesDir(), "images/" + list.getWordbankList().get(i).getPicture());
+                        //images
+                        final StorageReference pictureReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("pictures/" + categ + "/" + list.getWordbankList().get(i).getPicture());
+                        final File imageFile = new File(getFilesDir(), "images/" + list.getWordbankList().get(i).getPicture());
 
-                    pictureReference.getFile(imageFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            progressDialog.dismiss();
-                        }
-                    });
+                        pictureReference.getFile(imageFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                progressDialog.dismiss();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                progressDialog.dismiss();
+                            }
+                        });
 
-                    //effects
-                    final StorageReference audioFxReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("effects/" + categ + "/" + list.getWordbankList().get(i).getEffect());
-                    final File audioFxFile = new File(getFilesDir(), "effects/" + list.getWordbankList().get(i).getEffect());
+                        //effects
+                        final StorageReference audioFxReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("effects/" + categ + "/" + list.getWordbankList().get(i).getEffect());
+                        final File audioFxFile = new File(getFilesDir(), "effects/" + list.getWordbankList().get(i).getEffect());
 
-                    audioFxReference.getFile(audioFxFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            progressDialog.dismiss();
-                        }
-                    });
+                        audioFxReference.getFile(audioFxFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                progressDialog.dismiss();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                progressDialog.dismiss();
+                            }
+                        });
 
 
-                    //audio file
-                    final StorageReference audioReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("audio/" + categ + "/" + list.getWordbankList().get(i).getAudio());
-                    final File audioFile = new File(getFilesDir(), "audio/" + list.getWordbankList().get(i).getAudio());
+                        //audio file
+                        final StorageReference audioReference = storage.getReferenceFromUrl("gs://bistalk-7833f.appspot.com").child("audio/" + categ + "/" + list.getWordbankList().get(i).getAudio());
+                        final File audioFile = new File(getFilesDir(), "audio/" + list.getWordbankList().get(i).getAudio());
 
-                    audioReference.getFile(audioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        audioReference.getFile(audioFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
 
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            //Toast.makeText(MainActivity.this, "Audio is not downloaded", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                //Toast.makeText(MainActivity.this, "Audio is not downloaded", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
-                    list.getWordbankList().get(i).setStatus(1);
+                        list.getWordbankList().get(i).setStatus(1);
+                    }
                 }
             }
 
