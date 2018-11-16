@@ -94,7 +94,7 @@ public class AddData extends AppCompatActivity {
 
 
         // Create a storage reference from our app
-        storageRef = FirebaseStorage.getInstance().getReference();
+        storageRef = FirebaseStorage.getInstance().getReference("updates");
 
         // Database Reference
         databaseRef = FirebaseDatabase.getInstance().getReference("temp");
@@ -149,6 +149,7 @@ public class AddData extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 localAdd(bistalk);
+                uploadFile();
             }
         });
         //from android m, you need request runtime permission
@@ -304,22 +305,20 @@ public class AddData extends AppCompatActivity {
         progressDialog.show();
 
         if (audioFileUri != null){
-            StorageReference imageReference = storageRef.child("updates_photo").child(engText.getText().toString().trim() + "");
-            StorageReference audioRef = storageRef.child("updates_audio").child(engText.getText().toString().trim() + ""); // storage location to firebase.
-            StorageReference fxRef = storageRef.child("updates_effect").child(engText.getText().toString().trim() + ""); // storage location to firebase
+            StorageReference imageReference = storageRef.child("photo").child(engText.getText().toString().trim() + "" + ".png");
+            StorageReference audioRef = storageRef.child("audio").child(engText.getText().toString().trim() + "" + ".mp3"); // storage location to firebase.
+            StorageReference fxRef = storageRef.child("effect").child(engText.getText().toString().trim() + "" + ".mp3"); // storage location to firebase
 
             // Upload attach audio file
             audioRef.putFile(audioFileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     progressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "Audio Uploaded!", Toast.LENGTH_LONG).show();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     progressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -329,8 +328,6 @@ public class AddData extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         progressDialog.dismiss();
-                        Toast.makeText(getApplicationContext(), "Audio Effect Uploaded! ", Toast.LENGTH_LONG).show();
-
                     }
                 }).addOnPausedListener(new OnPausedListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -359,7 +356,6 @@ public class AddData extends AppCompatActivity {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 progressDialog.dismiss();
-                                Toast.makeText(getApplicationContext(), "Image File Uploaded ", Toast.LENGTH_LONG).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -405,7 +401,7 @@ public class AddData extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "No file selected. Audio File Required!", Toast.LENGTH_LONG).show();
         }
 
-        if(progressDialog != null && progressDialog.isShowing()){
+        if(progressDialog != null){
             progressDialog.show();
             progressDialog.dismiss();
         }
