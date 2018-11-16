@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">capstone</string>
+    <string name="app_name">BisTalk</string>
     <string-array name="post">
         <item>adjective</item>
         <item>animal</item>
