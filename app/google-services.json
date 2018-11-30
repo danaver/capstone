@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1004391529913:android:14f868a4f25e817b",
         "android_client_info": {
-          "package_name": "com.example.gailsemilladucao.capstone"
+          "package_name": "com.bistalk.gailsemilladucao.capstone"
         }
       },
       "oauth_client": [
@@ -41,7 +41,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:1004391529913:android:f5067dd529e903eb",
         "android_client_info": {
-          "package_name": "com.example.gailsemilladucao.externy"
+          "package_name": "com.bistalk.gailsemilladucao.externy"
         }
       },
       "oauth_client": [

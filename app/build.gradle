@@ -3,8 +3,8 @@
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.example.gailsemilladucao.capstone"
-        minSdkVersion 16
+        applicationId "com.bistalk.gailsemilladucao.capstone"
+        minSdkVersion 20
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"

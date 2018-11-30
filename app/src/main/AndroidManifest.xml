@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.gailsemilladucao.capstone">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.bistalk.gailsemilladucao.capstone">
 
     <supports-screens
         android:largeScreens="true"
@@ -23,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.bistalk.gailsemilladucao.capstone.MainActivity"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,38 +33,38 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.ShowData"
+            android:name="com.bistalk.gailsemilladucao.capstone.view.ShowData"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".backend.AddData"
+            android:name="com.bistalk.gailsemilladucao.capstone.backend.AddData"
             android:screenOrientation="landscape" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity
-            android:name=".Login"
+            android:name="com.bistalk.gailsemilladucao.capstone.Login"
             android:screenOrientation="landscape"></activity>
         <activity
-            android:name=".view.DownloadCateg"
+            android:name="com.bistalk.gailsemilladucao.capstone.view.DownloadCateg"
             android:screenOrientation="landscape">
 
         </activity>
         <activity
-            android:name=".view.viewCateg"
+            android:name="com.bistalk.gailsemilladucao.capstone.view.viewCateg"
             android:screenOrientation="landscape" />
-        <activity android:name=".Gson" />
+        <activity android:name="com.bistalk.gailsemilladucao.capstone.Gson" />
         <activity
-            android:name=".signup"
+            android:name="com.bistalk.gailsemilladucao.capstone.signup"
             android:screenOrientation="landscape" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".backend.EditData" android:screenOrientation="landscape">
+        <activity android:name="com.bistalk.gailsemilladucao.capstone.backend.EditData" android:screenOrientation="landscape">
 
         </activity>
-        <activity android:name=".view.Tips"
+        <activity android:name="com.bistalk.gailsemilladucao.capstone.view.Tips"
             android:screenOrientation="landscape">
         </activity>
     </application>
