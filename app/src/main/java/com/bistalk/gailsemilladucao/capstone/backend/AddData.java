@@ -525,7 +525,6 @@ public class AddData extends AppCompatActivity {
 
                     //audiofx to json and copy to internal
                     if(audioFxUri == null) {
-                        Toast.makeText(AddData.this, "YOLOOO WALA DAW NI SULOD", Toast.LENGTH_SHORT).show();
                         jfx="null";
                     }else {
                         File audfx = new File(getFilesDir() + "/effects", jeng + ".mp3");

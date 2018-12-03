@@ -241,7 +241,6 @@ public class EditData extends AppCompatActivity {
                 imageFileUri = result.getUri();
                 //set image choosen from gallery to image view
                 eImg.setImageURI(imageFileUri);
-                Toast.makeText(EditData.this, imageFileUri.getPath(), Toast.LENGTH_SHORT).show();
             }else if( resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
                 Exception error = result.getError();
             }
@@ -364,7 +363,6 @@ public class EditData extends AppCompatActivity {
                     InputStream ins = null;
                     try {
                         ins = contentResolvers.openInputStream(audioFileUri);
-                        Toast.makeText(EditData.this, ins.toString(), Toast.LENGTH_SHORT).show();
                         OutputStream out = new FileOutputStream(aud);
                         // Copy the bits from instream to outstream
                         byte[] buf = new byte[1024];
